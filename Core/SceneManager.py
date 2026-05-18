@@ -85,8 +85,6 @@ class SceneManager(Observer):
             print(f"[DEBUG SM] Room not found: {room_name}")
 
     def _apply_room_change(self) -> None:
-        if self.current_room:
-            self.current_room.exit()
 
         self.current_room = self._next_room
         self.current_room.enter()
