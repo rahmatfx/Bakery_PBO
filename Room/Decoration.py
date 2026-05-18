@@ -15,6 +15,7 @@ class Decoration(Room):
                 pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def update(self): pass
+    def exit(self): pass
 
     def render(self):
         if not self.screen: return
