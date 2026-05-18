@@ -1,46 +1,44 @@
 import pygame
 import os
 
-
 class Button:
-   
-    def __init__(
-        self,
-        x: int,
-        y: int,
-        image_path: str,
-        hover_image_path: str = None,
-        label: str = "",
-        callback=None,
+    def __init__(self,x: int,y: int,width: int = 220, height: int = 55,
+        image_path: str = None,hover_image_path: str = None,
+        label: str = "",callback=None,
     ):
         self.label = label
         self.callback = callback
         self.is_hovered = False
 
-        self.image = self._load_image(image_path, fallback_size=(220, 55))
+        self._has_image = False
+        self.image = None
+        self.hover_image = None
 
-        if hover_image_path and os.path.exists(hover_image_path):
-            self.hover_image = self._load_image(hover_image_path, fallback_size=(220, 55))
+        if image_path:
+            self.image = self._load_image(image_path, fallback_size=(width, height))
+            if hover_image_path and os.path.exists(hover_image_path):
+                self.hover_image = self._load_image(hover_image_path, fallback_size=(width, height))
+            else:
+                self.hover_image = self._create_hover_image(self.image)
+            self.rect = self.image.get_rect(topleft=(x, y))
+            self._has_image = True
         else:
-            self.hover_image = self._create_hover_image(self.image)
-
-        self.rect = self.image.get_rect(topleft=(x, y))
+            self.rect = pygame.Rect(x, y, width, height)
 
     def _load_image(self, path: str, fallback_size: tuple = (220, 55)) -> pygame.Surface:
-
         if os.path.exists(path):
             img = pygame.image.load(path).convert_alpha()
             return img
         else:
-            print(f"[DEBUG] Button image not found: {path} — using fallback rectangle")
-            surf = pygame.Surface(fallback_size)
-            surf.fill((139, 90, 43)) 
+            print(f"[DEBUG] Button image not found: {path} — using fallback")
+            surf = pygame.Surface(fallback_size, pygame.SRCALPHA)
+            surf.fill((139, 90, 43))
             return surf
 
     def _create_hover_image(self, base_image: pygame.Surface) -> pygame.Surface:
         hover = base_image.copy()
         overlay = pygame.Surface(hover.get_size(), pygame.SRCALPHA)
-        overlay.fill((255, 255, 255, 60)) 
+        overlay.fill((255, 255, 255, 60))
         hover.blit(overlay, (0, 0))
         return hover
 
@@ -48,6 +46,8 @@ class Button:
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
     def render(self, surface: pygame.Surface) -> None:
+        if not self._has_image:
+            return
         img = self.hover_image if self.is_hovered else self.image
         surface.blit(img, self.rect)
 
