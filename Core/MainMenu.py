@@ -53,7 +53,6 @@ class MainMenu(Room):
             self._bg_image = None
 
     def _build_buttons(self) -> None:
-        """Buat button Play, Credit, Exit dari file gambar."""
         self.buttons.clear()
 
         btn_width = 220
