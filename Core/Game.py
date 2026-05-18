@@ -5,6 +5,7 @@ from Core.SceneManager import SceneManager
 from Core.MainMenu import MainMenu
 from Room.Cashier import Cashier
 from Room.Decoration import Decoration
+from Room.RoomBaking import BakingRoom
 
 class Game:
     def __init__(self):
@@ -22,13 +23,17 @@ class Game:
         main_menu = MainMenu()
         cashier = Cashier()
         dekorasi = Decoration()
+        baking = BakingRoom()
 
         main_menu.screen = self.screen        
         cashier.screen = self.screen          
-        dekorasi.screen = self.screen        
+        dekorasi.screen = self.screen    
+        baking.screen = self.screen    
 
         self.scene_manager.room_cashier = cashier
         self.scene_manager.room_decoration = dekorasi   
+        self.scene_manager.room_baking = baking   
+
 
         main_menu._scene_manager = self.scene_manager
         self.scene_manager.current_room = main_menu
