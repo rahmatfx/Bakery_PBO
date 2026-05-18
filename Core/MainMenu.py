@@ -38,9 +38,6 @@ class MainMenu(Room):
         self._build_buttons()
         print("[DEBUG] Entered Main Menu")
 
-    def exit(self) -> None:
-        print("[DEBUG] Exited Main Menu")
-
     def _load_background(self) -> None:
         if os.path.exists(MAINMENU_BG):
             self._bg_image = pygame.image.load(MAINMENU_BG).convert()
