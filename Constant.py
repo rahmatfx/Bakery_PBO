@@ -9,12 +9,27 @@ BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BASE_DIR, "Assets")
 
 MAINMENU_BG       = os.path.join(ASSETS_DIR, "background.png")
+CASHIER_BG       = os.path.join(ASSETS_DIR, "cashier_bg.png")
+DEKORASI_BG      = os.path.join(ASSETS_DIR, "dekorasi_bg.png")
 BTN_PLAY          = os.path.join(ASSETS_DIR, "btn_play.png")
 BTN_PLAY_HOVER    = os.path.join(ASSETS_DIR, "btn_play_hover.png")
 BTN_CREDIT        = os.path.join(ASSETS_DIR, "btn_credit.png")
 BTN_CREDIT_HOVER  = os.path.join(ASSETS_DIR, "btn_credit_hover.png")
 BTN_EXIT          = os.path.join(ASSETS_DIR, "btn_exit.png")
 BTN_EXIT_HOVER    = os.path.join(ASSETS_DIR, "btn_exit_hover.png")
+
+NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_bar_bg.png")
+NAV_BTN_NORMAL   = os.path.join(ASSETS_DIR, "nav_btn.png")
+NAV_BTN_HOVER    = os.path.join(ASSETS_DIR, "nav_btn_hover.png")
+NAV_BTN_ACTIVE   = os.path.join(ASSETS_DIR, "nav_btn_active.png")
+
+NAV_BAR_X         = 0
+NAV_BAR_Y         = 0 
+NAV_BAR_WIDTH     = SCREEN_WIDTH         
+NAV_BAR_HEIGHT    = 70
+NAV_BUTTON_WIDTH  = 160
+NAV_BUTTON_HEIGHT = 40
+NAV_BTN_SPACING   = 20
 
 COLOR_BG_CREAM      = (255, 248, 231)
 COLOR_WARM_BROWN    = (139, 90, 43)
@@ -26,13 +41,10 @@ COLOR_BLACK         = (0, 0, 0)
 
 FONT_NAME          = None
 FONT_TITLE_SIZE    = 56
+FONT_HEADING_SIZE  = 36
 FONT_BODY_SIZE     = 24
 FONT_SMALL_SIZE    = 18
 
-NAV_BAR_HEIGHT     = 50
-NAV_BUTTON_WIDTH   = 160
-NAV_BUTTON_HEIGHT  = 40
-
 TRANSITION_SPEED   = 6
 
-DEBUG_NAV_UI       = True   
+DEBUG_NAV_UI       = False  

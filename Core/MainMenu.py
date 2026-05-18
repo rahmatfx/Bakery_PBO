@@ -87,8 +87,10 @@ class MainMenu(Room):
         ))
 
     def play(self) -> None:
-
-        print("[DEBUG] Play() called — no rooms available yet!")
+        print("[DEBUG] Play() called — transitioning to Cashier")
+        if self._scene_manager:
+            self._scene_manager.hide_navigation_ui()
+            self._scene_manager.transition_to_by_name("Cashier") 
 
     def credit(self) -> None:
 
