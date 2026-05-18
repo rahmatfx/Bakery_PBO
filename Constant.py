@@ -1,7 +1,7 @@
 import os
 
-SCREEN_WIDTH  = 1024
-SCREEN_HEIGHT = 768
+SCREEN_WIDTH  = 1280
+SCREEN_HEIGHT = 720
 FPS           = 60
 GAME_TITLE    = "Cozy Bakery"
 
