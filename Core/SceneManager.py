@@ -16,7 +16,7 @@ class SceneManager(Observer):
 
         self.room_cashier: Room = None
         self.room_dough: Room = None
-        self.room_oven: Room = None
+        self.room_baking: Room = None
         self.room_decoration: Room = None
 
         self.navigation_ui = NavigationUI()
@@ -50,7 +50,7 @@ class SceneManager(Observer):
         match name:
             case "Cashier":     return self.room_cashier
             case "Dough":       return self.room_dough
-            case "Oven":        return self.room_oven
+            case "Oven":        return self.room_baking
             case "Decoration":  return self.room_decoration
             case _:             return None
 
