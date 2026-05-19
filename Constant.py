@@ -33,7 +33,7 @@ NAV_BTN_HOVER    = os.path.join(ASSETS_DIR, "nav_bn_hover.png")
 NAV_BTN_ACTIVE   = os.path.join(ASSETS_DIR, "nav_bn_active.png")
 
 NAV_BAR_X         = 0
-NAV_BAR_Y         = 100
+NAV_BAR_Y         = 0
 NAV_BAR_WIDTH     = SCREEN_WIDTH         
 NAV_BAR_HEIGHT    = 70
 NAV_BUTTON_WIDTH  = 160
@@ -60,7 +60,7 @@ DEBUG_NAV_UI       = False
 
 TIMER_DURATION = 60  
 
-NPC_IMG            = os.path.join(ASSETS_DIR, "npc.png")
+NPC_IMG            = os.path.join(ASSETS_DIR, "Mimosa.png")
 NPC_EMOJI_HAPPY    = os.path.join(ASSETS_DIR, "emoji_happy.png")
 NPC_EMOJI_ANGRY    = os.path.join(ASSETS_DIR, "emoji_angry.png")
 
