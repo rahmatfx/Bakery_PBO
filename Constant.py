@@ -13,11 +13,11 @@ CASHIER_BG       = os.path.join(ASSETS_DIR, "cashier_bg.png")
 BAKING_BG       = os.path.join(ASSETS_DIR, "BakingRoom.png")
 DEKORASI_BG      = os.path.join(ASSETS_DIR, "dekorasi_bg.png")
 BTN_PLAY          = os.path.join(ASSETS_DIR, "btn_play.png")
-BTN_PLAY_HOVER    = os.path.join(ASSETS_DIR, "btn_play_hover.png")
+BTN_PLAY_HOVER    = os.path.join(ASSETS_DIR, "btn_ply_hover.png")
 BTN_CREDIT        = os.path.join(ASSETS_DIR, "btn_credit.png")
-BTN_CREDIT_HOVER  = os.path.join(ASSETS_DIR, "btn_credit_hover.png")
+BTN_CREDIT_HOVER  = os.path.join(ASSETS_DIR, "btn_crdit_hover.png")
 BTN_EXIT          = os.path.join(ASSETS_DIR, "btn_exit.png")
-BTN_EXIT_HOVER    = os.path.join(ASSETS_DIR, "btn_exit_hover.png")
+BTN_EXIT_HOVER    = os.path.join(ASSETS_DIR, "btn_ext_hover.png")
 
 OVEN_OPEN_IMAGE = os.path.join(ASSETS_DIR, "OvenBuka.png")
 OVEN_CLOSE_IMAGE = os.path.join(ASSETS_DIR, "OvenTutup.png")
@@ -27,6 +27,10 @@ NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_bar_bg.png")
 NAV_BTN_NORMAL   = os.path.join(ASSETS_DIR, "nav_btn.png")
 NAV_BTN_HOVER    = os.path.join(ASSETS_DIR, "nav_btn_hover.png")
 NAV_BTN_ACTIVE   = os.path.join(ASSETS_DIR, "nav_btn_active.png")
+NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_br_bg.png")
+NAV_BTN_NORMAL   = os.path.join(ASSETS_DIR, "nav_bn.png")
+NAV_BTN_HOVER    = os.path.join(ASSETS_DIR, "nav_bn_hover.png")
+NAV_BTN_ACTIVE   = os.path.join(ASSETS_DIR, "nav_bn_active.png")
 
 NAV_BAR_X         = 0
 NAV_BAR_Y         = 100
@@ -53,3 +57,24 @@ FONT_SMALL_SIZE    = 18
 TRANSITION_SPEED   = 6
 
 DEBUG_NAV_UI       = False  
+
+TIMER_DURATION = 60  
+
+NPC_IMG            = os.path.join(ASSETS_DIR, "npc.png")
+NPC_EMOJI_HAPPY    = os.path.join(ASSETS_DIR, "emoji_happy.png")
+NPC_EMOJI_ANGRY    = os.path.join(ASSETS_DIR, "emoji_angry.png")
+
+NPC_X              = 50
+NPC_Y              = NAV_BAR_HEIGHT + 80
+NPC_WIDTH          = 300
+NPC_HEIGHT         = 400
+NPC_SLIDE_SPEED    = 8
+
+EMOJI_WIDTH        = 80
+EMOJI_HEIGHT       = 80
+EMOJI_POPUP_SPEED  = 4
+
+ORDER_UI_WIDTH     = 320
+ORDER_UI_HEIGHT    = 200
+ORDER_UI_OFFSET_X  = 30
+ORDER_UI_OFFSET_Y  = 20

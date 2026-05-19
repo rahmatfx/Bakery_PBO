@@ -34,8 +34,16 @@ class Game:
         self.scene_manager.room_decoration = dekorasi   
         self.scene_manager.room_baking = baking   
 
+        main_menu.screen = self.screen
+        cashier.screen = self.screen
+        dekorasi.screen = self.screen
+
+        self.scene_manager.room_cashier = cashier
+        self.scene_manager.room_decoration = dekorasi
 
         main_menu._scene_manager = self.scene_manager
+        cashier._scene_manager = self.scene_manager
+
         self.scene_manager.current_room = main_menu
         main_menu.enter()
 
@@ -51,7 +59,7 @@ class Game:
             self._update()
             self._render()
             self.clock.tick(Constant.FPS)
-        pygame.quit()    
+        pygame.quit()
         sys.exit()
 
     def _handle_events(self) -> None:

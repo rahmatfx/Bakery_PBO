@@ -8,7 +8,6 @@ _IDLE = 0
 _FADE_OUT = 1
 _FADE_IN = 2
 
-
 class SceneManager(Observer):
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
@@ -31,8 +30,11 @@ class SceneManager(Observer):
         )
         self._fade_surface.fill((0, 0, 0))
 
-    def on_notify(self, event_type: str, data=None) -> None:
+        self._timer_active = False
+        self._timer_remaining = 0.0   
+        self._timer_expired = False  
 
+    def on_notify(self, event_type: str, data=None) -> None:
         if event_type == "room_change":
             room_name: str = data
             print(f"[DEBUG SM] Received 'room_change', target: {room_name}")
@@ -69,7 +71,6 @@ class SceneManager(Observer):
         self._fade_alpha = 0
 
     def transition_to(self, room: Room) -> None:
-
         if self._state != _IDLE:
             return
         if self.current_room and self.current_room is room:
@@ -103,6 +104,35 @@ class SceneManager(Observer):
     def hide_navigation_ui(self) -> None:
         self._nav_visible = False
 
+    def start_timer(self, seconds: float) -> None:
+        self._timer_active = True
+        self._timer_remaining = seconds
+        self._timer_expired = False
+        print(f"[DEBUG SM] Timer started: {seconds}s")
+
+    def stop_timer(self) -> None:
+        self._timer_active = False
+        print("[DEBUG SM] Timer stopped")
+
+    def get_timer_remaining(self) -> float:
+        return max(0.0, self._timer_remaining)
+
+    def consume_timer_expired(self) -> bool:
+        if self._timer_expired:
+            self._timer_expired = False
+            return True
+        return False
+
+    def _on_timer_expired(self) -> None:
+        print("[DEBUG SM] Timer expired!")
+
+        if self.current_room and self.current_room.name == "Cashier":
+            if hasattr(self.current_room, 'on_timer_expired'):
+                self.current_room.on_timer_expired()
+        else:
+            self._timer_expired = True 
+            self.transition_to_by_name("Cashier")
+
     def update(self) -> None:
         if self._state == _FADE_OUT:
             self._fade_alpha += Constant.TRANSITION_SPEED
@@ -117,6 +147,19 @@ class SceneManager(Observer):
                 self._fade_alpha = 0
                 self._state = _IDLE
                 print("[DEBUG SM] Transition complete")
+
+        if self._timer_active:
+            self._timer_remaining -= 1.0 / Constant.FPS
+            if self._timer_remaining <= 0:
+                self._timer_remaining = 0
+                self._timer_active = False
+                self._on_timer_expired()
+
+        if self._timer_active:
+            secs = max(0, int(self._timer_remaining))
+            self.navigation_ui.set_timer_text(f"Time: {secs}s")
+        else:
+            self.navigation_ui.set_timer_text("")
 
         if self._nav_visible:
             self.navigation_ui.update()
