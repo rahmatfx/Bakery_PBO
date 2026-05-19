@@ -8,6 +8,7 @@ _IDLE = 0
 _FADE_OUT = 1
 _FADE_IN = 2
 
+
 class SceneManager(Observer):
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
@@ -31,8 +32,8 @@ class SceneManager(Observer):
         self._fade_surface.fill((0, 0, 0))
 
         self._timer_active = False
-        self._timer_remaining = 0.0   
-        self._timer_expired = False  
+        self._timer_remaining = 0.0
+        self._timer_expired = False
 
     def on_notify(self, event_type: str, data=None) -> None:
         if event_type == "room_change":
@@ -43,11 +44,7 @@ class SceneManager(Observer):
                 print(f"[DEBUG SM] Same room ({room_name}), no change")
                 return
 
-            target_room = self._get_room_by_name(room_name)
-            if target_room:
-                self._start_transition(target_room)
-            else:
-                print(f"[DEBUG SM] Unknown room: {room_name}")
+            self.transition_to(room_name)
 
     def _get_room_by_name(self, name: str) -> Room:
         match name:
@@ -60,30 +57,28 @@ class SceneManager(Observer):
     def get_room_names(self) -> list[str]:
         return ["Cashier", "Dough", "Oven", "Decoration"]
 
-    def _start_transition(self, room: Room) -> None:
+
+    def transition_to(self, room) -> None:
         if self._state != _IDLE:
             return
+
+        if isinstance(room, str):
+            target = self._get_room_by_name(room)
+            if target is None:
+                print(f"[DEBUG SM] Room not found: {room}")
+                return
+            room = target
+
+        if self.current_room and self.current_room is room:
+            return
+
         if room is None:
             print("[DEBUG SM] Cannot transition to None room!")
             return
+
         self._next_room = room
         self._state = _FADE_OUT
         self._fade_alpha = 0
-
-    def transition_to(self, room: Room) -> None:
-        if self._state != _IDLE:
-            return
-        if self.current_room and self.current_room is room:
-            return
-        self._start_transition(room)
-
-    def transition_to_by_name(self, room_name: str) -> None:
-        print(f"[DEBUG SM] transition_to_by_name: {room_name}")
-        target = self._get_room_by_name(room_name)
-        if target:
-            self.transition_to(target)
-        else:
-            print(f"[DEBUG SM] Room not found: {room_name}")
 
     def _apply_room_change(self) -> None:
 
@@ -103,6 +98,7 @@ class SceneManager(Observer):
 
     def hide_navigation_ui(self) -> None:
         self._nav_visible = False
+
 
     def start_timer(self, seconds: float) -> None:
         self._timer_active = True
@@ -130,8 +126,8 @@ class SceneManager(Observer):
             if hasattr(self.current_room, 'on_timer_expired'):
                 self.current_room.on_timer_expired()
         else:
-            self._timer_expired = True 
-            self.transition_to_by_name("Cashier")
+            self._timer_expired = True
+            self.transition_to("Cashier")
 
     def update(self) -> None:
         if self._state == _FADE_OUT:
