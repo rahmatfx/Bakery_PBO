@@ -1,5 +1,6 @@
 import pygame
 import os
+import Constant
 from Room.Room import Room
 from Constant import (
     SCREEN_WIDTH,
@@ -26,7 +27,7 @@ class Dough(Room):
         if os.path.exists(DOUGH_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DOUGH_BG).convert(),
-                (SCREEN_WIDTH, SCREEN_HEIGHT)
+                (SCREEN_WIDTH, SCREEN_HEIGHT - Constant.NAV_BAR_HEIGHT)
             )
             print("[DEBUG Dough] Background loaded")
         else:
@@ -43,7 +44,7 @@ class Dough(Room):
             return
 
         if self._bg_image:
-            self.screen.blit(self._bg_image, (0, 0))
+            self.screen.blit(self._bg_image, (0, Constant.NAV_BAR_HEIGHT))
         else:
             self.screen.fill(COLOR_BG_CREAM)
 
