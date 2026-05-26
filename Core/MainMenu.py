@@ -56,10 +56,10 @@ class MainMenu(Room):
         btn_height = 55
         center_x = SCREEN_WIDTH // 2 - btn_width // 2
         start_y = SCREEN_HEIGHT // 2 + 30
-        spacing = 80
+        spacing = 120
 
         self.buttons.append(Button(
-            x=center_x, y=start_y,
+            x=center_x - btn_width // 1.1, y=start_y + spacing - 5,
             image_path=BTN_PLAY,
             hover_image_path=BTN_PLAY_HOVER,
             label="Play",
@@ -75,7 +75,7 @@ class MainMenu(Room):
         ))
 
         self.buttons.append(Button(
-            x=center_x, y=start_y + spacing * 2,
+            x=center_x + btn_width // 1.1, y=start_y + spacing,
             image_path=BTN_EXIT,
             hover_image_path=BTN_EXIT_HOVER,
             label="Exit",
