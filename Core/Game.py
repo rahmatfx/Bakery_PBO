@@ -38,17 +38,6 @@ class Game:
         self.scene_manager.room_baking = baking  
         self.scene_manager.room_dough = dough 
 
-        main_menu.screen = self.screen
-        cashier.screen = self.screen
-        dekorasi.screen = self.screen
-        baking.screen = self.screen
-        dough.screen = self.screen
-
-        self.scene_manager.room_cashier = cashier
-        self.scene_manager.room_decoration = dekorasi
-        self.scene_manager.room_baking = baking
-        self.scene_manager.room_dough = dough
-
         main_menu._scene_manager = self.scene_manager
         cashier._scene_manager = self.scene_manager
 
