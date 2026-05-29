@@ -30,6 +30,9 @@ Adonan_Coklat_IMAGE = os.path.join(ASSETS_DIR, "Coklat_Dough.PNG")
 Adonan_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "Strawberry_Dough.PNG")
 Exhaust_Neck_IMAGE = os.path.join(ASSETS_DIR,"Exhaust_Leher.PNG")
 Exhaust_Mouth_IMAGE = os.path.join(ASSETS_DIR,"Exhaust_Mulut.PNG")
+BTN_Original_IMAGE = os.path.join(ASSETS_DIR, "original_button.png")
+BTN_Coklat_IMAGE = os.path.join(ASSETS_DIR, "coklat_button.png")
+BTN_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "strawberry_button.png")
 
 # Oven Images
 OVEN_OPEN_IMAGE  = os.path.join(ASSETS_DIR, "OvenBuka.png")
