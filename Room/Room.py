@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 import pygame
 
 class Room(ABC):
-    def __init__(self, name: str):
+    def __init__(self, name: str,screen: pygame.Surface = None):
         self.name = name
-        self.screen = pygame.surface = None
+        self.screen = screen
     
-    def Enter(self) -> None:
+    def enter(self) -> None:
         pass
 
     @abstractmethod

@@ -3,10 +3,13 @@ import sys
 import Constant
 from Core.SceneManager import SceneManager
 from Core.MainMenu import MainMenu
+from Core.SaveManager import SaveManager
 from Room.Cashier import Cashier
 from Room.Decoration import Decoration
 from Room.RoomBaking import BakingRoom
 from Room.Dough import Dough
+from Character.NPCRegistry import NPCRegistry
+
 
 class Game:
     def __init__(self):
@@ -19,24 +22,21 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = False
 
+        self.save_manager = SaveManager(Constant.SAVE_FILE)
+
+        self.npc_registry = NPCRegistry(Constant.DATA_DIR)
+        saved_affinity = self.save_manager.load_affinity()
+        if saved_affinity:
+            self.npc_registry.load_affinity(saved_affinity)
+
         self.scene_manager = SceneManager(self.screen)
 
+        # Rooms 
         main_menu = MainMenu()
-        cashier = Cashier()
+        cashier = Cashier(self.npc_registry, self.save_manager)
         dekorasi = Decoration()
         baking = BakingRoom()
         dough = Dough()
-
-        main_menu.screen = self.screen        
-        cashier.screen = self.screen          
-        dekorasi.screen = self.screen    
-        baking.screen = self.screen 
-        dough.screen = self.screen   
-
-        self.scene_manager.room_cashier = cashier
-        self.scene_manager.room_decoration = dekorasi   
-        self.scene_manager.room_baking = baking  
-        self.scene_manager.room_dough = dough 
 
         main_menu.screen = self.screen
         cashier.screen = self.screen
@@ -48,7 +48,7 @@ class Game:
         self.scene_manager.room_decoration = dekorasi
         self.scene_manager.room_baking = baking
         self.scene_manager.room_dough = dough
-
+      
         main_menu._scene_manager = self.scene_manager
         cashier._scene_manager = self.scene_manager
 
@@ -73,6 +73,7 @@ class Game:
     def _handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self._save_on_exit()
                 self.running = False
                 return
             self.scene_manager.handle_event(event)
@@ -84,3 +85,8 @@ class Game:
         self.screen.fill((0, 0, 0))
         self.scene_manager.render()
         pygame.display.flip()
+
+    def _save_on_exit(self) -> None:
+        affinity = self.npc_registry.get_all_affinity()
+        self.save_manager.save_affinity(affinity)
+        print("[Game] Save on exit complete")

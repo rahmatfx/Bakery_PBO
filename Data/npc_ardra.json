@@ -1,0 +1,127 @@
+{
+    "id": "ardra",
+    "name": "Ardra",
+    "personality": "Pemalu tapi penyayang, suka hal-hal yang manis dan lembut",
+    "preferences": {
+        "flavors": ["Strawberry", "Original"],
+        "molds": ["Heart", "Round"],
+        "decorations": ["Sprinkle", "Whipcream"]
+    },
+    "dislikes": {
+        "flavors": ["Chocolate"],
+        "molds": ["Star"],
+        "decorations": ["Oreo"]
+    },
+    "dialogues": {
+        "level_0": [
+            {
+                "id": "ardra_0_1",
+                "text": "H-halo... permisi...",
+                "next": "ardra_0_2"
+            },
+            {
+                "id": "ardra_0_2",
+                "text": "Aku... aku mau pesan kue. Boleh?",
+                "choices": [
+                    {
+                        "text": "Tentu saja! Selamat datang di Cozy Bakery!",
+                        "affinity": 1,
+                        "next": "ardra_0_3a"
+                    },
+                    {
+                        "text": "Silakan, ada menu di sebelah.",
+                        "affinity": 0,
+                        "next": "ardra_0_3b"
+                    }
+                ]
+            },
+            {
+                "id": "ardra_0_3a",
+                "text": "Wah... terima kasih... kamu baik sekali... Aku mau yang manis ya...",
+                "next": null
+            },
+            {
+                "id": "ardra_0_3b",
+                "text": "O-oke... aku lihat dulu ya...",
+                "next": null
+            }
+        ],
+        "level_1": [
+            {
+                "id": "ardra_1_1",
+                "text": "Halo... aku datang lagi...",
+                "next": "ardra_1_2"
+            },
+            {
+                "id": "ardra_1_2",
+                "text": "Aku senang kuenya kemarin... terima kasih sudah dibuatkan.",
+                "choices": [
+                    {
+                        "text": "Senang mendengarnya! Mau pesan lagi?",
+                        "affinity": 2,
+                        "next": "ardra_1_3a"
+                    },
+                    {
+                        "text": "Iya, mau pesan apa hari ini?",
+                        "affinity": 0,
+                        "next": "ardra_1_3b"
+                    }
+                ]
+            },
+            {
+                "id": "ardra_1_3a",
+                "text": "B-benarkah? Aku... aku sangat senang... terima kasih...",
+                "next": null
+            },
+            {
+                "id": "ardra_1_3b",
+                "text": "Hmm... mungkin yang manis-manis lagi seperti kemarin...",
+                "next": null
+            }
+        ],
+        "level_2": [
+            {
+                "id": "ardra_2_1",
+                "text": "Kamu tahu... aku sebenarnya suka banget makan kue waktu kecil.",
+                "next": "ardra_2_2"
+            },
+            {
+                "id": "ardra_2_2",
+                "text": "Nenekku selalu buatkan kue stroberi bentuk hati... jadi kue di sini mengingatkanku padanya.",
+                "choices": [
+                    {
+                        "text": "Nenekmu pasti orang yang baik.",
+                        "affinity": 3,
+                        "next": "ardra_2_3a"
+                    },
+                    {
+                        "text": "Aku bisa buatkan kue seperti itu juga lho!",
+                        "affinity": 2,
+                        "next": "ardra_2_3b"
+                    }
+                ]
+            },
+            {
+                "id": "ardra_2_3a",
+                "text": "Iya... dia orang yang paling baik yang aku kenal. Makasih ya... sudah mau mendengarkanku.",
+                "next": null
+            },
+            {
+                "id": "ardra_2_3b",
+                "text": "B-benarkah?! Aku... aku ingin mencobanya suatu saat nanti...",
+                "next": null
+            }
+        ]
+    },
+    "affinity_thresholds": {
+        "level_1": 10,
+        "level_2": 25,
+        "level_3": 50,
+        "ending": 100
+    },
+    "assets": {
+        "sprite": "Assets/NPC/Ardra.png",
+        "emoji_happy": "Assets/NPC/Ardra_happy.png",
+        "emoji_angry": "Assets/NPC/Ardra_angry.png"
+    }
+}
