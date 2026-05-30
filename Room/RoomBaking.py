@@ -1,19 +1,43 @@
-import pygame, os
+import pygame, os, sys
 from Room.Room import Room
-from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE
+from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY
 
 class BakingRoom(Room):
     def __init__(self):
         super().__init__(name="Baking")
         self._bg_image = None
         self._oven_image = None
+        self._oven_image_opening = None
+        self._oven_bake_image = None
         self._font_heading = pygame.font.SysFont(FONT_NAME, FONT_HEADING_SIZE)
         self._font_body = pygame.font.SysFont(FONT_NAME, FONT_BODY_SIZE)
+        self._oven_rect = None
+        self._oven_size = None
+        self._adonan_rect = None
+        self._adonan_image = None
+        self._oven_isOpen = False
+        self._button_bake_rect = None
+        self._doughInOven = False
+        self.bakeDough = False
+        self.hideDough = False
+        self.isDragging = False
+        self.isShowText = False
+        self.text_surface = None
+
+    
 
     def enter(self):
         if os.path.exists(BAKING_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(BAKING_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+            
+        if os.path.exists(ADONAN_TEMPORARY):
+            img = pygame.image.load(ADONAN_TEMPORARY).convert_alpha()
+            original_width, original_height = img.get_size()
+            new_width = 150
+            new_height = int(original_height * (new_width / original_width))
+            self._adonan_image = pygame.transform.smoothscale(img, (new_width, new_height))
+            
           # Load oven image
         if os.path.exists(OVEN_CLOSE_IMAGE):
             img = pygame.image.load(OVEN_CLOSE_IMAGE).convert_alpha()  # convert_alpha untuk transparency
@@ -23,7 +47,81 @@ class BakingRoom(Room):
             new_height = int(original_height * (new_width / original_width))
             self._oven_image = pygame.transform.smoothscale(img, (new_width, new_height))
 
-    def update(self): pass
+            self._oven_size = self._oven_image.get_rect(
+                centerx=SCREEN_WIDTH - 550,
+                bottom=SCREEN_HEIGHT + 5
+            )
+
+            self._oven_rect = pygame.Rect(530, 420, 400, 270)
+
+            #gambar oven buka
+        if os.path.exists(OVEN_OPEN_IMAGE):
+            img = pygame.image.load(OVEN_OPEN_IMAGE).convert_alpha()
+            original_width, original_height = img.get_size()
+            new_width = 520
+            new_height = int(original_height * (new_width / original_width))
+            self._oven_image_opening = pygame.transform.smoothscale(img, (new_width, new_height))
+
+        if os.path.exists(OVEN_BAKE_IMAGE):
+            img = pygame.image.load(OVEN_BAKE_IMAGE).convert_alpha()
+            original_width, original_height = img.get_size()
+            new_width = 520
+            new_height = int(original_height * (new_width / original_width))
+            self._oven_bake_image = pygame.transform.smoothscale(img, (new_width, new_height))
+
+        if self._adonan_image:
+            self._adonan_rect = self._adonan_image.get_rect(
+                centerx=SCREEN_WIDTH - 1000,
+                bottom=SCREEN_HEIGHT - 350
+            )
+        
+        self._button_bake_rect = pygame.Rect(910, 340, 50, 50)
+
+        YELLOW = (255, 255, 59)
+        game_font = pygame.font.SysFont("Orbitron.ttf", 5)
+        self.text_surface = game_font.render("Hello World!", True, YELLOW)
+
+            
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = event.pos
+                
+                if self._oven_rect and self._oven_rect.collidepoint(mouse_pos):
+                    self._oven_isOpen = not self._oven_isOpen
+                    print(self._oven_isOpen)
+                    if self._doughInOven and not self._oven_isOpen:
+                        self.hideDough
+                
+                if self._adonan_rect and self._adonan_rect.collidepoint(mouse_pos):
+                    self.isDragging = True
+
+                if self._button_bake_rect and self._button_bake_rect.collidepoint(mouse_pos):
+                    if not self._oven_isOpen and self._doughInOven:
+                        print("bake dough :  + {self.bakeDough} ")
+                        self.bakeDough = True
+                        self.isShowText = True  
+
+
+        if event.type == pygame.MOUSEMOTION:
+            if self.isDragging:
+                self._adonan_rect.center = event.pos
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                self.isDragging = False 
+        
+
+    def mekanik(self):
+        if self._adonan_rect and self._adonan_rect.colliderect(self._oven_rect):
+            if  self._oven_isOpen and not self.isDragging:
+                self._doughInOven = True
+                print("Adonan berhasil masuk")
+            
+            
+
+    def update(self):
+        self.mekanik()
 
     def render(self):
         if not self.screen: return
@@ -34,9 +132,28 @@ class BakingRoom(Room):
             t = self._font_heading.render("~ Cashier ~", True, COLOR_DARK_BROWN)
             self.screen.blit(t, t.get_rect(centerx=SCREEN_WIDTH//2, centery=SCREEN_HEIGHT//3))
 
-        if self._oven_image:
-            oven_rect = self._oven_image.get_rect(centerx=SCREEN_WIDTH - 550,
-                bottom=SCREEN_HEIGHT + 5)
-            self.screen.blit(self._oven_image, oven_rect)
+        if self._oven_size:
+            if self._oven_isOpen and self._oven_image_opening:
+                self.screen.blit(self._oven_image_opening, self._oven_size)
+            elif self._oven_image:
+                self.screen.blit(self._oven_image, self._oven_size)
 
-    def handle_event(self, event): pass
+        if self._oven_bake_image and self.bakeDough:
+            self.screen.blit(self._oven_bake_image, self._oven_size)
+        
+        if self._adonan_image and not self._doughInOven and not self.hideDough:
+            self.screen.blit(self._adonan_image, self._adonan_rect)
+
+        if self._oven_rect:
+            pygame.draw.rect(self.screen, (255, 0, 0), self._oven_rect, 2)  # Kotak merah
+
+        if self._button_bake_rect:
+            pygame.draw.rect(self.screen, (25, 52, 224), self._button_bake_rect, 2)  
+
+        if self._adonan_rect:
+            pygame.draw.rect(self.screen, (25, 52, 224), self._adonan_rect, 2)  
+        
+        if self.isShowText:
+            self.screen.blit(self.text_surface, (80, 80))
+
+    # def handle_event(self, event): pass

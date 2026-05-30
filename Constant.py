@@ -38,6 +38,7 @@ BTN_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "strawberry_button.png")
 OVEN_OPEN_IMAGE  = os.path.join(ASSETS_DIR, "OvenBuka.png")
 OVEN_CLOSE_IMAGE = os.path.join(ASSETS_DIR, "OvenTutup.png")
 OVEN_BAKE_IMAGE  = os.path.join(ASSETS_DIR, "OvenMemanggang.png")
+ADONAN_TEMPORARY = os.path.join(ASSETS_DIR, "AdonanTemp.png")
 
 # Navigation Bar 
 NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_br_bg.png")
