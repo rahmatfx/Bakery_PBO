@@ -49,8 +49,8 @@ class Game:
         self.scene_manager.room_baking = baking
         self.scene_manager.room_dough = dough
       
-        main_menu._scene_manager = self.scene_manager
-        cashier._scene_manager = self.scene_manager
+        main_menu.set_scene_manager(self.scene_manager)
+        cashier.set_scene_manager(self.scene_manager)
 
         self.scene_manager.current_room = main_menu
         main_menu.enter()

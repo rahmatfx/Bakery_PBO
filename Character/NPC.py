@@ -41,7 +41,6 @@ class NPC:
     # Cake Options
 
     def generate_cake_options(self) -> list[Order]:
-        """Generate 5 cake options: 1 good, 1 bad, 3 random."""
         options: list[Order] = []
 
         # 1 kue Good option (preferensi NPC)
@@ -116,7 +115,7 @@ class NPC:
     def calculate_preference_score(self, order: Order) -> int:
         score = 0
 
-        # Ambil string value dari Enum───────────────────────
+        # Ambil string value dari enum
         flavor_str = order.flavor.value if hasattr(order.flavor, 'value') else str(order.flavor)
         mold_str = order.mold.value if hasattr(order.mold, 'value') else str(order.mold)
         deco_str = order.decoration.value if hasattr(order.decoration, 'value') else str(order.decoration)
@@ -142,15 +141,13 @@ class NPC:
         return score
     # Expression
 
-    def showHappy(self, result: bool) -> None:
-        if result:
-            self.expression = "happy"
-            print(f"[NPC] {self.name} is HAPPY!")
+    def showHappy(self) -> None:
+        self.expression = "happy"
+        print(f"[NPC] {self.name} is HAPPY!")
 
-    def showAngry(self, result: bool) -> None:
-        if not result:
-            self.expression = "angry"
-            print(f"[NPC] {self.name} is ANGRY!")
+    def showAngry(self) -> None:
+        self.expression = "angry"
+        print(f"[NPC] {self.name} is ANGRY!")
 
     # Payment 
 
