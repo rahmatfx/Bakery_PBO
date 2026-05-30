@@ -1,6 +1,6 @@
 import pygame, os, sys
 from Room.Room import Room
-from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY
+from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY
 
 class BakingRoom(Room):
     def __init__(self):
@@ -19,11 +19,21 @@ class BakingRoom(Room):
         self._button_bake_rect = None
         self._doughInOven = False
         self.bakeDough = False
-        self.hideDough = False
+        self.doughInFront = False
         self.isDragging = False
         self.isShowText = False
         self.text_surface = None
-
+        self.game_font = None
+        self.text_rect = None
+        self.bake_start_time = pygame.time.get_ticks()
+        self.elapsed = 0
+        self.bake_start_time = 5
+        self.bake_duration = 5
+        self.rect_posAwalDough = None
+        self.rect_posOvenDough = None
+        self.isBaked = False
+        self.cake_image = None
+        self.isReadyToTake = False
     
 
     def enter(self):
@@ -37,6 +47,13 @@ class BakingRoom(Room):
             new_width = 150
             new_height = int(original_height * (new_width / original_width))
             self._adonan_image = pygame.transform.smoothscale(img, (new_width, new_height))
+
+        if os.path.exists(CAKE_TEMPORARY):
+            img = pygame.image.load(CAKE_TEMPORARY).convert_alpha()
+            original_width, original_height = img.get_size()
+            new_width = 150
+            new_height = int(original_height * (new_width / original_width))
+            self.cake_image = pygame.transform.smoothscale(img, (new_width, new_height))
             
           # Load oven image
         if os.path.exists(OVEN_CLOSE_IMAGE):
@@ -77,9 +94,15 @@ class BakingRoom(Room):
         
         self._button_bake_rect = pygame.Rect(910, 340, 50, 50)
 
+        self.rect_posAwalDough = pygame.Rect(250, 300, 50, 50)
+
+        self.rect_posOvenDough = pygame.Rect(710, 600, 50, 50)
+
+
         YELLOW = (255, 255, 59)
-        game_font = pygame.font.SysFont("Orbitron.ttf", 5)
-        self.text_surface = game_font.render("Hello World!", True, YELLOW)
+        self.game_font = pygame.font.SysFont("Orbitron.ttf", 30, True)
+        self.text_surface = self.game_font.render("Hello World!", True, YELLOW)
+        self.text_rect = pygame.Rect(825, 355, 50, 50)
 
             
     def handle_event(self, event):
@@ -88,19 +111,28 @@ class BakingRoom(Room):
                 mouse_pos = event.pos
                 
                 if self._oven_rect and self._oven_rect.collidepoint(mouse_pos):
-                    self._oven_isOpen = not self._oven_isOpen
-                    print(self._oven_isOpen)
-                    if self._doughInOven and not self._oven_isOpen:
-                        self.hideDough
+                    if not self.bakeDough and (not self._doughInOven or self.isReadyToTake):
+                        if self.isReadyToTake and not self._oven_isOpen:
+                            self._oven_isOpen = True
+                            self._doughInOven = False
+                            self._adonan_rect.center = self.rect_posOvenDough.center
+
+                        elif not self.isReadyToTake:
+                            self._oven_isOpen = not self._oven_isOpen
+                            if not self._oven_isOpen and self.doughInFront:
+                                self._doughInOven = True
                 
                 if self._adonan_rect and self._adonan_rect.collidepoint(mouse_pos):
-                    self.isDragging = True
+                    if not self._doughInOven or self.isReadyToTake:
+                        self.isDragging = True
 
                 if self._button_bake_rect and self._button_bake_rect.collidepoint(mouse_pos):
-                    if not self._oven_isOpen and self._doughInOven:
+                    if not self._oven_isOpen and self._doughInOven and not self.bakeDough:
                         print("bake dough :  + {self.bakeDough} ")
                         self.bakeDough = True
                         self.isShowText = True  
+                        self.bake_start_time = pygame.time.get_ticks()
+                        print(self.isShowText)
 
 
         if event.type == pygame.MOUSEMOTION:
@@ -109,19 +141,32 @@ class BakingRoom(Room):
 
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
-                self.isDragging = False 
+                self.isDragging = False
+                if not (self._oven_isOpen and self._adonan_rect.colliderect(self._oven_rect)):
+                    self._adonan_rect.center = self.rect_posAwalDough.center 
+                if (self._oven_isOpen and self._adonan_rect.colliderect(self._oven_rect)):
+                    self._adonan_rect.center = self.rect_posOvenDough.center 
         
 
     def mekanik(self):
         if self._adonan_rect and self._adonan_rect.colliderect(self._oven_rect):
             if  self._oven_isOpen and not self.isDragging:
-                self._doughInOven = True
+                self.doughInFront = True
                 print("Adonan berhasil masuk")
             
             
 
     def update(self):
         self.mekanik()
+        if self.bakeDough:
+            self.elapsed = (pygame.time.get_ticks() - self.bake_start_time) // 1000
+            self.elapsed = self.bake_duration - self.elapsed
+            if self.elapsed <= 0: 
+                print("Kue matang!")
+                self.bakeDough = False
+                self.isBaked = True
+                self.isReadyToTake = True
+                
 
     def render(self):
         if not self.screen: return
@@ -140,8 +185,10 @@ class BakingRoom(Room):
 
         if self._oven_bake_image and self.bakeDough:
             self.screen.blit(self._oven_bake_image, self._oven_size)
-        
-        if self._adonan_image and not self._doughInOven and not self.hideDough:
+
+        if not self._doughInOven and self.isBaked and self.cake_image:
+            self.screen.blit(self.cake_image, self._adonan_rect)
+        elif not self._doughInOven and not self.isBaked and self._adonan_image:
             self.screen.blit(self._adonan_image, self._adonan_rect)
 
         if self._oven_rect:
@@ -151,9 +198,18 @@ class BakingRoom(Room):
             pygame.draw.rect(self.screen, (25, 52, 224), self._button_bake_rect, 2)  
 
         if self._adonan_rect:
-            pygame.draw.rect(self.screen, (25, 52, 224), self._adonan_rect, 2)  
+            pygame.draw.rect(self.screen, (25, 52, 224), self._adonan_rect, 2)
+        
+        if self.rect_posAwalDough:
+            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posAwalDough, 2)
+
+        if self.rect_posOvenDough:
+            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posOvenDough, 2)
+
         
         if self.isShowText:
-            self.screen.blit(self.text_surface, (80, 80))
+            if self.bakeDough:
+                self.text_surface = self.game_font.render(f"{self.elapsed}", True, (255, 255, 59))
+                self.screen.blit(self.text_surface, self.text_rect)
 
     # def handle_event(self, event): pass
