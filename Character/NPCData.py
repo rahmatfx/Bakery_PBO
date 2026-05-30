@@ -12,9 +12,6 @@ class NPCData :
     affinity_thresholds : dict = field(default_factory=dict)
     assets : dict = field(default_factory=dict)
 
-
-    #region helper
-
     def get_preferred_flavors(self) -> list[str] :
         return self.preferences.get("flavors", [])
     
@@ -25,17 +22,13 @@ class NPCData :
         return self.preferences.get("decorations", [])
     
     def get_disliked_flavors(self) -> list[str]:
-        """Return list of flavor names this NPC dislikes."""
         return self.dislikes.get("flavors", [])
 
     def get_disliked_molds(self) -> list[str]:
-        """Return list of mold names this NPC dislikes."""
         return self.dislikes.get("molds", [])
 
     def get_disliked_decorations(self) -> list[str]:
-        """Return list of decoration names this NPC dislikes."""
         return self.dislikes.get("decorations", [])
-
 
 
     def get_dialogues_for_level(self, level: int) -> list[dict]:
@@ -68,7 +61,6 @@ class NPCData :
     def get_emoji_angry_path(self) -> str:
         return self.assets.get("emoji_angry", "")
 
-    #endregion
 
     def __str__(self) -> str:
         return (f"NPCData(id={self.id}, name={self.name}, "

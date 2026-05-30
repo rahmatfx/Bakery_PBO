@@ -47,10 +47,8 @@ class SaveManager:
             print(f"[SaveManager] ERROR saving: {e}")
 
     def save_affinity(self, affinity: dict[str, int]) -> None:
-        """Save hanya affinity data. Convenience method."""
         self.save({"affinity": affinity})
 
-    # Utility
 
     def has_save(self) -> bool:
         return os.path.exists(self.save_path)
