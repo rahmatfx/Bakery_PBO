@@ -19,11 +19,11 @@ DOUGH_BG          = os.path.join(ASSETS_DIR, "dough room.jpeg")
 
 # Main Menu Buttons
 BTN_PLAY          = os.path.join(ASSETS_DIR, "btn_play.png")
-BTN_PLAY_HOVER    = os.path.join(ASSETS_DIR, "btn_ply_hover.png")
+BTN_PLAY_HOVER    = os.path.join(ASSETS_DIR, "btn_play_hover.png")
 BTN_CREDIT        = os.path.join(ASSETS_DIR, "btn_credit.png")
-BTN_CREDIT_HOVER  = os.path.join(ASSETS_DIR, "btn_crdit_hover.png")
+BTN_CREDIT_HOVER  = os.path.join(ASSETS_DIR, "btn_credit_hover.png")
 BTN_EXIT          = os.path.join(ASSETS_DIR, "btn_exit.png")
-BTN_EXIT_HOVER    = os.path.join(ASSETS_DIR, "btn_ext_hover.png")
+BTN_EXIT_HOVER    = os.path.join(ASSETS_DIR, "btn_exit_hover.png")
 
 Adonan_IMAGE = os.path.join(ASSETS_DIR, "Original_Dough.png")
 Adonan_Coklat_IMAGE = os.path.join(ASSETS_DIR, "Coklat_Dough.PNG")
@@ -33,6 +33,18 @@ Exhaust_Mouth_IMAGE = os.path.join(ASSETS_DIR,"Exhaust_Mulut.PNG")
 BTN_Original_IMAGE = os.path.join(ASSETS_DIR, "original_button.png")
 BTN_Coklat_IMAGE = os.path.join(ASSETS_DIR, "coklat_button.png")
 BTN_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "strawberry_button.png")
+
+# Decoration Room Images
+berries_decor_IMAGE = os.path.join(ASSETS_DIR, "berriesBowl.png")
+berries_hover_IMAGE = os.path.join(ASSETS_DIR, "berriesHover.png")
+chocochip_decor_IMAGE = os.path.join(ASSETS_DIR, "chocochipsBowl.png")
+chocochip_hover_IMAGE = os.path.join(ASSETS_DIR, "chocochipsHover.png")
+cream_decor_IMAGE = os.path.join(ASSETS_DIR, "creamBowl.png")
+cream_hover_IMAGE = os.path.join(ASSETS_DIR, "creamHover.png")
+oreo_decor_IMAGE = os.path.join(ASSETS_DIR, "oreoBowl.png")
+oreo_hover_IMAGE = os.path.join(ASSETS_DIR, "oreoHover.png")
+sprinkles_decor_IMAGE = os.path.join(ASSETS_DIR, "sprinklesBottle.png")
+sprinkles_hover_IMAGE = os.path.join(ASSETS_DIR, "sprinklesHover.png")
 
 # Oven Images
 OVEN_OPEN_IMAGE  = os.path.join(ASSETS_DIR, "OvenBuka.png")
