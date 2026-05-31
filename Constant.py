@@ -41,12 +41,15 @@ SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.ogg")
 ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.ogg")
 SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.ogg")
 HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.ogg")
+BAKA   = os.path.join(SFX_DIR, "baka.mp3")
 
 # Animation
 ANIM_SHAKE_INTENSITY = 6
 ANIM_SHAKE_DURATION  = 0.3
 ANIM_SHAKE_FREQUENCY = 40.0
 
+ANIM_FADE_DURATION = 0.8    
+ANIM_FADE_SINK = 8        
 ANIM_POP_DURATION    = 0.25
 
 ANIM_BOUNCE_HEIGHT   = 10
@@ -153,10 +156,10 @@ NPC_IMG            = os.path.join(ASSETS_DIR, "Mimosa.png")
 HEART_IMG          = os.path.join(ASSETS_DIR, "heart.png")
 
 # NPC Position
-NPC_X              = 50
-NPC_Y              = NAV_BAR_HEIGHT + 80
-NPC_WIDTH          = 300
-NPC_HEIGHT         = 400
+NPC_X              = 80
+NPC_Y              = NAV_BAR_HEIGHT + 50
+NPC_WIDTH          = 350
+NPC_HEIGHT         = 450
 NPC_SLIDE_SPEED    = 8
 
 # Expression Images (fallback)
@@ -183,7 +186,7 @@ ORDER_UI_OFFSET_X  = 30
 ORDER_UI_OFFSET_Y  = 20
 
 # Dialogue Box
-DIALOGUE_BOX_HEIGHT = 250
+DIALOGUE_BOX_HEIGHT = 200
 DIALOGUE_MARGIN_BOTTOM = 50
 DIALOGUE_BOX_Y     = SCREEN_HEIGHT - DIALOGUE_BOX_HEIGHT - DIALOGUE_MARGIN_BOTTOM
 DIALOGUE_MARGIN_X  = 30
@@ -216,7 +219,7 @@ CAKE_SELECT_TITLE_Y       = 120
 AFFINITY_HEART_SIZE = 50
 AFFINITY_FONT_SIZE  = 20
 AFFINITY_BAR_OFFSET_X = 10
-AFFINITY_BAR_OFFSET_Y = 12
+AFFINITY_BAR_OFFSET_Y = -17
 AFFINITY_TEXT_GAP = 8
 AFFINITY_PANEL_PADDING = 8
 AFFINITY_SHADOW_OFFSET = 2

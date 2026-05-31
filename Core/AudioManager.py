@@ -59,6 +59,7 @@ class AudioManager:
         self.register_sfx("happy_sfx", Constant.HAPPY_SFX)
         self.register_sfx("sad_sfx", Constant.SAD_SFX)
         self.register_sfx("angry_sfx", Constant.ANGRY_SFX)
+        self.register_sfx("baka", Constant.BAKA)
 
     # ── BGM ──
 

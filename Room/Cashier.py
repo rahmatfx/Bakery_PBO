@@ -310,24 +310,25 @@ class Cashier(Room):
             self._show_emoji_popup(result.emoji)
 
     def _apply_npc_expression(self, expression: str) -> None:
-        self.npc.expression = expression   # langsung set, tanpa showHappy()/showAngry()
+        self.npc.expression = expression
 
-        # Ambil animasi dari config
+        # ── Animation (global only, tidak perlu per-NPC) ──
         animation = self._expression_set.get_animation(expression)
         if animation == "bounce":
             self.animator.bounce("npc")
         elif animation == "shake":
             self.animator.shake("npc")
         elif animation == "fade":
-            self.animator.fade("npc")     # contoh animasi baru
-        # else: neutral → no animation
+            self.animator.fade("npc")
 
-        # Ambil sfx dari config
-        sfx = self._expression_set.get_sfx(expression)
+        # ── SFX: NPC-specific → fallback ke global default ──
+        sfx = self.npc.data.get_expression_sfx(expression)   # cek NPC-specific dulu
+        if sfx is None:
+            sfx = self._expression_set.get_sfx(expression)    # fallback ke global
         if sfx and self.audio:
             self.audio.play_sfx(sfx)
 
-        print(f"[Cashier] NPC expression → '{expression}'")
+        print(f"[Cashier] NPC expression → '{expression}' sfx={sfx}")
 
     # ── Cake Select ──
 
