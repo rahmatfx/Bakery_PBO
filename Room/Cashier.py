@@ -9,6 +9,9 @@ from Core.SaveManager import SaveManager
 from UI.OrderUI import OrderUI
 from UI.DialogueBox import DialogueBox
 from UI.CakeSelectionUI import CakeSelectionUI
+from UI.Animator import Animator
+from UI.ExpressionSet import ExpressionSet
+from UI.EmojiPopup import EmojiPopup
 from Order.Order import Order
 from Order.Cake import Cake, CakeStep
 from Enum.CashierState import CashierState
@@ -19,79 +22,72 @@ class Cashier(Room):
 
     def __init__(self, npc_registry: NPCRegistry = None,
                  save_manager: SaveManager = None,
-                 dialogue_tracker: DialogueTracker = None):
+                 dialogue_tracker: DialogueTracker = None,
+                 audio=None):
         super().__init__("Cashier")
 
-        # Dependencies
         self.npc_registry: NPCRegistry = npc_registry
         self.save_manager: SaveManager = save_manager
         self.dialogue_tracker: DialogueTracker = dialogue_tracker or DialogueTracker()
+        self.audio = audio
 
-        # NPC & Order state
+        # npc & order
         self.npc: NPC = None
         self.order: Order = None
-        # Note: self.cake di-inject dari Game.py (shared Cake object)
+        # self.cake di-inject dari Game.py
         self.result: bool = False
         self._cake_options: list = []
 
+        # state
         self._state = CashierState.HIDDEN
         self._npc_x: float = -Constant.NPC_WIDTH
         self._npc_target_x: int = Constant.NPC_X
 
-        # Dialogue
+        # dialogue
         self.dialogue_manager = DialogueManager()
         self.dialogue_box = DialogueBox()
-
-        # mood & variant
         self._current_mood: str = "neutral"
         self._current_variant: str = "a"
 
-        # Cake Selection
+        # cake selection
         self.cake_selection = CakeSelectionUI()
 
-        # Emoji animation
-        self._emoji_type: str = ""
-        self._emoji_y: float = 0.0
-        self._emoji_target_y: float = 0.0
-        self._emoji_start_y: float = 0.0
-        self._emoji_active: bool = False
-        self._emoji_done: bool = False
+        # animation
+        self.animator = Animator()
+        self._npc_offset: tuple[float, float, float] = (0, 0, 1.0)
+        self._emoji_scale: float = 1.0
 
-        # UI
+        # expression & emoji
+        self._expression_set = ExpressionSet()
+        self._emoji_popup = EmojiPopup()
+
+        # order ui
         self._order_ui = OrderUI()
 
-        # Default assets
+        # default assets
         self._default_bg = self._load_and_scale(Constant.CASHIER_BG,
                                                  Constant.SCREEN_WIDTH,
                                                  Constant.SCREEN_HEIGHT)
         self._default_npc = self._load_and_scale(Constant.NPC_IMG,
                                                   Constant.NPC_WIDTH,
                                                   Constant.NPC_HEIGHT)
-        self._default_emoji_happy = self._load_and_scale(Constant.NPC_EMOJI_HAPPY,
-                                                          Constant.EMOJI_WIDTH,
-                                                          Constant.EMOJI_HEIGHT)
-        self._default_emoji_angry = self._load_and_scale(Constant.NPC_EMOJI_ANGRY,
-                                                          Constant.EMOJI_WIDTH,
-                                                          Constant.EMOJI_HEIGHT)
         self._heart_img = self._load_and_scale(Constant.HEART_IMG,
                                                 Constant.AFFINITY_HEART_SIZE,
                                                 Constant.AFFINITY_HEART_SIZE)
 
-        # Current NPC assets
+        # current npc assets
         self._current_bg = self._default_bg
         self._current_npc_img = self._default_npc
-        self._current_emoji_happy = self._default_emoji_happy
-        self._current_emoji_angry = self._default_emoji_angry
 
-        # Asset cache per NPC id
-        self._npc_asset_cache: dict[str, dict] = {}
+        # sprite cache
+        self._sprite_cache: dict[str, pygame.Surface] = {}
 
-        # Fonts & text cache
+        # fonts & cache
         self._font = None
         self._font_affinity = None
         self._text_cache: dict[str, pygame.Surface] = {}
 
-    # Asset loading helpers
+    # ── Helpers ──
 
     @staticmethod
     def _load_and_scale(path: str, w: int, h: int):
@@ -104,40 +100,20 @@ class Cashier(Room):
             print(f"[DEBUG Cashier] Not found, fallback: {path}")
             return None
 
-    def _load_npc_assets(self, data: NPCData) -> None:
-        if data.id in self._npc_asset_cache:
-            cached = self._npc_asset_cache[data.id]
-            self._current_npc_img = cached["sprite"]
-            self._current_emoji_happy = cached["happy"]
-            self._current_emoji_angry = cached["angry"]
+    def _load_npc_sprite(self, data: NPCData) -> None:
+        # cache
+        if data.id in self._sprite_cache:
+            self._current_npc_img = self._sprite_cache[data.id]
             return
 
         sprite_path = data.get_sprite_path()
-        happy_path = data.get_emoji_happy_path()
-        angry_path = data.get_emoji_angry_path()
-
         npc_img = (self._load_and_scale(sprite_path,
                     Constant.NPC_WIDTH, Constant.NPC_HEIGHT)
                    if sprite_path else None)
-        happy_img = (self._load_and_scale(happy_path,
-                     Constant.EMOJI_WIDTH, Constant.EMOJI_HEIGHT)
-                     if happy_path else None)
-        angry_img = (self._load_and_scale(angry_path,
-                     Constant.EMOJI_WIDTH, Constant.EMOJI_HEIGHT)
-                     if angry_path else None)
 
         self._current_npc_img = npc_img if npc_img else self._default_npc
-        self._current_emoji_happy = happy_img if happy_img else self._default_emoji_happy
-        self._current_emoji_angry = angry_img if angry_img else self._default_emoji_angry
-
-        self._npc_asset_cache[data.id] = {
-            "sprite": self._current_npc_img,
-            "happy": self._current_emoji_happy,
-            "angry": self._current_emoji_angry,
-        }
-        print(f"[DEBUG Cashier] Assets loaded & cached for: {data.id}")
-
-    # Text cache
+        self._sprite_cache[data.id] = self._current_npc_img
+        print(f"[DEBUG Cashier] Sprite loaded for: {data.id}")
 
     def _get_cached_text(self, text: str, color: tuple) -> pygame.Surface:
         key = f"{text}_{color}"
@@ -148,17 +124,16 @@ class Cashier(Room):
     def _clear_text_cache(self) -> None:
         self._text_cache.clear()
 
-    # Auto-save
+    # ── Autosave ──
 
     def _auto_save(self) -> None:
         if self.save_manager and self.npc_registry:
             affinity = self.npc_registry.get_all_affinity()
             self.save_manager.save_affinity(affinity)
-            # Phase 7: save dialogue tracker
             tracker_data = self.dialogue_tracker.get_save_data()
             self.save_manager.save_dialogue_tracker(tracker_data)
 
-    # Room lifecycle
+    # ── Lifecycle ──
 
     def enter(self) -> None:
         print("[DEBUG Cashier] Entering room")
@@ -196,7 +171,7 @@ class Cashier(Room):
     def exit(self) -> None:
         print("[DEBUG Cashier] Exiting room")
 
-    # NPC spawning
+    # ── Spawn ──
 
     def showNPC(self) -> None:
         if self.npc_registry:
@@ -209,10 +184,19 @@ class Cashier(Room):
             self.npc = NPC(fallback_data)
 
         self.order = None
-        self._load_npc_assets(self.npc.data)
+        self._load_npc_sprite(self.npc.data)
+        self._expression_set.load_from_assets(self.npc.data.assets,
+                                               self.npc.data.id)
 
         self._state = CashierState.SLIDING_IN
         self._npc_x = -Constant.NPC_WIDTH
+
+        # slide-in
+        self.animator.slide("npc", start_dx=-Constant.NPC_WIDTH - Constant.NPC_X,
+                             duration=0.6)
+
+        if self.audio:
+            self.audio.play_sfx("order_new")
 
         self._order_ui.set_npc_info(self.npc.name, self.npc.data.personality)
         self._order_ui.accepted = False
@@ -228,14 +212,14 @@ class Cashier(Room):
               f"(affinity: {self.npc.affinity}, "
               f"level: {self.npc.get_affinity_level()})")
 
-    # Order handling
+    # ── Order ──
 
     def acceptOrder(self) -> None:
         print(f"[DEBUG Cashier] Order accepted for {self.npc.name}")
 
         self._state = CashierState.DIALOGUE
 
-        # Phase 7: resolve mood + variant dari DialogueTracker
+        # resolve mood + variant
         npc_id = self.npc.data.id
         level = self.npc.get_affinity_level()
         available_moods = self.npc.data.get_moods_for_level(level)
@@ -246,10 +230,9 @@ class Cashier(Room):
                 lambda mood: self.npc.data.get_variants_for_level_mood(level, mood)
             )
 
-        # Save mood ke tracker (untuk emoji nanti)
         self.dialogue_tracker.set_mood(npc_id, self._current_mood)
 
-        # Get dialogue entries pakai mood + variant
+        # get dialogue entries
         entries = self.npc.get_dialogue(self._current_mood, self._current_variant)
 
         print(f"[DEBUG Cashier] Dialogue: level_{level}, "
@@ -311,7 +294,7 @@ class Cashier(Room):
         else:
             self._show_current_dialogue()
 
-    # Cake Selection
+    # ── Cake Select ──
 
     def _start_cake_select(self) -> None:
         self._state = CashierState.CAKE_SELECT
@@ -345,13 +328,13 @@ class Cashier(Room):
 
         self._start_order_active()
 
-    # Order Active
+    # ── Order Active ──
 
     def _start_order_active(self) -> None:
         self._state = CashierState.ORDER_ACTIVE
         self._order_ui.show_order_details()
 
-        # Reset cake buat round baru
+        # reset cake
         if self.cake:
             self.cake.reset()
 
@@ -361,10 +344,6 @@ class Cashier(Room):
         print("[DEBUG Cashier] Timer started, order active")
 
     def check_cake(self) -> None:
-        """Cek kue yang sudah jadi. Dipanggil saat player balik ke Cashier.
-
-        Cake di-cek dari self.cake (shared objek dari Game.py).
-        """
         if not self.cake:
             print("[WARN Cashier] No Cake!")
             return
@@ -387,45 +366,55 @@ class Cashier(Room):
 
         if correct_cake:
             pref_score = self.npc.calculate_preference_score(self.order)
-            affinity_delta = 1 + pref_score
+            affinity_delta = Constant.REWARD_CORRECT_CAKE + pref_score
 
-            if pref_score >= 2:
+            if pref_score >= Constant.PREF_SCORE_GREAT:
                 self.npc.showHappy()
-                self._start_emoji_popup("happy")
+                self._show_emoji_popup("happy")
+                self.animator.bounce("npc")
+                if self.audio:
+                    self.audio.play_sfx("order_correct")
                 print(f"[DEBUG Cashier] Great match! pref={pref_score}, delta={affinity_delta}")
-            elif pref_score >= 1:
+            elif pref_score >= Constant.PREF_SCORE_GOOD:
                 self.npc.showHappy()
-                self._start_emoji_popup("happy")
+                self._show_emoji_popup("happy")
+                self.animator.bounce("npc")
+                if self.audio:
+                    self.audio.play_sfx("order_correct")
                 print(f"[DEBUG Cashier] Good match! pref={pref_score}, delta={affinity_delta}")
             elif pref_score == 0:
                 self.npc.showHappy()
-                self._start_emoji_popup("happy")
+                self._show_emoji_popup("happy")
+                if self.audio:
+                    self.audio.play_sfx("order_correct")
                 print(f"[DEBUG Cashier] OK match, neutral. pref={pref_score}, delta={affinity_delta}")
             else:
                 self.npc.expression = "neutral"
-                self._start_emoji_popup("angry")
+                self._show_emoji_popup("angry")
+                self.animator.shake("npc")
+                if self.audio:
+                    self.audio.play_sfx("order_wrong")
                 print(f"[DEBUG Cashier] Correct but bad taste. pref={pref_score}, delta={affinity_delta}")
         else:
-            affinity_delta = -2
+            affinity_delta = Constant.PENALTY_WRONG_CAKE
             self.npc.showAngry()
-            self._start_emoji_popup("angry")
+            self._show_emoji_popup("angry")
+            self.animator.shake("npc")
+            if self.audio:
+                self.audio.play_sfx("order_wrong")
             print(f"[DEBUG Cashier] Wrong cake! delta={affinity_delta}")
 
         self.result = correct_cake
         self.npc.change_affinity(affinity_delta)
         self._state = CashierState.REACTING
 
-        # mood HANYA dari dialogue choices, bukan dari hasil kue
         self._auto_save()
 
         print(f"[DEBUG Cashier] Result: {correct_cake}, "
               f"affinity delta: {affinity_delta}, "
               f"total: {self.npc.affinity}")
 
-    def getResult(self) -> bool:
-        return self.result
-
-    # Timer
+    # ── Timer ──
 
     def on_timer_expired(self) -> None:
         print("[DEBUG Cashier] Timer expired!")
@@ -437,52 +426,60 @@ class Cashier(Room):
         self.dialogue_box.hide()
         self.cake_selection.hide()
 
-        self.npc.change_affinity(-2)
+        self.npc.change_affinity(Constant.PENALTY_TIMER_EXPIRED)
         self.npc.showAngry()
-        self._start_emoji_popup("angry")
-        # Phase 7: timer expired gak set mood
+        self._show_emoji_popup("angry")
+        self.animator.shake("npc")
         self._auto_save()
 
-    # Emoji popup
+    # ── Emoji Popup ──
 
-    def _start_emoji_popup(self, emoji_type: str) -> None:
-        self._emoji_type = emoji_type
-        self._emoji_active = True
-        self._emoji_done = False
+    def _show_emoji_popup(self, expression: str) -> None:
+        surface = self._expression_set.get_surface(expression)
+        fallback_text, fallback_color = self._expression_set.get_fallback(expression)
+        center_x = int(self._npc_x) + Constant.NPC_WIDTH // 2
 
-        self._emoji_target_y = Constant.NPC_Y - Constant.EMOJI_HEIGHT - 10
-        self._emoji_start_y = Constant.NPC_Y + 20
-        self._emoji_y = self._emoji_start_y
+        self._emoji_popup.show(surface, fallback_text, fallback_color,
+                               center_x, Constant.NPC_Y)
+        self.animator.pop_in("emoji_popup")
 
-        print(f"[DEBUG Cashier] Emoji popup started: {emoji_type}")
+        if self.audio:
+            self.audio.play_sfx("emoji_popup")
 
-    # Update
+        print(f"[DEBUG Cashier] Emoji popup: {expression}")
 
-    def update(self) -> None:
+    # ── Update ──
+
+    def update(self, delta_time: float = 0.0) -> None:
+        offsets = self.animator.update(delta_time)
+        self._npc_offset = offsets.get("npc", (0, 0, 1.0))
+        self._emoji_scale = offsets.get("emoji_popup", (0, 0, 1.0))[2]
+
+        # slide-in
         if self._state == CashierState.SLIDING_IN:
-            self._npc_x += Constant.NPC_SLIDE_SPEED
-            if self._npc_x >= self._npc_target_x:
+            dx, _, _ = self._npc_offset
+            self._npc_x = Constant.NPC_X + dx
+            if not self.animator.is_active("npc"):
                 self._npc_x = self._npc_target_x
                 self._state = CashierState.WAITING
                 self._order_ui.show_npc_info()
                 print("[DEBUG Cashier] NPC slide-in complete")
 
-        if self._emoji_active and not self._emoji_done:
-            self._emoji_y -= Constant.EMOJI_POPUP_SPEED
-            if self._emoji_y <= self._emoji_target_y:
-                self._emoji_y = self._emoji_target_y
-                self._emoji_done = True
+        # emoji float-up
+        self._emoji_popup.update(delta_time)
 
+        # dialogue typewriter
         if self._state == CashierState.DIALOGUE:
-            self.dialogue_box.update()
+            self.dialogue_box.update(delta_time, self.audio)
 
+        # timer countdown
         if (self._state == CashierState.ORDER_ACTIVE
                 and self._scene_manager):
             remaining = self._scene_manager.get_timer_remaining()
             secs = max(0, int(remaining))
             self._order_ui.set_timer_text(f"Time: {secs}s")
 
-    # Render
+    # ── Render ──
 
     def render(self) -> None:
         if not self.screen:
@@ -491,7 +488,7 @@ class Cashier(Room):
         self._render_background()
         self._render_npc()
         self._order_ui.render(self.screen)
-        self._render_emoji()
+        self._emoji_popup.render(self.screen, self._emoji_scale)
         self._render_affinity()
 
         if self._state == CashierState.DIALOGUE:
@@ -500,11 +497,12 @@ class Cashier(Room):
         if self._state == CashierState.CAKE_SELECT:
             self.cake_selection.render(self.screen)
 
-        if self._state == CashierState.REACTING and self._emoji_done:
+        if self._state == CashierState.REACTING and self._emoji_popup.is_done():
             hint = self._get_cached_text("Click to continue...",
                                           Constant.COLOR_DARK_BROWN)
             self.screen.blit(hint,
-                (Constant.NPC_X, Constant.NPC_Y + Constant.NPC_HEIGHT + 20))
+                (Constant.NPC_X, Constant.NPC_Y + Constant.NPC_HEIGHT
+                 + Constant.HINT_CLICK_OFFSET_Y))
 
     def _render_background(self) -> None:
         if self._current_bg:
@@ -513,21 +511,30 @@ class Cashier(Room):
             content = pygame.Rect(0, Constant.NAV_BAR_HEIGHT,
                                   Constant.SCREEN_WIDTH,
                                   Constant.SCREEN_HEIGHT - Constant.NAV_BAR_HEIGHT)
-            pygame.draw.rect(self.screen, (255, 235, 210), content)
+            pygame.draw.rect(self.screen, Constant.COLOR_CASHIER_FALLBACK_BG, content)
 
     def _render_npc(self) -> None:
         if not self.npc or self._state == CashierState.HIDDEN:
             return
 
-        npc_x = int(self._npc_x)
-        npc_y = Constant.NPC_Y
+        dx, dy, scale = self._npc_offset
+        npc_x = int(self._npc_x + dx)
+        npc_y = int(Constant.NPC_Y + dy)
 
         if self._current_npc_img:
-            self.screen.blit(self._current_npc_img, (npc_x, npc_y))
+            if scale != 1.0:
+                w = int(Constant.NPC_WIDTH * scale)
+                h = int(Constant.NPC_HEIGHT * scale)
+                scaled_img = pygame.transform.scale(self._current_npc_img, (w, h))
+                offset_x = (Constant.NPC_WIDTH - w) // 2
+                offset_y = (Constant.NPC_HEIGHT - h) // 2
+                self.screen.blit(scaled_img, (npc_x + offset_x, npc_y + offset_y))
+            else:
+                self.screen.blit(self._current_npc_img, (npc_x, npc_y))
         else:
             npc_rect = pygame.Rect(npc_x, npc_y,
                                     Constant.NPC_WIDTH, Constant.NPC_HEIGHT)
-            shadow = npc_rect.move(4, 4)
+            shadow = npc_rect.move(Constant.SHADOW_OFFSET, Constant.SHADOW_OFFSET)
             pygame.draw.rect(self.screen, (0, 0, 0), shadow, border_radius=12)
 
             color = self._get_npc_color()
@@ -544,38 +551,15 @@ class Cashier(Room):
             self.screen.blit(expr_surf,
                 expr_surf.get_rect(centerx=npc_rect.centerx, y=npc_y + 50))
 
-    def _render_emoji(self) -> None:
-        if not self._emoji_active:
-            return
-
-        emoji_x = int(self._npc_x) + (Constant.NPC_WIDTH - Constant.EMOJI_WIDTH) // 2
-        emoji_y = int(self._emoji_y)
-
-        if self._emoji_type == "happy" and self._current_emoji_happy:
-            self.screen.blit(self._current_emoji_happy, (emoji_x, emoji_y))
-        elif self._emoji_type == "angry" and self._current_emoji_angry:
-            self.screen.blit(self._current_emoji_angry, (emoji_x, emoji_y))
-        else:
-            if self._emoji_type == "happy":
-                txt, color = "HAPPY", (0, 180, 0)
-            else:
-                txt, color = "ANGRY", (220, 50, 50)
-
-            emoji_rect = pygame.Rect(emoji_x, emoji_y,
-                                      Constant.EMOJI_WIDTH, Constant.EMOJI_HEIGHT)
-            pygame.draw.rect(self.screen, color, emoji_rect, border_radius=50)
-            surf = self._get_cached_text(txt, Constant.COLOR_WHITE)
-            self.screen.blit(surf, surf.get_rect(center=emoji_rect.center))
-
     def _render_affinity(self) -> None:
         if not self.npc or self._state == CashierState.HIDDEN:
             return
 
-        bar_x = int(self._npc_x) + 10
-        bar_y = Constant.NPC_Y - Constant.AFFINITY_HEART_SIZE - 12
+        bar_x = int(self._npc_x) + Constant.AFFINITY_BAR_OFFSET_X
+        bar_y = Constant.NPC_Y - Constant.AFFINITY_HEART_SIZE - Constant.AFFINITY_BAR_OFFSET_Y
 
         heart_size = Constant.AFFINITY_HEART_SIZE
-        padding = 8
+        padding = Constant.AFFINITY_PANEL_PADDING
 
         affinity_text = str(self.npc.affinity)
         affinity_surf = None
@@ -584,12 +568,12 @@ class Cashier(Room):
                 affinity_text, True, Constant.COLOR_DARK_BROWN)
 
         text_w = affinity_surf.get_width() if affinity_surf else 30
-        panel_w = heart_size + 8 + text_w + padding * 2
+        panel_w = heart_size + Constant.AFFINITY_TEXT_GAP + text_w + padding * 2
         panel_h = heart_size + padding * 2
 
         panel_rect = pygame.Rect(bar_x - padding, bar_y - padding,
                                   panel_w, panel_h)
-        pygame.draw.rect(self.screen, (0, 0, 0), panel_rect.move(2, 2),
+        pygame.draw.rect(self.screen, (0, 0, 0), panel_rect.move(Constant.AFFINITY_SHADOW_OFFSET, Constant.AFFINITY_SHADOW_OFFSET),
                           border_radius=8)
         pygame.draw.rect(self.screen, Constant.COLOR_BG_CREAM,
                           panel_rect, border_radius=8)
@@ -599,17 +583,17 @@ class Cashier(Room):
         if self._heart_img:
             self.screen.blit(self._heart_img, (bar_x, bar_y))
         else:
-            heart_rect = pygame.Rect(bar_x + 2, bar_y + 2,
-                                      heart_size - 4, heart_size - 4)
+            heart_rect = pygame.Rect(bar_x + Constant.AFFINITY_SHADOW_OFFSET, bar_y + Constant.AFFINITY_SHADOW_OFFSET,
+                                      heart_size - Constant.SHADOW_OFFSET, heart_size - Constant.SHADOW_OFFSET)
             pygame.draw.circle(self.screen, Constant.COLOR_HEART_RED,
-                               heart_rect.center, heart_size // 2 - 2)
+                               heart_rect.center, heart_size // 2 - Constant.AFFINITY_SHADOW_OFFSET)
 
         if affinity_surf:
             self.screen.blit(affinity_surf,
-                             (bar_x + heart_size + 8,
+                             (bar_x + heart_size + Constant.AFFINITY_TEXT_GAP,
                               bar_y + (heart_size - affinity_surf.get_height()) // 2))
 
-    # Event handling
+    # ── Events ──
 
     def handle_event(self, event) -> None:
         if self._state == CashierState.CAKE_SELECT:
@@ -629,19 +613,21 @@ class Cashier(Room):
             return
 
         if (self._state == CashierState.REACTING
-                and self._emoji_done
+                and self._emoji_popup.is_done()
                 and event.type == pygame.MOUSEBUTTONDOWN
                 and event.button == 1):
             print("[DEBUG Cashier] New round!")
             self._reset_for_new_round()
 
+    # ── Internal ──
+
     def _get_npc_color(self) -> tuple:
         if not self.npc:
             return Constant.COLOR_WARM_BROWN
         if self.npc.expression == "happy":
-            return (100, 200, 100)
+            return Constant.COLOR_NPC_HAPPY
         if self.npc.expression == "angry":
-            return (220, 80, 80)
+            return Constant.COLOR_NPC_ANGRY
         return Constant.COLOR_WARM_BROWN
 
     def _reset_for_new_round(self) -> None:
@@ -652,22 +638,26 @@ class Cashier(Room):
         self._cake_options = []
         self._state = CashierState.HIDDEN
         self._npc_x = -Constant.NPC_WIDTH
-        self._emoji_active = False
-        self._emoji_done = False
-        self._emoji_type = ""
         self._current_mood = "neutral"
         self._current_variant = "a"
+
+        # hide ui
         self._order_ui.hide()
         self._order_ui.accepted = False
         self._order_ui.set_timer_text("")
         self.dialogue_box.hide()
         self.dialogue_manager.reset()
         self.cake_selection.reset()
+        self._emoji_popup.hide()
         self._clear_text_cache()
 
+        # reset animation
+        self.animator.stop_all()
+        self._npc_offset = (0, 0, 1.0)
+        self._emoji_scale = 1.0
+
+        # reset assets
         self._current_bg = self._default_bg
         self._current_npc_img = self._default_npc
-        self._current_emoji_happy = self._default_emoji_happy
-        self._current_emoji_angry = self._default_emoji_angry
 
         self.showNPC()

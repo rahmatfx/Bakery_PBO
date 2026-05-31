@@ -97,7 +97,7 @@ class MainMenu(Room):
         pygame.event.post(pygame.event.Event(pygame.QUIT))
 
 
-    def update(self) -> None:
+    def update(self, delta_time: float = 0.0) -> None:
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons:
             btn.update(mouse_pos)
