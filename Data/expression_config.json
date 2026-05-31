@@ -1,0 +1,39 @@
+{
+    "expressions": {
+        "neutral": {
+            "animation": null,
+            "sfx": null,
+            "fallback_text": "...",
+            "fallback_color": [200, 180, 160]
+        },
+        "happy": {
+            "animation": "bounce",
+            "sfx": "happy_sfx",
+            "fallback_text": "HAPPY",
+            "fallback_color": [255, 220, 100]
+        },
+        "angry": {
+            "animation": "shake",
+            "sfx": "angry_sfx",
+            "fallback_text": "ANGRY",
+            "fallback_color": [220, 80, 80]
+        },
+        "sad": {
+            "animation": "fade",
+            "sfx": "sad_sfx",
+            "fallback_text": "SAD",
+            "fallback_color": [100, 150, 220]
+        },
+        "iri": {
+            "animation": "shake",
+            "sfx": null,
+            "fallback_text": "IRI",
+            "fallback_color": [150, 100, 200]
+        }
+    },
+    "global_emojis": {
+        "happy": "Assets/emoji_happy.png",
+        "angry": "Assets/emoji_angry.png",
+        "sad": "Assets/emoji_sad.png"
+    }
+}

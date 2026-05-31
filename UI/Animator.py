@@ -53,10 +53,8 @@ class _PopInTrack(_Track):
 
         t = self.progress
         if t < 0.6:
-            # scale up
             scale = t / 0.6 * (1.0 + self.overshoot)
         else:
-            # settle
             settle_t = (t - 0.6) / 0.4
             scale = (1.0 + self.overshoot) - self.overshoot * settle_t
 
@@ -116,6 +114,36 @@ class _SlideTrack(_Track):
         return dx, dy, 1.0
 
 
+class _FadeTrack(_Track):
+
+    def __init__(self, duration: float, sink: int = 0, min_scale: float = 0.88):
+        super().__init__(duration)
+        self.sink = sink or Constant.ANIM_FADE_SINK
+        self.min_scale = min_scale
+
+    def update(self, delta_time: float) -> tuple[float, float, float]:
+        _, _, _ = super().update(delta_time)
+        if self.done:
+            return 0.0, 0.0, 1.0
+
+        t = self.progress
+
+        if t < 0.3:
+            # Quick droop
+            phase = t / 0.3
+            dy = self.sink * phase
+            scale = 1.0 - (1.0 - self.min_scale) * phase
+        else:
+            # Slow recovery
+            phase = (t - 0.3) / 0.7
+            # Ease-out recovery for smooth feel
+            ease = 1.0 - (1.0 - phase) ** 2
+            dy = self.sink * (1.0 - ease)
+            scale = self.min_scale + (1.0 - self.min_scale) * ease
+
+        return 0.0, dy, max(0.0, scale)
+
+
 class Animator:
 
     def __init__(self):
@@ -147,6 +175,12 @@ class Animator:
               duration: float = 0.0, ease: str = "out") -> None:
         duration = duration or Constant.ANIM_SLIDE_DURATION
         self._tracks[track_id] = _SlideTrack(start_dx, start_dy, duration, ease)
+
+    def fade(self, track_id: str, duration: float = 0.0,
+             sink: int = 0, min_scale: float = 0.88) -> None:
+        duration = duration or Constant.ANIM_FADE_DURATION
+        sink = sink or Constant.ANIM_FADE_SINK
+        self._tracks[track_id] = _FadeTrack(duration, sink, min_scale)
 
     # ── Update ──
 

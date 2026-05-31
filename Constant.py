@@ -10,6 +10,8 @@ ASSETS_DIR = os.path.join(BASE_DIR, "Assets")
 DATA_DIR   = os.path.join(BASE_DIR, "Data")
 SAVE_FILE = os.path.join(DATA_DIR, "save.json")
 
+EXPRESSION_CONFIG = os.path.join(DATA_DIR, "expression_config.json")
+
 # Audio
 AUDIO_DIR = os.path.join(ASSETS_DIR, "Audio")
 BGM_DIR   = os.path.join(AUDIO_DIR, "BGM")
@@ -32,10 +34,13 @@ SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.ogg")
 SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.ogg")
 SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.ogg")
 SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.ogg")
-SFX_ORDER_WRONG    = os.path.join(SFX_DIR, "order_wrong.ogg")
-SFX_NAV_CLICK      = os.path.join(SFX_DIR, "nav_click.ogg")
-SFX_AFFINITY_UP    = os.path.join(SFX_DIR, "affinity_up.ogg")
-SFX_TIMER_URGENT   = os.path.join(SFX_DIR, "timer_urgent.ogg")
+SFX_ORDER_WRONG = os.path.join(SFX_DIR, "order_wrong.ogg")
+SFX_NAV_CLICK = os.path.join(SFX_DIR, "nav_click.ogg")
+SFX_AFFINITY_UP  = os.path.join(SFX_DIR, "affinity_up.ogg")
+SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.ogg")
+ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.ogg")
+SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.ogg")
+HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.ogg")
 
 # Animation
 ANIM_SHAKE_INTENSITY = 6
@@ -49,6 +54,9 @@ ANIM_BOUNCE_DURATION = 0.4
 ANIM_BOUNCE_FREQUENCY = 12.0
 
 ANIM_SLIDE_DURATION  = 0.5
+
+EMOJI_POPUP_DURATION = 1.5       
+EMOJI_POPUP_FADE_DURATION = 0.4 
 
 # Backgrounds
 MAINMENU_BG       = os.path.join(ASSETS_DIR, "background.png")
@@ -278,6 +286,3 @@ ORDER_UI_DETAIL_VALUE_X = 110
 ORDER_UI_DETAIL_LABELS = ["Flavor:", "Mold:", "Top:"]
 ORDER_UI_TIMER_OFFSET_X = 95
 ORDER_UI_TIMER_OFFSET_Y = 16
-
-# Debug 
-DEBUG_NAV_UI       = False

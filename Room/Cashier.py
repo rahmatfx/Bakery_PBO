@@ -101,39 +101,32 @@ class Cashier(Room):
         self._current_npc_img = npc_img if npc_img else self._default_npc
         self._sprite_cache[data.id] = self._current_npc_img
 
+    # ── Expression Sprites Loading (REFACTORED — loop, bukan hardcoded) ──
+
     def _load_npc_expression_sprites(self, data: NPCData) -> None:
         if data.id in self._npc_expression_sprites:
-            return  # sudah di-cache, skip
+            return
 
         sprites: dict[str, pygame.Surface] = {}
 
-        # neutral — pakai sprite default
-        neutral_img = self._load_and_scale(
-            data.assets.get("sprite", ""),
+        # Neutral = sprite default
+        default_img = self._load_and_scale(
+            data.get_sprite_path(),
             Constant.NPC_WIDTH, Constant.NPC_HEIGHT
         )
-        if neutral_img:
-            sprites["neutral"] = neutral_img
+        if default_img:
+            sprites["neutral"] = default_img
 
-        # happy — sprite saat expression = "happy"
-        happy_img = self._load_and_scale(
-            data.assets.get("sprite_happy", ""),
-            Constant.NPC_WIDTH, Constant.NPC_HEIGHT
-        )
-        if happy_img:
-            sprites["happy"] = happy_img
-
-        # angry — sprite saat expression = "angry"
-        angry_img = self._load_and_scale(
-            data.assets.get("sprite_angry", ""),
-            Constant.NPC_WIDTH, Constant.NPC_HEIGHT
-        )
-        if angry_img:
-            sprites["angry"] = angry_img
+        # Semua expression dari assets.expressions — LOOP, bukan copy-paste
+        for expr_name in data.get_all_expression_names():
+            path = data.get_expression_sprite_path(expr_name)
+            if path:
+                img = self._load_and_scale(path, Constant.NPC_WIDTH, Constant.NPC_HEIGHT)
+                if img:
+                    sprites[expr_name] = img
 
         self._npc_expression_sprites[data.id] = sprites
-        loaded = list(sprites.keys())
-        print(f"[Cashier] Expression sprites '{data.id}': {loaded}")
+        print(f"[Cashier] Expression sprites '{data.id}': {list(sprites.keys())}")
 
     def _get_expression_sprite(self) -> pygame.Surface | None:
         if not self.npc:
@@ -317,19 +310,24 @@ class Cashier(Room):
             self._show_emoji_popup(result.emoji)
 
     def _apply_npc_expression(self, expression: str) -> None:
-        if expression == "happy":
-            self.npc.showHappy()          # set self.npc.expression = "happy"
-            self.animator.bounce("npc")
-            if self.audio:
-                self.audio.play_sfx("affinity_up")
-        elif expression == "angry":
-            self.npc.showAngry()          # set self.npc.expression = "angry"
-            self.animator.shake("npc")
-        else:
-            self.npc.expression = "neutral"
+        self.npc.expression = expression   # langsung set, tanpa showHappy()/showAngry()
 
-        print(f"[DEBUG Cashier] NPC expression → '{expression}' "
-              f"(sprite akan ganti di render)")
+        # Ambil animasi dari config
+        animation = self._expression_set.get_animation(expression)
+        if animation == "bounce":
+            self.animator.bounce("npc")
+        elif animation == "shake":
+            self.animator.shake("npc")
+        elif animation == "fade":
+            self.animator.fade("npc")     # contoh animasi baru
+        # else: neutral → no animation
+
+        # Ambil sfx dari config
+        sfx = self._expression_set.get_sfx(expression)
+        if sfx and self.audio:
+            self.audio.play_sfx(sfx)
+
+        print(f"[Cashier] NPC expression → '{expression}'")
 
     # ── Cake Select ──
 
@@ -456,7 +454,11 @@ class Cashier(Room):
         self.animator.pop_in("emoji_popup")
 
         if self.audio:
-            self.audio.play_sfx("emoji_popup")
+            popup_sfx = self._expression_set.get_expression_config(expression).get("popup_sfx")
+            if popup_sfx:
+                self.audio.play_sfx(popup_sfx)
+            else:
+                self.audio.play_sfx("emoji_popup")  # default generic sound
 
         print(f"[DEBUG Cashier] Emoji popup: {expression} (global)")
 
@@ -494,7 +496,6 @@ class Cashier(Room):
         self._render_background()
         self._render_npc()
         self._order_ui.render(self.screen)
-        self._emoji_popup.render(self.screen, self._emoji_scale)
         self._render_affinity()
 
         if self._state == CashierState.DIALOGUE:
@@ -502,6 +503,8 @@ class Cashier(Room):
 
         if self._state == CashierState.CAKE_SELECT:
             self.cake_selection.render(self.screen)
+
+        self._emoji_popup.render(self.screen, self._emoji_scale)
 
         if self._state == CashierState.REACTING and self._emoji_popup.is_done():
             hint = self._get_cached_text("Click to continue...",
@@ -632,11 +635,13 @@ class Cashier(Room):
     def _get_npc_color(self) -> tuple:
         if not self.npc:
             return Constant.COLOR_WARM_BROWN
-        if self.npc.expression == "happy":
-            return Constant.COLOR_NPC_HAPPY
-        if self.npc.expression == "angry":
-            return Constant.COLOR_NPC_ANGRY
-        return Constant.COLOR_WARM_BROWN
+
+        # Ambil nama constant dari config, fallback ke COLOR_WARM_BROWN
+        color_name = self._expression_set.get_expression_config(
+            self.npc.expression
+            ).get("npc_color", "COLOR_WARM_BROWN")
+
+        return getattr(Constant, color_name, Constant.COLOR_WARM_BROWN)
 
     def _reset_for_new_round(self) -> None:
         self.npc = None

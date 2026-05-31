@@ -11,8 +11,6 @@ class NPCRegistry:
         self.data_dir: str = data_dir
         self.npcs: dict[str, NPCData] = {}
         self._affinity: dict[str, int] = {}
-
-        # Cycling state
         self._recently_seen: list[str] = []     
         self._max_recent: int = 3              
 
