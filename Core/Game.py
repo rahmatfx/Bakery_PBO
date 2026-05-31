@@ -1,6 +1,7 @@
 import pygame
 import sys
 import Constant
+from Core.AudioManager import AudioManager
 from Core.SceneManager import SceneManager
 from Core.MainMenu import MainMenu
 from Core.SaveManager import SaveManager
@@ -24,6 +25,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = False
 
+        self.audio = AudioManager()
+        self.audio.register_defaults()
+
         self.save_manager = SaveManager(Constant.SAVE_FILE)
 
         self.npc_registry = NPCRegistry(Constant.DATA_DIR)
@@ -31,21 +35,19 @@ class Game:
         if saved_affinity:
             self.npc_registry.load_affinity(saved_affinity)
 
-        # DialogueTracker
         self.dialogue_tracker = DialogueTracker()
         saved_tracker = self.save_manager.load_dialogue_tracker()
         if saved_tracker:
             self.dialogue_tracker.load_save_data(saved_tracker)
 
-        self.scene_manager = SceneManager(self.screen)
+        self.scene_manager = SceneManager(self.screen, self.audio)
 
-        # Shared Cake — satu objek yang dipakai semua room
         self.cake = Cake()
 
-        # Rooms
+        # rooms
         main_menu = MainMenu()
         cashier = Cashier(self.npc_registry, self.save_manager,
-                          self.dialogue_tracker)
+                          self.dialogue_tracker, self.audio)
         dekorasi = Decoration()
         baking = BakingRoom()
         dough = Dough()
@@ -56,22 +58,25 @@ class Game:
         baking.screen = self.screen
         dough.screen = self.screen
 
-        # Inject Cake ke semua room
+        # inject cake
         cashier.cake = self.cake
         dough.cake = self.cake
         baking.cake = self.cake
         dekorasi.cake = self.cake
 
-        self.scene_manager.room_cashier = cashier
-        self.scene_manager.room_decoration = dekorasi
-        self.scene_manager.room_baking = baking
-        self.scene_manager.room_dough = dough
+        self.scene_manager.register_room(cashier)
+        self.scene_manager.register_room(dough)
+        self.scene_manager.register_room(baking)
+        self.scene_manager.register_room(dekorasi)
 
         main_menu.set_scene_manager(self.scene_manager)
         cashier.set_scene_manager(self.scene_manager)
 
         self.scene_manager.current_room = main_menu
         main_menu.enter()
+
+        # main menu bgm
+        self.audio.play_bgm("main_menu")
 
         self.scene_manager.navigation_ui.build_buttons(
             self.scene_manager.get_room_names()
@@ -81,8 +86,9 @@ class Game:
     def run(self):
         self.running = True
         while self.running:
+            delta_time = self.clock.get_time() / 1000.0
             self._handle_events()
-            self._update()
+            self._update(delta_time)
             self._render()
             self.clock.tick(Constant.FPS)
         pygame.quit()
@@ -96,8 +102,9 @@ class Game:
                 return
             self.scene_manager.handle_event(event)
 
-    def _update(self) -> None:
-        self.scene_manager.update()
+    def _update(self, delta_time: float) -> None:
+        self.audio.update(delta_time)
+        self.scene_manager.update(delta_time)
 
     def _render(self) -> None:
         self.screen.fill((0, 0, 0))
@@ -105,6 +112,7 @@ class Game:
         pygame.display.flip()
 
     def _save_on_exit(self) -> None:
+        self.audio.stop_bgm()
         affinity = self.npc_registry.get_all_affinity()
         self.save_manager.save_affinity(affinity)
         # save dialogue tracker

@@ -23,18 +23,12 @@ class DialogueManager:
         self._current_id = None
         self._finished = False
 
-    # Query 
+    # Query
 
     def get_current(self) -> dict | None:
         if not self._current_id:
             return None
         return self._entries.get(self._current_id)
-
-    def get_current_text(self) -> str:
-        entry = self.get_current()
-        if not entry:
-            return ""
-        return entry.get("text", "")
 
     def get_current_choices(self) -> list[dict]:
         entry = self.get_current()
@@ -42,14 +36,8 @@ class DialogueManager:
             return []
         return entry.get("choices", [])
 
-    def has_choices(self) -> bool:
-        return len(self.get_current_choices()) > 0
-
     def is_finished(self) -> bool:
         return self._finished
-
-    def is_active(self) -> bool:
-        return self._current_id is not None and not self._finished
 
     def advance(self, choice_index: int = -1) -> int:
         if self._finished:

@@ -58,11 +58,3 @@ class SaveManager:
     def load_dialogue_tracker(self) -> dict:
         data = self.load()
         return data.get("dialogue_tracker", {})
-
-    def has_save(self) -> bool:
-        return os.path.exists(self.save_path)
-
-    def delete_save(self) -> None:
-        if os.path.exists(self.save_path):
-            os.remove(self.save_path)
-            print("[SaveManager] Save file deleted")

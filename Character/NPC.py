@@ -3,6 +3,7 @@ from Order.Order import Order
 from Character.NPCData import NPCData
 from Character.NPCRegistry import NPCRegistry
 from Enum.BakeryEnum import Flavor, Mold, DecorationOption
+import Constant
 
 
 class NPC:
@@ -62,7 +63,7 @@ class NPC:
             DecorationOption)
         options.append(Order(bad_flavor, bad_mold, bad_deco))
 
-        for _ in range(3):
+        for _ in range(Constant.CAKE_OPTION_RANDOM_COUNT):
             options.append(Order(
                 Order.randomFlavor(),
                 Order.randomMold(),
@@ -95,18 +96,6 @@ class NPC:
         self.order = order
         print(f"[NPC] {self.name} order set: {order}")
 
-    def generateOrder(self) -> Order:
-        self.order = Order(
-            flavor=Order.randomFlavor(),
-            mold=Order.randomMold(),
-            decoration=Order.randomDecoration()
-        )
-        print(f"[NPC] {self.name} generated random order: {self.order}")
-        return self.order
-
-    def getOrder(self) -> Order:
-        return self.order
-
     # Preference Score
 
     def calculate_preference_score(self, order: Order) -> int:
@@ -116,19 +105,19 @@ class NPC:
         deco_str = order.decoration.value if hasattr(order.decoration, 'value') else str(order.decoration)
 
         if flavor_str in self.data.get_preferred_flavors():
-            score += 1
+            score += Constant.PREF_SCORE_LIKED
         elif flavor_str in self.data.get_disliked_flavors():
-            score -= 1
+            score += Constant.PREF_SCORE_DISLIKED
 
         if mold_str in self.data.get_preferred_molds():
-            score += 1
+            score += Constant.PREF_SCORE_LIKED
         elif mold_str in self.data.get_disliked_molds():
-            score -= 1
+            score += Constant.PREF_SCORE_DISLIKED
 
         if deco_str in self.data.get_preferred_decorations():
-            score += 1
+            score += Constant.PREF_SCORE_LIKED
         elif deco_str in self.data.get_disliked_decorations():
-            score -= 1
+            score += Constant.PREF_SCORE_DISLIKED
 
         return score
 
@@ -141,11 +130,6 @@ class NPC:
     def showAngry(self) -> None:
         self.expression = "angry"
         print(f"[NPC] {self.name} is ANGRY!")
-
-    # Payment
-
-    def getMoney(self) -> None:
-        print(f"[NPC] {self.name} pays for the order!")
 
     # Debug
 

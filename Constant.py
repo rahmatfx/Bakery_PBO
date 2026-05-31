@@ -10,6 +10,46 @@ ASSETS_DIR = os.path.join(BASE_DIR, "Assets")
 DATA_DIR   = os.path.join(BASE_DIR, "Data")
 SAVE_FILE = os.path.join(DATA_DIR, "save.json")
 
+# Audio
+AUDIO_DIR = os.path.join(ASSETS_DIR, "Audio")
+BGM_DIR   = os.path.join(AUDIO_DIR, "BGM")
+SFX_DIR   = os.path.join(AUDIO_DIR, "SFX")
+
+BGM_VOLUME = 0.5
+SFX_VOLUME = 0.7
+TYPEWRITER_SFX_COOLDOWN = 0.06
+
+# BGM files
+BGM_MAIN_MENU  = os.path.join(BGM_DIR, "main_menu.mp3")
+BGM_CASHIER    = os.path.join(BGM_DIR, "cashier.ogg")
+BGM_DOUGH      = os.path.join(BGM_DIR, "dough.ogg")
+BGM_BAKING     = os.path.join(BGM_DIR, "baking.ogg")
+BGM_DECORATION = os.path.join(BGM_DIR, "decoration.ogg")
+
+# SFX files
+SFX_DIALOGUE_TYPE  = os.path.join(SFX_DIR, "dialogue_type.ogg")
+SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.ogg")
+SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.ogg")
+SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.ogg")
+SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.ogg")
+SFX_ORDER_WRONG    = os.path.join(SFX_DIR, "order_wrong.ogg")
+SFX_NAV_CLICK      = os.path.join(SFX_DIR, "nav_click.ogg")
+SFX_AFFINITY_UP    = os.path.join(SFX_DIR, "affinity_up.ogg")
+SFX_TIMER_URGENT   = os.path.join(SFX_DIR, "timer_urgent.ogg")
+
+# Animation
+ANIM_SHAKE_INTENSITY = 6
+ANIM_SHAKE_DURATION  = 0.3
+ANIM_SHAKE_FREQUENCY = 40.0
+
+ANIM_POP_DURATION    = 0.25
+
+ANIM_BOUNCE_HEIGHT   = 10
+ANIM_BOUNCE_DURATION = 0.4
+ANIM_BOUNCE_FREQUENCY = 12.0
+
+ANIM_SLIDE_DURATION  = 0.5
+
 # Backgrounds
 MAINMENU_BG       = os.path.join(ASSETS_DIR, "background.png")
 CASHIER_BG        = os.path.join(ASSETS_DIR, "cashier_bg.png")
@@ -92,19 +132,31 @@ TIMER_DURATION = 60
 
 # NPC (Fallback)
 NPC_IMG            = os.path.join(ASSETS_DIR, "Mimosa.png")
-NPC_EMOJI_HAPPY    = os.path.join(ASSETS_DIR, "emoji_happy.png")
-NPC_EMOJI_ANGRY    = os.path.join(ASSETS_DIR, "emoji_angry.png")
 HEART_IMG          = os.path.join(ASSETS_DIR, "heart.png")
 
+# NPC Position
 NPC_X              = 50
 NPC_Y              = NAV_BAR_HEIGHT + 80
 NPC_WIDTH          = 300
 NPC_HEIGHT         = 400
 NPC_SLIDE_SPEED    = 8
 
-EMOJI_WIDTH        = 80
-EMOJI_HEIGHT       = 80
+# Expression Images (fallback)
+NPC_EMOJI_HAPPY    = os.path.join(ASSETS_DIR, "emoji_happy.png")
+NPC_EMOJI_ANGRY    = os.path.join(ASSETS_DIR, "emoji_angry.png")
+
+# Expression Size
+EXPR_WIDTH         = 80
+EXPR_HEIGHT        = 80
+
+# Expression Fallback Colors
+COLOR_EXPR_HAPPY_FALLBACK   = (0, 180, 0)
+COLOR_EXPR_ANGRY_FALLBACK   = (220, 50, 50)
+COLOR_EXPR_NEUTRAL_FALLBACK = (180, 180, 180)
+
+# Emoji Popup
 EMOJI_POPUP_SPEED  = 4
+EMOJI_POPUP_OFFSET_Y = 20
 
 # Order UI 
 ORDER_UI_WIDTH     = 320
@@ -145,6 +197,77 @@ CAKE_SELECT_TITLE_Y       = 120
 # Affinity Display 
 AFFINITY_HEART_SIZE = 50
 AFFINITY_FONT_SIZE  = 20
+AFFINITY_BAR_OFFSET_X = 10
+AFFINITY_BAR_OFFSET_Y = 12
+AFFINITY_TEXT_GAP = 8
+AFFINITY_PANEL_PADDING = 8
+AFFINITY_SHADOW_OFFSET = 2
+
+# NPC Expression Colors (fallback rect)
+COLOR_NPC_HAPPY   = (100, 200, 100)
+COLOR_NPC_ANGRY   = (220, 80, 80)
+
+# NPC Shadow
+SHADOW_OFFSET     = 4
+NPC_FALLBACK_SHADOW_OFFSET = 4
+
+# Cashier Reaction
+REWARD_CORRECT_CAKE = 1
+PENALTY_WRONG_CAKE  = -2
+PENALTY_TIMER_EXPIRED = -2
+PREF_SCORE_GREAT = 2
+PREF_SCORE_GOOD  = 1
+PREF_SCORE_LIKED = 1
+PREF_SCORE_DISLIKED = -1
+
+# Cake Options
+CAKE_OPTION_RANDOM_COUNT = 3
+
+# Cashier Render
+COLOR_CASHIER_FALLBACK_BG = (255, 235, 210)
+HINT_CLICK_OFFSET_Y = 20
+
+# DialogueBox Render
+DIALOGUE_SHADOW_OFFSET = 3
+DIALOGUE_NAME_TAG_PADDING_X = 12
+DIALOGUE_NAME_TAG_PADDING_Y = 4
+DIALOGUE_NAME_TAG_INNER_PAD = 24
+DIALOGUE_TEXT_EXTRA_OFFSET = 10
+DIALOGUE_TEXT_WIDTH_MARGIN = 20
+DIALOGUE_HINT_OFFSET_X = 180
+DIALOGUE_HINT_OFFSET_Y = 28
+DIALOGUE_CHOICE_OVERLAY_ALPHA = 120
+
+# OrderUI Render
+ORDER_UI_SHADOW_OFFSET = 4
+ORDER_UI_SHADOW_ALPHA  = 60
+ORDER_UI_HEADER_HEIGHT = 44
+ORDER_UI_HEADER_INSET  = 3
+ORDER_UI_TITLE_OFFSET_X = 18
+ORDER_UI_TITLE_OFFSET_Y = 8
+ORDER_UI_DIVIDER_Y_OFFSET = 50
+ORDER_UI_DIVIDER_PADDING_X = 15
+ORDER_UI_NAME_OFFSET_X = 20
+ORDER_UI_NAME_OFFSET_Y = 60
+ORDER_UI_PERSONALITY_OFFSET_Y = 90
+ORDER_UI_PERSONALITY_LINE_HEIGHT = 20
+ORDER_UI_PERSONALITY_MAX_LINES = 3
+ORDER_UI_PERSONALITY_PADDING = 40
+ORDER_UI_BTN_WIDTH  = 150
+ORDER_UI_BTN_HEIGHT = 42
+ORDER_UI_BTN_BOTTOM_PADDING = 14
+ORDER_UI_BTN_SHADOW_OFFSET = 2
+ORDER_UI_BTN_SHADOW_ALPHA  = 40
+ORDER_UI_ACCEPTED_COLOR = (80, 180, 80)
+ORDER_UI_TIMER_URGENT_COLOR = (255, 100, 100)
+ORDER_UI_TIMER_URGENT_THRESHOLD = 10
+ORDER_UI_DETAIL_ROW_START_Y = 60
+ORDER_UI_DETAIL_ROW_SPACING = 34
+ORDER_UI_DETAIL_LABEL_X = 20
+ORDER_UI_DETAIL_VALUE_X = 110
+ORDER_UI_DETAIL_LABELS = ["Flavor:", "Mold:", "Top:"]
+ORDER_UI_TIMER_OFFSET_X = 95
+ORDER_UI_TIMER_OFFSET_Y = 16
 
 # Debug 
 DEBUG_NAV_UI       = False

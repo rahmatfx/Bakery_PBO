@@ -1,29 +1,30 @@
+from enum import IntEnum
 import pygame
 import Constant
 from Room.Room import Room
 from Observer import Observer
 from UI.NavUI import NavigationUI
 
-_IDLE = 0
-_FADE_OUT = 1
-_FADE_IN = 2
+
+class TransitionState(IntEnum):
+    IDLE = 0
+    FADE_OUT = 1
+    FADE_IN = 2
 
 
 class SceneManager(Observer):
-    def __init__(self, screen: pygame.Surface):
+    def __init__(self, screen: pygame.Surface, audio=None):
         self.screen = screen
+        self.audio = audio
         self.current_room: Room = None
 
-        self.room_cashier: Room = None
-        self.room_dough: Room = None
-        self.room_baking: Room = None
-        self.room_decoration: Room = None
+        self._rooms: dict[str, Room] = {}
 
-        self.navigation_ui = NavigationUI()
+        self.navigation_ui = NavigationUI(audio)
         self.navigation_ui.add_observer(self)
         self._nav_visible = False
 
-        self._state = _IDLE
+        self._state = TransitionState.IDLE
         self._fade_alpha = 0
         self._next_room: Room = None
         self._fade_surface = pygame.Surface(
@@ -34,6 +35,9 @@ class SceneManager(Observer):
         self._timer_active = False
         self._timer_remaining = 0.0
         self._timer_expired = False
+
+    def register_room(self, room: Room) -> None:
+        self._rooms[room.name] = room
 
     def on_notify(self, event_type: str, data=None) -> None:
         if event_type == "room_change":
@@ -47,19 +51,13 @@ class SceneManager(Observer):
             self.transition_to(room_name)
 
     def _get_room_by_name(self, name: str) -> Room:
-        match name:
-            case "Cashier":     return self.room_cashier
-            case "Dough":       return self.room_dough
-            case "Oven":        return self.room_baking
-            case "Decoration":  return self.room_decoration
-            case _:             return None
+        return self._rooms.get(name)
 
     def get_room_names(self) -> list[str]:
-        return ["Cashier", "Dough", "Oven", "Decoration"]
-
+        return list(self._rooms.keys())
 
     def transition_to(self, room) -> None:
-        if self._state != _IDLE:
+        if self._state != TransitionState.IDLE:
             return
 
         if isinstance(room, str):
@@ -77,18 +75,21 @@ class SceneManager(Observer):
             return
 
         self._next_room = room
-        self._state = _FADE_OUT
+        self._state = TransitionState.FADE_OUT
         self._fade_alpha = 0
 
     def _apply_room_change(self) -> None:
-
         self.current_room = self._next_room
         self.current_room.enter()
 
         self.navigation_ui.set_room(self.current_room.name)
 
-        if self.current_room.name in ("Cashier", "Dough", "Oven", "Decoration"):
+        if self.current_room.name in self._rooms:
             self._nav_visible = True
+
+        # switch bgm
+        if self.audio:
+            self.audio.play_bgm_for_room(self.current_room.name)
 
         print(f"[DEBUG SM] Current room: {self.current_room.name}")
         self._next_room = None
@@ -98,7 +99,6 @@ class SceneManager(Observer):
 
     def hide_navigation_ui(self) -> None:
         self._nav_visible = False
-
 
     def start_timer(self, seconds: float) -> None:
         self._timer_active = True
@@ -129,19 +129,19 @@ class SceneManager(Observer):
             self._timer_expired = True
             self.transition_to("Cashier")
 
-    def update(self) -> None:
-        if self._state == _FADE_OUT:
+    def update(self, delta_time: float = 0.0) -> None:
+        if self._state == TransitionState.FADE_OUT:
             self._fade_alpha += Constant.TRANSITION_SPEED
             if self._fade_alpha >= 255:
                 self._fade_alpha = 255
                 self._apply_room_change()
-                self._state = _FADE_IN
+                self._state = TransitionState.FADE_IN
 
-        elif self._state == _FADE_IN:
+        elif self._state == TransitionState.FADE_IN:
             self._fade_alpha -= Constant.TRANSITION_SPEED
             if self._fade_alpha <= 0:
                 self._fade_alpha = 0
-                self._state = _IDLE
+                self._state = TransitionState.IDLE
                 print("[DEBUG SM] Transition complete")
 
         if self._timer_active:
@@ -161,10 +161,10 @@ class SceneManager(Observer):
             self.navigation_ui.update()
 
         if self.current_room:
-            self.update_room(self.current_room)
-
-    def update_room(self, current_room: Room) -> None:
-        current_room.update()
+            try:
+                self.current_room.update(delta_time)
+            except TypeError:
+                self.current_room.update()
 
     def render(self) -> None:
         if self.current_room:
@@ -181,5 +181,5 @@ class SceneManager(Observer):
         if self._nav_visible:
             self.navigation_ui.handle_event(event)
 
-        if self.current_room and self._state == _IDLE:
+        if self.current_room and self._state == TransitionState.IDLE:
             self.current_room.handle_event(event)
