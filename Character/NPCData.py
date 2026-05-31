@@ -38,12 +38,10 @@ class NPCData:
         return self.assets.get("sprite", "")
 
     def get_expression_sprite_path(self, expression: str) -> str:
-        """Get sprite path for ANY expression — reads from assets.expressions dict."""
         expressions = self.assets.get("expressions", {})
         return expressions.get(expression, "")
 
     def get_all_expression_names(self) -> list[str]:
-        """Return list of all expression names defined for this NPC."""
         return list(self.assets.get("expressions", {}).keys())
 
     # ── Dialogue helpers ──
@@ -89,6 +87,10 @@ class NPCData:
     def get_dialogues_for_level(self, level: int) -> list[dict]:
         return self.get_dialogue_entries(level, "neutral", "a")
 
+    def get_expression_sfx(self, expression: str) -> str | None:
+        sfx_overrides = self.assets.get("expression_sfx", {})
+        return sfx_overrides.get(expression)
+    
     # ── Affinity thresholds ──
 
     def get_level_for_affinity(self, affinity: int) -> int:

@@ -29,11 +29,18 @@
             "sfx": null,
             "fallback_text": "IRI",
             "fallback_color": [150, 100, 200]
+        },
+        "kecewa": {
+            "animation": "shake",
+            "sfx": null,
+            "fallback_text": "Kecewa",
+            "fallback_color": [150, 100, 200]
         }
     },
     "global_emojis": {
         "happy": "Assets/emoji_happy.png",
         "angry": "Assets/emoji_angry.png",
-        "sad": "Assets/emoji_sad.png"
+        "sad": "Assets/emoji_sad.png",
+        "curious": "Assets/emoji_curious.jpg"
     }
 }
