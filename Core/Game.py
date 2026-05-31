@@ -4,6 +4,7 @@ import Constant
 from Core.SceneManager import SceneManager
 from Core.MainMenu import MainMenu
 from Core.SaveManager import SaveManager
+from Core.DialogueTracker import DialogueTracker
 from Room.Cashier import Cashier
 from Room.Decoration import Decoration
 from Room.RoomBaking import BakingRoom
@@ -29,11 +30,18 @@ class Game:
         if saved_affinity:
             self.npc_registry.load_affinity(saved_affinity)
 
+        # DialogueTracker
+        self.dialogue_tracker = DialogueTracker()
+        saved_tracker = self.save_manager.load_dialogue_tracker()
+        if saved_tracker:
+            self.dialogue_tracker.load_save_data(saved_tracker)
+
         self.scene_manager = SceneManager(self.screen)
 
-        # Rooms 
+        # Rooms
         main_menu = MainMenu()
-        cashier = Cashier(self.npc_registry, self.save_manager)
+        cashier = Cashier(self.npc_registry, self.save_manager,
+                          self.dialogue_tracker)
         dekorasi = Decoration()
         baking = BakingRoom()
         dough = Dough()
@@ -48,7 +56,7 @@ class Game:
         self.scene_manager.room_decoration = dekorasi
         self.scene_manager.room_baking = baking
         self.scene_manager.room_dough = dough
-      
+
         main_menu.set_scene_manager(self.scene_manager)
         cashier.set_scene_manager(self.scene_manager)
 
@@ -89,4 +97,7 @@ class Game:
     def _save_on_exit(self) -> None:
         affinity = self.npc_registry.get_all_affinity()
         self.save_manager.save_affinity(affinity)
+        # Phase 7: save dialogue tracker
+        tracker_data = self.dialogue_tracker.get_save_data()
+        self.save_manager.save_dialogue_tracker(tracker_data)
         print("[Game] Save on exit complete")

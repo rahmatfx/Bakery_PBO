@@ -9,109 +9,550 @@
     },
     "dislikes": {
         "flavors": ["Chocolate"],
-        "molds": ["Star"],
+        "molds": [],
         "decorations": ["Oreo"]
     },
     "dialogues": {
-        "level_0": [
-            {
-                "id": "ardra_0_1",
-                "text": "H-halo... permisi...",
-                "next": "ardra_0_2"
-            },
-            {
-                "id": "ardra_0_2",
-                "text": "Aku... aku mau pesan kue. Boleh?",
-                "choices": [
+        "level_0": {
+            "neutral": {
+                "a": [
                     {
-                        "text": "Tentu saja! Selamat datang di Cozy Bakery!",
-                        "affinity": 1,
-                        "next": "ardra_0_3a"
+                        "id": "ardra_0_n_a_1",
+                        "text": "H-halo... permisi...",
+                        "next": "ardra_0_n_a_2"
                     },
                     {
-                        "text": "Silakan, ada menu di sebelah.",
-                        "affinity": 0,
-                        "next": "ardra_0_3b"
+                        "id": "ardra_0_n_a_2",
+                        "text": "Aku... aku mau pesan kue. Boleh?",
+                        "choices": [
+                            {
+                                "text": "Tentu saja! Selamat datang di Cozy Bakery!",
+                                "affinity": 1,
+                                "next": "ardra_0_n_a_3a",
+                                "set_next": "level_0.good.a"
+                            },
+                            {
+                                "text": "Silakan, ada menu di sebelah.",
+                                "affinity": 0,
+                                "next": "ardra_0_n_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_0_n_a_3a",
+                        "text": "Wah... terima kasih... kamu baik sekali... Aku mau yang manis ya...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_0_n_a_3b",
+                        "text": "O-oke... aku lihat dulu ya...",
+                        "next": null
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "ardra_0_n_b_1",
+                        "text": "E-ehm... maaf mengganggu...",
+                        "next": "ardra_0_n_b_2"
+                    },
+                    {
+                        "id": "ardra_0_n_b_2",
+                        "text": "Aku dengar kue di sini enak... boleh aku pesan?",
+                        "choices": [
+                            {
+                                "text": "Pasti enak! Aku buat yang terbaik untukmu!",
+                                "affinity": 1,
+                                "next": "ardra_0_n_b_3a",
+                                "set_next": "level_0.good.a"
+                            },
+                            {
+                                "text": "Boleh, silakan pilih menunya.",
+                                "affinity": 0,
+                                "next": "ardra_0_n_b_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_0_n_b_3a",
+                        "text": "B-baik... aku percaya padamu...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_0_n_b_3b",
+                        "text": "Hmm... oke aku akan lihat-lihat...",
+                        "next": null
                     }
                 ]
             },
-            {
-                "id": "ardra_0_3a",
-                "text": "Wah... terima kasih... kamu baik sekali... Aku mau yang manis ya...",
-                "next": null
-            },
-            {
-                "id": "ardra_0_3b",
-                "text": "O-oke... aku lihat dulu ya...",
-                "next": null
-            }
-        ],
-        "level_1": [
-            {
-                "id": "ardra_1_1",
-                "text": "Halo... aku datang lagi...",
-                "next": "ardra_1_2"
-            },
-            {
-                "id": "ardra_1_2",
-                "text": "Aku senang kuenya kemarin... terima kasih sudah dibuatkan.",
-                "choices": [
+            "good": {
+                "a": [
                     {
-                        "text": "Senang mendengarnya! Mau pesan lagi?",
-                        "affinity": 2,
-                        "next": "ardra_1_3a"
+                        "id": "ardra_0_g_a_1",
+                        "text": "Halo lagi! Aku... aku senang bisa datang ke sini lagi...",
+                        "next": "ardra_0_g_a_2"
                     },
                     {
-                        "text": "Iya, mau pesan apa hari ini?",
-                        "affinity": 0,
-                        "next": "ardra_1_3b"
+                        "id": "ardra_0_g_a_2",
+                        "text": "Kuenya kemarin enak sekali... boleh pesan lagi?",
+                        "choices": [
+                            {
+                                "text": "Tentu! Senang kamu suka!",
+                                "affinity": 1,
+                                "next": "ardra_0_g_a_3a",
+                                "set_next": "level_0.good.b"
+                            },
+                            {
+                                "text": "Boleh, mau yang mana?",
+                                "affinity": 0,
+                                "next": "ardra_0_g_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_0_g_a_3a",
+                        "text": "Hehe... kamu baik banget... mau yang manis lagi ya...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_0_g_a_3b",
+                        "text": "Mmm... yang kemarin itu enak... mungkin yang serupa?",
+                        "next": null
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "ardra_0_g_b_1",
+                        "text": "Hai! Aku lagi semangat datang ke sini!",
+                        "next": "ardra_0_g_b_2"
+                    },
+                    {
+                        "id": "ardra_0_g_b_2",
+                        "text": "Kemarin kamu baik banget... aku harap hari ini juga seru!",
+                        "choices": [
+                            {
+                                "text": "Tentu! Aku selalu senang kalau kamu datang!",
+                                "affinity": 1,
+                                "next": "ardra_0_g_b_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Yap, silakan pesan.",
+                                "affinity": 0,
+                                "next": "ardra_0_g_b_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_0_g_b_3a",
+                        "text": "S-serius? Aku... aku senang banget... terima kasih!",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_0_g_b_3b",
+                        "text": "Oke... aku mau yang manis lagi ya...",
+                        "next": null
                     }
                 ]
             },
-            {
-                "id": "ardra_1_3a",
-                "text": "B-benarkah? Aku... aku sangat senang... terima kasih...",
-                "next": null
-            },
-            {
-                "id": "ardra_1_3b",
-                "text": "Hmm... mungkin yang manis-manis lagi seperti kemarin...",
-                "next": null
-            }
-        ],
-        "level_2": [
-            {
-                "id": "ardra_2_1",
-                "text": "Kamu tahu... aku sebenarnya suka banget makan kue waktu kecil.",
-                "next": "ardra_2_2"
-            },
-            {
-                "id": "ardra_2_2",
-                "text": "Nenekku selalu buatkan kue stroberi bentuk hati... jadi kue di sini mengingatkanku padanya.",
-                "choices": [
+            "bad": {
+                "a": [
                     {
-                        "text": "Nenekmu pasti orang yang baik.",
-                        "affinity": 3,
-                        "next": "ardra_2_3a"
+                        "id": "ardra_0_b_a_1",
+                        "text": "... halo.",
+                        "next": "ardra_0_b_a_2"
                     },
                     {
-                        "text": "Aku bisa buatkan kue seperti itu juga lho!",
-                        "affinity": 2,
-                        "next": "ardra_2_3b"
+                        "id": "ardra_0_b_a_2",
+                        "text": "Kemarin kuenya... tidak sesuai harapan aku. Tapi... aku mau coba lagi.",
+                        "choices": [
+                            {
+                                "text": "Maaf ya! Aku akan buat yang lebih baik kali ini!",
+                                "affinity": 1,
+                                "next": "ardra_0_b_a_3a",
+                                "set_next": "level_0.neutral.a"
+                            },
+                            {
+                                "text": "Oke, silakan pesan lagi.",
+                                "affinity": 0,
+                                "next": "ardra_0_b_a_3b",
+                                "set_next": "level_0.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_0_b_a_3a",
+                        "text": "... baiklah. Aku percaya padamu...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_0_b_a_3b",
+                        "text": "Hm... aku harap kali ini lebih baik...",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_1": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "ardra_1_n_a_1",
+                        "text": "Halo... aku datang lagi...",
+                        "next": "ardra_1_n_a_2"
+                    },
+                    {
+                        "id": "ardra_1_n_a_2",
+                        "text": "Aku senang kuenya kemarin... terima kasih sudah dibuatkan.",
+                        "choices": [
+                            {
+                                "text": "Senang mendengarnya! Mau pesan lagi?",
+                                "affinity": 2,
+                                "next": "ardra_1_n_a_3a",
+                                "set_next": "level_1.good.a"
+                            },
+                            {
+                                "text": "Iya, mau pesan apa hari ini?",
+                                "affinity": 0,
+                                "next": "ardra_1_n_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_1_n_a_3a",
+                        "text": "B-benarkah? Aku... aku sangat senang... terima kasih...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_1_n_a_3b",
+                        "text": "Hmm... mungkin yang manis-manis lagi seperti kemarin...",
+                        "next": null
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "ardra_1_n_b_1",
+                        "text": "E-ehm... hai...",
+                        "next": "ardra_1_n_b_2"
+                    },
+                    {
+                        "id": "ardra_1_n_b_2",
+                        "text": "Aku sudah datang beberapa kali kan? Rasanya... semakin nyaman di sini.",
+                        "choices": [
+                            {
+                                "text": "Kamu memang langganan favorit! Hehe.",
+                                "affinity": 2,
+                                "next": "ardra_1_n_b_3a",
+                                "set_next": "level_1.good.a"
+                            },
+                            {
+                                "text": "Iya, silakan pesan yang mana saja.",
+                                "affinity": 0,
+                                "next": "ardra_1_n_b_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_1_n_b_3a",
+                        "text": "F-favorit? Aku... terharu... hehe...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_1_n_b_3b",
+                        "text": "Baiklah... aku mau coba yang berbeda kali ini...",
+                        "next": null
                     }
                 ]
             },
-            {
-                "id": "ardra_2_3a",
-                "text": "Iya... dia orang yang paling baik yang aku kenal. Makasih ya... sudah mau mendengarkanku.",
-                "next": null
+            "good": {
+                "a": [
+                    {
+                        "id": "ardra_1_g_a_1",
+                        "text": "Hei! Aku datang lagi dengan senang! Kuenya kemarin luar biasa!",
+                        "next": "ardra_1_g_a_2"
+                    },
+                    {
+                        "id": "ardra_1_g_a_2",
+                        "text": "Kamu tahu... kue buatanmu selalu bikin hariku lebih baik.",
+                        "choices": [
+                            {
+                                "text": "Itu yang selalu aku usahakan! Mau yang mana hari ini?",
+                                "affinity": 2,
+                                "next": "ardra_1_g_a_3a",
+                                "set_next": "level_2.neutral.a"
+                            },
+                            {
+                                "text": "Terima kasih, semoga selalu begitu.",
+                                "affinity": 1,
+                                "next": "ardra_1_g_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_1_g_a_3a",
+                        "text": "Aku mau... yang manis sekali! Seperti kemarin tapi lebih!",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_1_g_a_3b",
+                        "text": "Hehe... aku yakin kuenya akan enak lagi...",
+                        "next": null
+                    }
+                ]
             },
-            {
-                "id": "ardra_2_3b",
-                "text": "B-benarkah?! Aku... aku ingin mencobanya suatu saat nanti...",
-                "next": null
+            "bad": {
+                "a": [
+                    {
+                        "id": "ardra_1_b_a_1",
+                        "text": "... hai.",
+                        "next": "ardra_1_b_a_2"
+                    },
+                    {
+                        "id": "ardra_1_b_a_2",
+                        "text": "Kemarin kuenya... kurang pas. Tapi aku masih mau datang ke sini...",
+                        "choices": [
+                            {
+                                "text": "Aku janji akan lebih baik! Ceritakan yang kamu mau.",
+                                "affinity": 2,
+                                "next": "ardra_1_b_a_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Oke, silakan coba lagi.",
+                                "affinity": 0,
+                                "next": "ardra_1_b_a_3b",
+                                "set_next": "level_1.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_1_b_a_3a",
+                        "text": "Baiklah... aku percaya... tolong buat yang enak ya...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_1_b_a_3b",
+                        "text": "Hmm... semoga kali ini lebih baik...",
+                        "next": null
+                    }
+                ]
             }
-        ]
+        },
+        "level_2": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "ardra_2_n_a_1",
+                        "text": "Kamu tahu... aku sebenarnya suka banget makan kue waktu kecil.",
+                        "next": "ardra_2_n_a_2"
+                    },
+                    {
+                        "id": "ardra_2_n_a_2",
+                        "text": "Nenekku selalu buatkan kue stroberi bentuk hati... jadi kue di sini mengingatkanku padanya.",
+                        "choices": [
+                            {
+                                "text": "Nenekmu pasti orang yang baik.",
+                                "affinity": 3,
+                                "next": "ardra_2_n_a_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Aku bisa buatkan kue seperti itu juga lho!",
+                                "affinity": 2,
+                                "next": "ardra_2_n_a_3b",
+                                "set_next": "level_2.good.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_n_a_3a",
+                        "text": "Iya... dia orang yang paling baik yang aku kenal. Makasih ya... sudah mau mendengarkanku.",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_n_a_3b",
+                        "text": "B-benarkah?! Aku... aku ingin mencobanya suatu saat nanti...",
+                        "next": null
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "ardra_2_n_b_1",
+                        "text": "Hari ini aku teringat masa kecilku...",
+                        "next": "ardra_2_n_b_2"
+                    },
+                    {
+                        "id": "ardra_2_n_b_2",
+                        "text": "Aroma kue stroberi selalu bikin aku kembali ke dapur nenek. Kamu pernah merasa begitu?",
+                        "choices": [
+                            {
+                                "text": "Iya, ada makanan yang selalu ingatkan kita pada seseorang.",
+                                "affinity": 3,
+                                "next": "ardra_2_n_b_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Belum pernah, tapi kuenya di sini pasti bisa jadi kenangan barumu!",
+                                "affinity": 2,
+                                "next": "ardra_2_n_b_3b",
+                                "set_next": "level_2.good.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_n_b_3a",
+                        "text": "Tepat sekali... makasih sudah mengerti...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_n_b_3b",
+                        "text": "Hehe... iya aku harap begitu...",
+                        "next": null
+                    }
+                ],
+                "c": [
+                    {
+                        "id": "ardra_2_n_c_1",
+                        "text": "Aku baru sadar... sudah lama sekali aku datang ke sini.",
+                        "next": "ardra_2_n_c_2"
+                    },
+                    {
+                        "id": "ardra_2_n_c_2",
+                        "text": "Dulu aku takut banget buat datang sendiri... tapi sekarang rasanya seperti rumah.",
+                        "choices": [
+                            {
+                                "text": "Ini memang rumahmu! Selalu datang ya!",
+                                "affinity": 3,
+                                "next": "ardra_2_n_c_3a",
+                                "set_next": "level_2.good.b"
+                            },
+                            {
+                                "text": "Aku senang kamu merasa nyaman di sini.",
+                                "affinity": 2,
+                                "next": "ardra_2_n_c_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_n_c_3a",
+                        "text": "Rumah... iya... ini seperti rumah keduaku... terima kasih...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_n_c_3b",
+                        "text": "Nyaman... iya itu kata yang tepat... hehe...",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "ardra_2_g_a_1",
+                        "text": "Hei! Aku sangat senang hari ini! Kuenya kemarin sempurna!",
+                        "next": "ardra_2_g_a_2"
+                    },
+                    {
+                        "id": "ardra_2_g_a_2",
+                        "text": "Tahukah kamu? Setiap kali aku makan kue buatanmu, aku teringat nenek. Tapi yang bahagia sekarang!",
+                        "choices": [
+                            {
+                                "text": "Aku senang bisa buatmu tersenyum seperti nenekmu!",
+                                "affinity": 3,
+                                "next": "ardra_2_g_a_3a",
+                                "set_next": "level_2.good.b"
+                            },
+                            {
+                                "text": "Mau yang spesial hari ini?",
+                                "affinity": 2,
+                                "next": "ardra_2_g_a_3b",
+                                "set_next": "level_2.good.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_g_a_3a",
+                        "text": "Kamu... kamu benar-benar baik padaku... aku tidak tahu harus berkata apa...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_g_a_3b",
+                        "text": "Spesial? Iya... aku mau yang terbaik yang kamu bisa buat!",
+                        "next": null
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "ardra_2_g_b_1",
+                        "text": "Hari ini aku datang dengan senyum! Karena kue kemarin luar biasa!",
+                        "next": "ardra_2_g_b_2"
+                    },
+                    {
+                        "id": "ardra_2_g_b_2",
+                        "text": "Aku pernah dengar kata orang... tempat yang bikin nyaman itu seperti pelukan. Dan kuenya kamu seperti itu.",
+                        "choices": [
+                            {
+                                "text": "Itu hal terindah yang pernah aku dengar!",
+                                "affinity": 3,
+                                "next": "ardra_2_g_b_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Terima kasih... aku akan terus berusaha.",
+                                "affinity": 2,
+                                "next": "ardra_2_g_b_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_g_b_3a",
+                        "text": "Hehe... maksudku lho... jangan salah paham... tapi aku senang di sini...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_g_b_3b",
+                        "text": "Aku yakin kuenya akan selalu enak... karena dibuat dengan hati...",
+                        "next": null
+                    }
+                ]
+            },
+            "bad": {
+                "a": [
+                    {
+                        "id": "ardra_2_b_a_1",
+                        "text": "... hai. Maaf aku agak murung hari ini.",
+                        "next": "ardra_2_b_a_2"
+                    },
+                    {
+                        "id": "ardra_2_b_a_2",
+                        "text": "Kuenya kemarin... kurang pas. Dan itu ingatkanku kalau aku rindu kue nenek tapi tidak pernah sama...",
+                        "choices": [
+                            {
+                                "text": "Aku minta maaf... ceritakan tentang kue nenekmu, aku akan coba buat!",
+                                "affinity": 3,
+                                "next": "ardra_2_b_a_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Aku mengerti rindumu. Mau coba lagi hari ini?",
+                                "affinity": 1,
+                                "next": "ardra_2_b_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "ardra_2_b_a_3a",
+                        "text": "B-benarkah? Kue stroberi bentuk hati dengan whipcream... itu favorit nenek... dan aku...",
+                        "next": null
+                    },
+                    {
+                        "id": "ardra_2_b_a_3b",
+                        "text": "... baiklah. Mungkin kali ini akan lebih baik...",
+                        "next": null
+                    }
+                ]
+            }
+        }
     },
     "affinity_thresholds": {
         "level_1": 10,
