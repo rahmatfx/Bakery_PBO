@@ -4,7 +4,6 @@ class DialogueManager:
         self._entries: dict[str, dict] = {}    
         self._current_id: str | None = None
         self._finished: bool = False
-        self._pending_affinity: int = 0       
 
     def start(self, entries: list[dict]) -> None:
         self._entries = {}
@@ -15,7 +14,6 @@ class DialogueManager:
 
         self._current_id = entries[0]["id"] if entries else None
         self._finished = False
-        self._pending_affinity = 0
 
         print(f"[DialogueManager] Started, entries: {len(self._entries)}, "
               f"first: {self._current_id}")
@@ -24,7 +22,6 @@ class DialogueManager:
         self._entries = {}
         self._current_id = None
         self._finished = False
-        self._pending_affinity = 0
 
     # Query 
 
@@ -87,13 +84,7 @@ class DialogueManager:
         else:
             self._current_id = next_id
 
-        self._pending_affinity = affinity_delta
         return affinity_delta
-
-    def consume_affinity(self) -> int:
-        delta = self._pending_affinity
-        self._pending_affinity = 0
-        return delta
 
     # Debug 
 

@@ -1,46 +1,88 @@
 from dataclasses import dataclass, field
 
 @dataclass
-class NPCData :
+class NPCData:
 
-    id : str
-    name : str
-    personality : str
-    preferences : dict = field(default_factory=dict)
-    dislikes: dict = field(default_factory=dict)     
-    dialogues : dict = field(default_factory=dict)
-    affinity_thresholds : dict = field(default_factory=dict)
-    assets : dict = field(default_factory=dict)
+    id: str
+    name: str
+    personality: str
+    preferences: dict = field(default_factory=dict)
+    dislikes: dict = field(default_factory=dict)
+    dialogues: dict = field(default_factory=dict)
+    affinity_thresholds: dict = field(default_factory=dict)
+    assets: dict = field(default_factory=dict)
 
+    # Preference helpers
 
-    #region helper
-
-    def get_preferred_flavors(self) -> list[str] :
+    def get_preferred_flavors(self) -> list[str]:
         return self.preferences.get("flavors", [])
-    
-    def get_preferred_molds(self) -> list[str] :
+
+    def get_preferred_molds(self) -> list[str]:
         return self.preferences.get("molds", [])
-    
-    def get_preferred_decorations(self) -> list[str] :
+
+    def get_preferred_decorations(self) -> list[str]:
         return self.preferences.get("decorations", [])
-    
+
+    # Dislike helpers
+
     def get_disliked_flavors(self) -> list[str]:
-        """Return list of flavor names this NPC dislikes."""
         return self.dislikes.get("flavors", [])
 
     def get_disliked_molds(self) -> list[str]:
-        """Return list of mold names this NPC dislikes."""
         return self.dislikes.get("molds", [])
 
     def get_disliked_decorations(self) -> list[str]:
-        """Return list of decoration names this NPC dislikes."""
         return self.dislikes.get("decorations", [])
 
+    # Dialogue helpers (mood + variant)
 
+    def get_moods_for_level(self, level: int) -> list[str]:
+        level_data = self.dialogues.get(f"level_{level}")
+        if level_data is None:
+            return []
+        # Backward compat: flat list = neutral
+        if isinstance(level_data, list):
+            return ["neutral"]
+        if isinstance(level_data, dict):
+            return list(level_data.keys())
+        return []
 
+    def get_variants_for_level_mood(self, level: int, mood: str) -> list[str]:
+        level_data = self.dialogues.get(f"level_{level}")
+        if level_data is None:
+            return []
+        # Backward compat: flat list = neutral/a
+        if isinstance(level_data, list):
+            return ["a"] if mood == "neutral" else []
+        if isinstance(level_data, dict):
+            mood_data = level_data.get(mood, {})
+            if isinstance(mood_data, dict):
+                return list(mood_data.keys())
+            if isinstance(mood_data, list):
+                return ["a"]
+        return []
+
+    def get_dialogue_entries(self, level: int, mood: str, variant: str) -> list[dict]:
+        level_data = self.dialogues.get(f"level_{level}")
+        if level_data is None:
+            return []
+        # Backward compat: flat list = neutral/a
+        if isinstance(level_data, list):
+            return level_data if mood == "neutral" and variant == "a" else []
+        if isinstance(level_data, dict):
+            mood_data = level_data.get(mood, {})
+            if isinstance(mood_data, dict):
+                return mood_data.get(variant, [])
+            if isinstance(mood_data, list):
+                return mood_data if variant == "a" else []
+        return []
+
+    # Legacy — masih works, selalu neutral/a
     def get_dialogues_for_level(self, level: int) -> list[dict]:
-        return self.dialogues.get(f"level_{level}",[])
-    
+        return self.get_dialogue_entries(level, "neutral", "a")
+
+    # Affinity thresholds
+
     def get_level_for_affinity(self, affinity: int) -> int:
         level = 0
         for key, threshold in self.affinity_thresholds.items():
@@ -52,23 +94,23 @@ class NPCData :
                 except (ValueError, IndexError):
                     continue
         return level
-    
+
     def has_ending(self) -> bool:
         return "ending" in self.affinity_thresholds
-    
+
     def get_ending_threshold(self) -> int:
         return self.affinity_thresholds.get("ending", -1)
-    
+
+    # Asset helpers
+
     def get_sprite_path(self) -> str:
         return self.assets.get("sprite", "")
-    
+
     def get_emoji_happy_path(self) -> str:
         return self.assets.get("emoji_happy", "")
 
     def get_emoji_angry_path(self) -> str:
         return self.assets.get("emoji_angry", "")
-
-    #endregion
 
     def __str__(self) -> str:
         return (f"NPCData(id={self.id}, name={self.name}, "

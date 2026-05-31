@@ -13,7 +13,6 @@ from Constant import (
     BTN_EXIT,
     BTN_EXIT_HOVER,
     COLOR_BG_CREAM,
-    COLOR_DARK_BROWN,
     FONT_TITLE_SIZE,
     FONT_NAME,
 )

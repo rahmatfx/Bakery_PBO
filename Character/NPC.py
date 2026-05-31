@@ -14,7 +14,7 @@ class NPC:
         self.order: Order = None
         self._registry: NPCRegistry = registry
 
-    # Affinity 
+    # Affinity
 
     @property
     def affinity(self) -> int:
@@ -34,17 +34,16 @@ class NPC:
 
     # Dialogue
 
-    def get_dialogue(self) -> list[dict]:
+    def get_dialogue(self, mood: str = "neutral",
+                     variant: str = "a") -> list[dict]:
         level = self.get_affinity_level()
-        return self.data.get_dialogues_for_level(level)
+        return self.data.get_dialogue_entries(level, mood, variant)
 
     # Cake Options
 
     def generate_cake_options(self) -> list[Order]:
-        """Generate 5 cake options: 1 good, 1 bad, 3 random."""
         options: list[Order] = []
 
-        # 1 kue Good option (preferensi NPC)
         good_flavor = self._pick_from_or_random(
             self.data.get_preferred_flavors(), Order.randomFlavor, Flavor)
         good_mold = self._pick_from_or_random(
@@ -52,10 +51,8 @@ class NPC:
         good_deco = self._pick_from_or_random(
             self.data.get_preferred_decorations(), Order.randomDecoration,
             DecorationOption)
-
         options.append(Order(good_flavor, good_mold, good_deco))
 
-        # 1 kue Bad option (dislikes NPC)
         bad_flavor = self._pick_from_or_random(
             self.data.get_disliked_flavors(), Order.randomFlavor, Flavor)
         bad_mold = self._pick_from_or_random(
@@ -63,10 +60,8 @@ class NPC:
         bad_deco = self._pick_from_or_random(
             self.data.get_disliked_decorations(), Order.randomDecoration,
             DecorationOption)
-
         options.append(Order(bad_flavor, bad_mold, bad_deco))
 
-        # 3 kue Random options 
         for _ in range(3):
             options.append(Order(
                 Order.randomFlavor(),
@@ -88,11 +83,12 @@ class NPC:
             picked_str = random.choice(pool)
             if enum_class:
                 try:
-                    return enum_class[picked_str]
+                    return enum_class(picked_str)  # lookup by VALUE
                 except (KeyError, ValueError):
                     return random_fn()
             return picked_str
         return random_fn()
+
     # Order
 
     def set_order(self, order: Order) -> None:
@@ -111,53 +107,47 @@ class NPC:
     def getOrder(self) -> Order:
         return self.order
 
-    # Preference Score 
+    # Preference Score
 
     def calculate_preference_score(self, order: Order) -> int:
         score = 0
-
-        # Ambil string value dari Enum───────────────────────
         flavor_str = order.flavor.value if hasattr(order.flavor, 'value') else str(order.flavor)
         mold_str = order.mold.value if hasattr(order.mold, 'value') else str(order.mold)
         deco_str = order.decoration.value if hasattr(order.decoration, 'value') else str(order.decoration)
 
-        # Flavor
         if flavor_str in self.data.get_preferred_flavors():
             score += 1
         elif flavor_str in self.data.get_disliked_flavors():
             score -= 1
 
-        # Mold
         if mold_str in self.data.get_preferred_molds():
             score += 1
         elif mold_str in self.data.get_disliked_molds():
             score -= 1
 
-        # Decoration
         if deco_str in self.data.get_preferred_decorations():
             score += 1
         elif deco_str in self.data.get_disliked_decorations():
             score -= 1
 
         return score
+
     # Expression
 
-    def showHappy(self, result: bool) -> None:
-        if result:
-            self.expression = "happy"
-            print(f"[NPC] {self.name} is HAPPY!")
+    def showHappy(self) -> None:
+        self.expression = "happy"
+        print(f"[NPC] {self.name} is HAPPY!")
 
-    def showAngry(self, result: bool) -> None:
-        if not result:
-            self.expression = "angry"
-            print(f"[NPC] {self.name} is ANGRY!")
+    def showAngry(self) -> None:
+        self.expression = "angry"
+        print(f"[NPC] {self.name} is ANGRY!")
 
-    # Payment 
+    # Payment
 
     def getMoney(self) -> None:
         print(f"[NPC] {self.name} pays for the order!")
 
-    # Debug 
+    # Debug
 
     def __str__(self) -> str:
         return (f"NPC({self.name}, expression={self.expression}, "

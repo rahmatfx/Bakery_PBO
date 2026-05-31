@@ -19,3 +19,6 @@ class Room(ABC):
 
     def handle_event(self, event: pygame.event.Event) -> None:
         pass
+
+    def set_scene_manager(self, scene_manager) -> None:
+        self._scene_manager = scene_manager

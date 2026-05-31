@@ -7,9 +7,7 @@ class SaveManager:
     def __init__(self, save_path: str):
         self.save_path: str = save_path
 
-
     def load(self) -> dict:
-       
         if not os.path.exists(self.save_path):
             print(f"[SaveManager] No save file found: {self.save_path}")
             return {}
@@ -31,7 +29,6 @@ class SaveManager:
         return data.get("affinity", {})
 
     def save(self, data: dict) -> None:
-        # Pastikan folder ada
         save_dir = os.path.dirname(self.save_path)
         if save_dir and not os.path.exists(save_dir):
             os.makedirs(save_dir, exist_ok=True)
@@ -47,10 +44,20 @@ class SaveManager:
             print(f"[SaveManager] ERROR saving: {e}")
 
     def save_affinity(self, affinity: dict[str, int]) -> None:
-        """Save hanya affinity data. Convenience method."""
         self.save({"affinity": affinity})
 
-    # Utility
+    # Dialogue tracker save/load
+
+    def save_dialogue_tracker(self, tracker_data: dict) -> None:
+        data = self.load()
+        if not data:
+            data = {}
+        data["dialogue_tracker"] = tracker_data
+        self.save(data)
+
+    def load_dialogue_tracker(self) -> dict:
+        data = self.load()
+        return data.get("dialogue_tracker", {})
 
     def has_save(self) -> bool:
         return os.path.exists(self.save_path)

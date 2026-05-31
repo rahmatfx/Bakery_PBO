@@ -1,44 +1,40 @@
 import pygame
-import os
 from Room.Room import Room
 from Character.NPC import NPC
 from Character.NPCData import NPCData
 from Character.NPCRegistry import NPCRegistry
 from Core.DialogueManager import DialogueManager
+from Core.DialogueTracker import DialogueTracker
 from Core.SaveManager import SaveManager
 from UI.OrderUI import OrderUI
 from UI.DialogueBox import DialogueBox
-from UI.CakeSelectionUI import CakeSelectionUI          
+from UI.CakeSelectionUI import CakeSelectionUI
 from Order.Order import Order
+from Order.Cake import Cake, CakeStep
+from Enum.CashierState import CashierState
 import Constant
-
-_NPC_HIDDEN       = 0
-_NPC_SLIDING_IN   = 1
-_NPC_WAITING      = 2
-_NPC_DIALOGUE     = 5
-_NPC_CAKE_SELECT  = 6                                 
-_NPC_ORDER_ACTIVE = 3
-_NPC_REACTING     = 4
 
 
 class Cashier(Room):
 
     def __init__(self, npc_registry: NPCRegistry = None,
-                 save_manager: SaveManager = None):
+                 save_manager: SaveManager = None,
+                 dialogue_tracker: DialogueTracker = None):
         super().__init__("Cashier")
 
         # Dependencies
         self.npc_registry: NPCRegistry = npc_registry
         self.save_manager: SaveManager = save_manager
+        self.dialogue_tracker: DialogueTracker = dialogue_tracker or DialogueTracker()
 
-        # NPC & Order state 
+        # NPC & Order state
         self.npc: NPC = None
         self.order: Order = None
-        self.cake = None
+        # Note: self.cake di-inject dari Game.py (shared Cake object)
         self.result: bool = False
-        self._cake_options: list = []                   
+        self._cake_options: list = []
 
-        self._state = _NPC_HIDDEN
+        self._state = CashierState.HIDDEN
         self._npc_x: float = -Constant.NPC_WIDTH
         self._npc_target_x: int = Constant.NPC_X
 
@@ -46,10 +42,14 @@ class Cashier(Room):
         self.dialogue_manager = DialogueManager()
         self.dialogue_box = DialogueBox()
 
-        # Cake Selection 
+        # mood & variant
+        self._current_mood: str = "neutral"
+        self._current_variant: str = "a"
+
+        # Cake Selection
         self.cake_selection = CakeSelectionUI()
 
-        # Emoji animation 
+        # Emoji animation
         self._emoji_type: str = ""
         self._emoji_y: float = 0.0
         self._emoji_target_y: float = 0.0
@@ -57,10 +57,10 @@ class Cashier(Room):
         self._emoji_active: bool = False
         self._emoji_done: bool = False
 
-        # UI 
+        # UI
         self._order_ui = OrderUI()
 
-        # Default assets 
+        # Default assets
         self._default_bg = self._load_and_scale(Constant.CASHIER_BG,
                                                  Constant.SCREEN_WIDTH,
                                                  Constant.SCREEN_HEIGHT)
@@ -83,15 +83,15 @@ class Cashier(Room):
         self._current_emoji_happy = self._default_emoji_happy
         self._current_emoji_angry = self._default_emoji_angry
 
-        # Asset cache per NPC id 
+        # Asset cache per NPC id
         self._npc_asset_cache: dict[str, dict] = {}
 
-        # Fonts & text cache 
+        # Fonts & text cache
         self._font = None
         self._font_affinity = None
         self._text_cache: dict[str, pygame.Surface] = {}
 
-    # Asset loading helpers 
+    # Asset loading helpers
 
     @staticmethod
     def _load_and_scale(path: str, w: int, h: int):
@@ -148,12 +148,15 @@ class Cashier(Room):
     def _clear_text_cache(self) -> None:
         self._text_cache.clear()
 
-    # Auto-save 
+    # Auto-save
 
     def _auto_save(self) -> None:
         if self.save_manager and self.npc_registry:
             affinity = self.npc_registry.get_all_affinity()
             self.save_manager.save_affinity(affinity)
+            # Phase 7: save dialogue tracker
+            tracker_data = self.dialogue_tracker.get_save_data()
+            self.save_manager.save_dialogue_tracker(tracker_data)
 
     # Room lifecycle
 
@@ -168,32 +171,32 @@ class Cashier(Room):
             print("[DEBUG Cashier] Timer expired entry!")
             return
 
-        if self._state == _NPC_ORDER_ACTIVE:
+        if self._state == CashierState.ORDER_ACTIVE:
             print("[DEBUG Cashier] Resuming — order active")
-            self._order_ui.show_order_details()      
+            self._order_ui.show_order_details()
             return
 
-        if self._state == _NPC_REACTING:
+        if self._state == CashierState.REACTING:
             print("[DEBUG Cashier] Resuming — reacting")
             return
 
-        if self._state == _NPC_DIALOGUE:
+        if self._state == CashierState.DIALOGUE:
             print("[DEBUG Cashier] Resuming — dialogue active")
             self.dialogue_box.show()
             return
 
-        if self._state == _NPC_CAKE_SELECT:
+        if self._state == CashierState.CAKE_SELECT:
             print("[DEBUG Cashier] Resuming — cake selection")
             self.cake_selection.show()
             return
 
-        if self._state == _NPC_HIDDEN:
+        if self._state == CashierState.HIDDEN:
             self.showNPC()
 
     def exit(self) -> None:
         print("[DEBUG Cashier] Exiting room")
 
-    # NPC spawning 
+    # NPC spawning
 
     def showNPC(self) -> None:
         if self.npc_registry:
@@ -205,17 +208,12 @@ class Cashier(Room):
                                      personality="Generic customer")
             self.npc = NPC(fallback_data)
 
-        # Generate order buat fallback, tapi UI belum tampil order details
-        self.npc.generateOrder()
-        self.order = self.npc.getOrder()
-
+        self.order = None
         self._load_npc_assets(self.npc.data)
 
-        self._state = _NPC_SLIDING_IN
+        self._state = CashierState.SLIDING_IN
         self._npc_x = -Constant.NPC_WIDTH
 
-        # OrderUI: mode NPC Info 
-        self._order_ui.set_order(self.order)
         self._order_ui.set_npc_info(self.npc.name, self.npc.data.personality)
         self._order_ui.accepted = False
         self._order_ui.set_position(
@@ -232,20 +230,38 @@ class Cashier(Room):
 
     # Order handling
 
-    def acceptOrder(self, o: Order) -> Order:
-        print(f"[DEBUG Cashier] Order accepted: {o}")
+    def acceptOrder(self) -> None:
+        print(f"[DEBUG Cashier] Order accepted for {self.npc.name}")
 
-        self._state = _NPC_DIALOGUE
+        self._state = CashierState.DIALOGUE
 
-        entries = self.npc.get_dialogue()
+        # Phase 7: resolve mood + variant dari DialogueTracker
+        npc_id = self.npc.data.id
+        level = self.npc.get_affinity_level()
+        available_moods = self.npc.data.get_moods_for_level(level)
+
+        self._current_mood, self._current_variant = \
+            self.dialogue_tracker.resolve_next(
+                npc_id, level, available_moods,
+                lambda mood: self.npc.data.get_variants_for_level_mood(level, mood)
+            )
+
+        # Save mood ke tracker (untuk emoji nanti)
+        self.dialogue_tracker.set_mood(npc_id, self._current_mood)
+
+        # Get dialogue entries pakai mood + variant
+        entries = self.npc.get_dialogue(self._current_mood, self._current_variant)
+
+        print(f"[DEBUG Cashier] Dialogue: level_{level}, "
+              f"mood={self._current_mood}, variant={self._current_variant} "
+              f"({len(entries)} entries)")
+
         if entries:
             self.dialogue_manager.start(entries)
             self._show_current_dialogue()
         else:
-            print("[DEBUG Cashier] No dialogue, skip to CAKE_SELECT")
-            self._start_cake_select()                      
-
-        return o
+            print("[DEBUG Cashier] No dialogue for this combination, skip to CAKE_SELECT")
+            self._start_cake_select()
 
     def _show_current_dialogue(self) -> None:
         entry = self.dialogue_manager.get_current()
@@ -267,7 +283,16 @@ class Cashier(Room):
         if choice_result == -1:
             return
 
+        npc_id = self.npc.data.id
+
         if choice_result >= 0:
+            choices = self.dialogue_manager.get_current_choices()
+            if choice_result < len(choices):
+                choice_data = choices[choice_result]
+                set_next = choice_data.get("set_next")
+                if set_next:
+                    self.dialogue_tracker.set_next(npc_id, set_next)
+
             affinity_delta = self.dialogue_manager.advance(choice_result)
         else:
             affinity_delta = self.dialogue_manager.advance()
@@ -282,14 +307,14 @@ class Cashier(Room):
         if self.dialogue_manager.is_finished():
             print("[DEBUG Cashier] Dialogue finished")
             self.dialogue_box.hide()
-            self._start_cake_select()                       
+            self._start_cake_select()
         else:
             self._show_current_dialogue()
 
     # Cake Selection
 
     def _start_cake_select(self) -> None:
-        self._state = _NPC_CAKE_SELECT
+        self._state = CashierState.CAKE_SELECT
 
         self._cake_options = self.npc.generate_cake_options()
 
@@ -306,118 +331,116 @@ class Cashier(Room):
             return
 
         selected_order = self._cake_options[index]
-
-        # Set order NPC ke kue yang dipilih player
         self.npc.set_order(selected_order)
         self.order = selected_order
-
-        # Update OrderUI
         self._order_ui.set_order(self.order)
-
-        # Hide cake selection
         self.cake_selection.hide()
 
         print(f"[DEBUG Cashier] Player chose cake {index}: "
               f"{selected_order.flavor} + {selected_order.mold} + "
               f"{selected_order.decoration}")
 
-        # Hitung preference score (buat info debug)
         score = self.npc.calculate_preference_score(selected_order)
         print(f"[DEBUG Cashier] Preference score: {score}")
 
         self._start_order_active()
 
-    # Order Active 
+    # Order Active
 
     def _start_order_active(self) -> None:
-        self._state = _NPC_ORDER_ACTIVE
-        self._order_ui.show_order_details() 
+        self._state = CashierState.ORDER_ACTIVE
+        self._order_ui.show_order_details()
+
+        # Reset cake buat round baru
+        if self.cake:
+            self.cake.reset()
 
         if self._scene_manager:
             self._scene_manager.start_timer(Constant.TIMER_DURATION)
 
         print("[DEBUG Cashier] Timer started, order active")
 
-    def onCheckOrder(self, cake) -> None:
+    def check_cake(self) -> None:
+        """Cek kue yang sudah jadi. Dipanggil saat player balik ke Cashier.
+
+        Cake di-cek dari self.cake (shared objek dari Game.py).
+        """
+        if not self.cake:
+            print("[WARN Cashier] No Cake!")
+            return
+
+        if self.cake.is_complete():
+            self.onCheckOrder(self.cake)
+        else:
+            print(f"[WARN Cashier] Cake belum selesai! step={self.cake.step}")
+
+    def onCheckOrder(self, cake: Cake) -> None:
         if not self.order or not cake:
             return
 
-        self.cake = cake
-
-        # Cek apakah kue yang dibake cocok sama order 
-        correct_cake = (
-            cake.flavor == self.order.flavor
-            and cake.mold == self.order.mold
-            and cake.decoration == self.order.decoration
-        )
+        correct_cake = cake.matches_order(self.order)
 
         if self._scene_manager:
             self._scene_manager.stop_timer()
 
         self._order_ui.hide()
 
-        # Scoring berbasis preference
         if correct_cake:
-            # Kue bener! Preference score = per-attribute bonus
             pref_score = self.npc.calculate_preference_score(self.order)
-
-            # Minimum +1 (kue bener), + preference bonus per attribute
-            # pref_score: +1 per preferred, -1 per disliked
-            # Jadi kalau semua preferred: +3, kalau netral: 0, kalau disliked: negatif
             affinity_delta = 1 + pref_score
 
             if pref_score >= 2:
-                self.npc.showHappy(True)
+                self.npc.showHappy()
                 self._start_emoji_popup("happy")
                 print(f"[DEBUG Cashier] Great match! pref={pref_score}, delta={affinity_delta}")
             elif pref_score >= 1:
-                self.npc.showHappy(True)
+                self.npc.showHappy()
                 self._start_emoji_popup("happy")
                 print(f"[DEBUG Cashier] Good match! pref={pref_score}, delta={affinity_delta}")
             elif pref_score == 0:
-                self.npc.showHappy(True)
+                self.npc.showHappy()
                 self._start_emoji_popup("happy")
                 print(f"[DEBUG Cashier] OK match, neutral. pref={pref_score}, delta={affinity_delta}")
             else:
-                # Kue bener tapi isinya disliked
                 self.npc.expression = "neutral"
                 self._start_emoji_popup("angry")
                 print(f"[DEBUG Cashier] Correct but bad taste. pref={pref_score}, delta={affinity_delta}")
         else:
-            # Kue salah!
             affinity_delta = -2
-            self.npc.showAngry(False)
+            self.npc.showAngry()
             self._start_emoji_popup("angry")
             print(f"[DEBUG Cashier] Wrong cake! delta={affinity_delta}")
 
         self.result = correct_cake
         self.npc.change_affinity(affinity_delta)
-        self._state = _NPC_REACTING
+        self._state = CashierState.REACTING
+
+        # mood HANYA dari dialogue choices, bukan dari hasil kue
         self._auto_save()
 
         print(f"[DEBUG Cashier] Result: {correct_cake}, "
               f"affinity delta: {affinity_delta}, "
               f"total: {self.npc.affinity}")
-        
 
     def getResult(self) -> bool:
         return self.result
 
-    # Timer 
+    # Timer
 
     def on_timer_expired(self) -> None:
         print("[DEBUG Cashier] Timer expired!")
 
         self._npc_x = self._npc_target_x
-        self._state = _NPC_REACTING
+        self._state = CashierState.REACTING
 
         self._order_ui.hide()
         self.dialogue_box.hide()
         self.cake_selection.hide()
 
         self.npc.change_affinity(-2)
-        self.npc.showAngry(False)
+        self.npc.showAngry()
         self._start_emoji_popup("angry")
+        # Phase 7: timer expired gak set mood
         self._auto_save()
 
     # Emoji popup
@@ -433,15 +456,15 @@ class Cashier(Room):
 
         print(f"[DEBUG Cashier] Emoji popup started: {emoji_type}")
 
-    # Update 
+    # Update
 
     def update(self) -> None:
-        if self._state == _NPC_SLIDING_IN:
+        if self._state == CashierState.SLIDING_IN:
             self._npc_x += Constant.NPC_SLIDE_SPEED
             if self._npc_x >= self._npc_target_x:
                 self._npc_x = self._npc_target_x
-                self._state = _NPC_WAITING
-                self._order_ui.show_npc_info() 
+                self._state = CashierState.WAITING
+                self._order_ui.show_npc_info()
                 print("[DEBUG Cashier] NPC slide-in complete")
 
         if self._emoji_active and not self._emoji_done:
@@ -450,16 +473,16 @@ class Cashier(Room):
                 self._emoji_y = self._emoji_target_y
                 self._emoji_done = True
 
-        if self._state == _NPC_DIALOGUE:
+        if self._state == CashierState.DIALOGUE:
             self.dialogue_box.update()
 
-        if (self._state == _NPC_ORDER_ACTIVE
+        if (self._state == CashierState.ORDER_ACTIVE
                 and self._scene_manager):
             remaining = self._scene_manager.get_timer_remaining()
             secs = max(0, int(remaining))
             self._order_ui.set_timer_text(f"Time: {secs}s")
 
-    # Render 
+    # Render
 
     def render(self) -> None:
         if not self.screen:
@@ -471,13 +494,13 @@ class Cashier(Room):
         self._render_emoji()
         self._render_affinity()
 
-        if self._state == _NPC_DIALOGUE:
+        if self._state == CashierState.DIALOGUE:
             self.dialogue_box.render(self.screen)
 
-        if self._state == _NPC_CAKE_SELECT:                
+        if self._state == CashierState.CAKE_SELECT:
             self.cake_selection.render(self.screen)
 
-        if self._state == _NPC_REACTING and self._emoji_done:
+        if self._state == CashierState.REACTING and self._emoji_done:
             hint = self._get_cached_text("Click to continue...",
                                           Constant.COLOR_DARK_BROWN)
             self.screen.blit(hint,
@@ -493,7 +516,7 @@ class Cashier(Room):
             pygame.draw.rect(self.screen, (255, 235, 210), content)
 
     def _render_npc(self) -> None:
-        if not self.npc or self._state == _NPC_HIDDEN:
+        if not self.npc or self._state == CashierState.HIDDEN:
             return
 
         npc_x = int(self._npc_x)
@@ -545,7 +568,7 @@ class Cashier(Room):
             self.screen.blit(surf, surf.get_rect(center=emoji_rect.center))
 
     def _render_affinity(self) -> None:
-        if not self.npc or self._state == _NPC_HIDDEN:
+        if not self.npc or self._state == CashierState.HIDDEN:
             return
 
         bar_x = int(self._npc_x) + 10
@@ -554,7 +577,6 @@ class Cashier(Room):
         heart_size = Constant.AFFINITY_HEART_SIZE
         padding = 8
 
-        # Background panel 
         affinity_text = str(self.npc.affinity)
         affinity_surf = None
         if self._font_affinity:
@@ -574,7 +596,6 @@ class Cashier(Room):
         pygame.draw.rect(self.screen, Constant.COLOR_WARM_BROWN,
                           panel_rect, 2, border_radius=8)
 
-        # Heart image
         if self._heart_img:
             self.screen.blit(self._heart_img, (bar_x, bar_y))
         else:
@@ -583,34 +604,31 @@ class Cashier(Room):
             pygame.draw.circle(self.screen, Constant.COLOR_HEART_RED,
                                heart_rect.center, heart_size // 2 - 2)
 
-        # Angka affinity 
         if affinity_surf:
             self.screen.blit(affinity_surf,
                              (bar_x + heart_size + 8,
                               bar_y + (heart_size - affinity_surf.get_height()) // 2))
 
-    # Event handling 
+    # Event handling
 
     def handle_event(self, event) -> None:
-        # Cake Selection 
-        if self._state == _NPC_CAKE_SELECT:
+        if self._state == CashierState.CAKE_SELECT:
             result = self.cake_selection.handle_event(event)
             return
 
-        # Dialogue 
-        if self._state == _NPC_DIALOGUE:
+        if self._state == CashierState.DIALOGUE:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 result = self.dialogue_box.handle_event(event)
                 if result != -1:
                     self._on_dialogue_advance(result)
             return
 
-        if self._state == _NPC_WAITING:
+        if self._state == CashierState.WAITING:
             if self._order_ui.handle_event(event):
-                self.acceptOrder(self.order)
+                self.acceptOrder()
             return
 
-        if (self._state == _NPC_REACTING
+        if (self._state == CashierState.REACTING
                 and self._emoji_done
                 and event.type == pygame.MOUSEBUTTONDOWN
                 and event.button == 1):
@@ -631,18 +649,20 @@ class Cashier(Room):
         self.order = None
         self.cake = None
         self.result = False
-        self._cake_options = []                           
-        self._state = _NPC_HIDDEN
+        self._cake_options = []
+        self._state = CashierState.HIDDEN
         self._npc_x = -Constant.NPC_WIDTH
         self._emoji_active = False
         self._emoji_done = False
         self._emoji_type = ""
+        self._current_mood = "neutral"
+        self._current_variant = "a"
         self._order_ui.hide()
         self._order_ui.accepted = False
         self._order_ui.set_timer_text("")
         self.dialogue_box.hide()
         self.dialogue_manager.reset()
-        self.cake_selection.reset()                       
+        self.cake_selection.reset()
         self._clear_text_cache()
 
         self._current_bg = self._default_bg

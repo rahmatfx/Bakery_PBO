@@ -227,7 +227,6 @@ class CakeSelectionUI:
         return y
 
     def reset(self) -> None:
-        """Reset state buat round baru."""
         self._options = []
         self._hovered = -1
         self._selected = -1
