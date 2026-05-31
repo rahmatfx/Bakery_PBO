@@ -7,7 +7,7 @@ class DialogueBox:
     def __init__(self):
         self.visible: bool = False
 
-        # Fonts 
+        # fonts
         self.font_name = pygame.font.SysFont(Constant.FONT_NAME,
                                               Constant.FONT_BODY_SIZE)
         self.font_text = pygame.font.SysFont(Constant.FONT_NAME,
@@ -17,18 +17,18 @@ class DialogueBox:
         self.font_hint = pygame.font.SysFont(Constant.FONT_NAME,
                                               Constant.FONT_SMALL_SIZE)
 
-        # Panel dimensions
+        # panel
         self.panel_x = Constant.DIALOGUE_MARGIN_X
         self.panel_y = Constant.DIALOGUE_BOX_Y
         self.panel_w = Constant.SCREEN_WIDTH - (Constant.DIALOGUE_MARGIN_X * 2)
         self.panel_h = Constant.DIALOGUE_BOX_HEIGHT
 
-        # Typewriter state 
+        # typewriter
         self._full_text: str = ""
         self._displayed_chars: int = 0
         self._typewriter_done: bool = True
 
-        # Choice state
+        # choices
         self._choices: list[dict] = []
         self._choice_rects: list[pygame.Rect] = []
         self._hovered_choice: int = -1
@@ -36,7 +36,7 @@ class DialogueBox:
  
         self._npc_name: str = ""
 
-    # Public API
+    # public
 
     def show(self) -> None:
         self.visible = True
@@ -67,7 +67,6 @@ class DialogueBox:
         if not choices:
             return
 
-        # Posisi choices di tengah layar
         choice_w = Constant.CHOICE_CENTER_WIDTH
         choice_h = Constant.CHOICE_CENTER_HEIGHT
         spacing = Constant.CHOICE_CENTER_SPACING
@@ -88,17 +87,22 @@ class DialogueBox:
         self._displayed_chars = len(self._full_text)
         self._typewriter_done = True
 
-    # Update
+    # update
 
-    def update(self) -> None:
+    def update(self, delta_time: float = 0.0, audio=None) -> None:
         if not self.visible:
             return
 
         if not self._typewriter_done:
+            prev_chars = int(self._displayed_chars)
             self._displayed_chars += Constant.TYPEWRITER_SPEED
             if self._displayed_chars >= len(self._full_text):
                 self._displayed_chars = len(self._full_text)
                 self._typewriter_done = True
+
+            # typewriter sfx
+            if audio and int(self._displayed_chars) > prev_chars:
+                audio.play_type_tick(delta_time)
 
         mouse_pos = pygame.mouse.get_pos()
         self._hovered_choice = -1
@@ -107,18 +111,18 @@ class DialogueBox:
                 self._hovered_choice = i
                 break
 
-    # Render
+    # render
 
     def render(self, surface: pygame.Surface) -> None:
         if not self.visible:
             return
 
-        # Jika ada choices, tampilkan di tengah (overlay) saja
+        # choices overlay
         if self._show_choices and self._choices:
             self._render_choices_overlay(surface)
             return
 
-        # Dialogue box normal
+        # dialogue panel
         self._render_panel(surface)
         self._render_name_tag(surface)
         self._render_text(surface)
@@ -127,14 +131,14 @@ class DialogueBox:
             hint = self.font_hint.render("Click to continue...",
                                           True, Constant.COLOR_LIGHT_BROWN)
             surface.blit(hint,
-                         (self.panel_x + self.panel_w - 180,
-                          self.panel_y + self.panel_h - 28))
+                         (self.panel_x + self.panel_w - Constant.DIALOGUE_HINT_OFFSET_X,
+                          self.panel_y + self.panel_h - Constant.DIALOGUE_HINT_OFFSET_Y))
 
     def _render_panel(self, surface: pygame.Surface) -> None:
         panel_rect = pygame.Rect(self.panel_x, self.panel_y,
                                   self.panel_w, self.panel_h)
 
-        shadow = panel_rect.move(3, 3)
+        shadow = panel_rect.move(Constant.DIALOGUE_SHADOW_OFFSET, Constant.DIALOGUE_SHADOW_OFFSET)
         pygame.draw.rect(surface, (0, 0, 0), shadow, border_radius=12)
 
         pygame.draw.rect(surface, Constant.DIALOGUE_BG_COLOR,
@@ -148,7 +152,7 @@ class DialogueBox:
 
         name_surf = self.font_name.render(self._npc_name, True,
                                            Constant.COLOR_WHITE)
-        tag_w = name_surf.get_width() + 24
+        tag_w = name_surf.get_width() + Constant.DIALOGUE_NAME_TAG_INNER_PAD
         tag_h = Constant.DIALOGUE_NAME_TAG_HEIGHT
         tag_x = self.panel_x + Constant.DIALOGUE_PADDING
         tag_y = self.panel_y + Constant.DIALOGUE_PADDING
@@ -163,18 +167,18 @@ class DialogueBox:
                           border_top_left_radius=8,
                           border_top_right_radius=8)
 
-        surface.blit(name_surf, (tag_x + 12, tag_y + 4))
+        surface.blit(name_surf, (tag_x + Constant.DIALOGUE_NAME_TAG_PADDING_X, tag_y + Constant.DIALOGUE_NAME_TAG_PADDING_Y))
 
     def _render_text(self, surface: pygame.Surface) -> None:
         if not self._full_text:
             return
 
         visible_text = self._full_text[:self._displayed_chars]
-        text_x = self.panel_x + Constant.DIALOGUE_PADDING + 10
+        text_x = self.panel_x + Constant.DIALOGUE_PADDING + Constant.DIALOGUE_TEXT_EXTRA_OFFSET
         text_y = self.panel_y + Constant.DIALOGUE_PADDING + \
-                 Constant.DIALOGUE_NAME_TAG_HEIGHT + 10
+                 Constant.DIALOGUE_NAME_TAG_HEIGHT + Constant.DIALOGUE_TEXT_EXTRA_OFFSET
 
-        max_width = self.panel_w - Constant.DIALOGUE_PADDING * 2 - 20
+        max_width = self.panel_w - Constant.DIALOGUE_PADDING * 2 - Constant.DIALOGUE_TEXT_WIDTH_MARGIN
         words = visible_text.split(" ")
         lines = []
         current_line = ""
@@ -197,13 +201,11 @@ class DialogueBox:
             surface.blit(text_surf, (text_x, text_y + i * line_height))
 
     def _render_choices_overlay(self, surface: pygame.Surface) -> None:
-        # Semi-transparent overlay
         overlay = pygame.Surface((Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT),
                                   pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 120))
+        overlay.fill((0, 0, 0, Constant.DIALOGUE_CHOICE_OVERLAY_ALPHA))
         surface.blit(overlay, (0, 0))
 
-        # Choice buttons
         for i, choice in enumerate(self._choices):
             if i >= len(self._choice_rects):
                 break
@@ -211,11 +213,9 @@ class DialogueBox:
             rect = self._choice_rects[i]
             is_hovered = (i == self._hovered_choice)
 
-            # Shadow
-            shadow = rect.move(3, 3)
+            shadow = rect.move(Constant.DIALOGUE_SHADOW_OFFSET, Constant.DIALOGUE_SHADOW_OFFSET)
             pygame.draw.rect(surface, (0, 0, 0), shadow, border_radius=12)
 
-            # Background
             if is_hovered:
                 bg_color = Constant.COLOR_PINK_ACCENT
                 text_color = Constant.COLOR_WHITE
@@ -232,7 +232,7 @@ class DialogueBox:
             surface.blit(text_surf,
                          text_surf.get_rect(center=rect.center))
 
-    # Event handling 
+    # events
 
     def handle_event(self, event: pygame.event.Event) -> int:
         if not self.visible or event.type != pygame.MOUSEBUTTONDOWN:
@@ -244,7 +244,7 @@ class DialogueBox:
             self.skip_typewriter()
             return -1
 
-        # Kalau ada choices tapi belum ditampilkan, klik = tampilkan choices
+        # show choices
         if self._choices and not self._show_choices:
             self._show_choices = True
             return -1 

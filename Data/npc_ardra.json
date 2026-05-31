@@ -28,12 +28,16 @@
                             {
                                 "text": "Tentu saja! Selamat datang di Cozy Bakery!",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_0_n_a_3a",
                                 "set_next": "level_0.good.a"
                             },
                             {
                                 "text": "Silakan, ada menu di sebelah.",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_0_n_a_3b"
                             }
                         ]
@@ -62,12 +66,16 @@
                             {
                                 "text": "Pasti enak! Aku buat yang terbaik untukmu!",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_0_n_b_3a",
                                 "set_next": "level_0.good.a"
                             },
                             {
                                 "text": "Boleh, silakan pilih menunya.",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_0_n_b_3b"
                             }
                         ]
@@ -98,12 +106,16 @@
                             {
                                 "text": "Tentu! Senang kamu suka!",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_0_g_a_3a",
                                 "set_next": "level_0.good.b"
                             },
                             {
                                 "text": "Boleh, mau yang mana?",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_0_g_a_3b"
                             }
                         ]
@@ -132,12 +144,16 @@
                             {
                                 "text": "Tentu! Aku selalu senang kalau kamu datang!",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_0_g_b_3a",
                                 "set_next": "level_1.neutral.a"
                             },
                             {
                                 "text": "Yap, silakan pesan.",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_0_g_b_3b"
                             }
                         ]
@@ -168,12 +184,16 @@
                             {
                                 "text": "Maaf ya! Aku akan buat yang lebih baik kali ini!",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_0_b_a_3a",
                                 "set_next": "level_0.neutral.a"
                             },
                             {
                                 "text": "Oke, silakan pesan lagi.",
                                 "affinity": 0,
+                                "expression": "angry",
+                                "emoji": "angry",
                                 "next": "ardra_0_b_a_3b",
                                 "set_next": "level_0.bad.a"
                             }
@@ -207,12 +227,16 @@
                             {
                                 "text": "Senang mendengarnya! Mau pesan lagi?",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_1_n_a_3a",
                                 "set_next": "level_1.good.a"
                             },
                             {
                                 "text": "Iya, mau pesan apa hari ini?",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_1_n_a_3b"
                             }
                         ]
@@ -241,12 +265,16 @@
                             {
                                 "text": "Kamu memang langganan favorit! Hehe.",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_1_n_b_3a",
                                 "set_next": "level_1.good.a"
                             },
                             {
                                 "text": "Iya, silakan pesan yang mana saja.",
                                 "affinity": 0,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_1_n_b_3b"
                             }
                         ]
@@ -277,12 +305,16 @@
                             {
                                 "text": "Itu yang selalu aku usahakan! Mau yang mana hari ini?",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_1_g_a_3a",
                                 "set_next": "level_2.neutral.a"
                             },
                             {
                                 "text": "Terima kasih, semoga selalu begitu.",
                                 "affinity": 1,
+                                "expression": "happy",
+                                "emoji": null,
                                 "next": "ardra_1_g_a_3b"
                             }
                         ]
@@ -313,12 +345,16 @@
                             {
                                 "text": "Aku janji akan lebih baik! Ceritakan yang kamu mau.",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_1_b_a_3a",
                                 "set_next": "level_1.neutral.a"
                             },
                             {
                                 "text": "Oke, silakan coba lagi.",
                                 "affinity": 0,
+                                "expression": "angry",
+                                "emoji": "angry",
                                 "next": "ardra_1_b_a_3b",
                                 "set_next": "level_1.bad.a"
                             }
@@ -352,12 +388,16 @@
                             {
                                 "text": "Nenekmu pasti orang yang baik.",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_n_a_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
                                 "text": "Aku bisa buatkan kue seperti itu juga lho!",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_n_a_3b",
                                 "set_next": "level_2.good.b"
                             }
@@ -387,12 +427,16 @@
                             {
                                 "text": "Iya, ada makanan yang selalu ingatkan kita pada seseorang.",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_n_b_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
                                 "text": "Belum pernah, tapi kuenya di sini pasti bisa jadi kenangan barumu!",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_n_b_3b",
                                 "set_next": "level_2.good.b"
                             }
@@ -422,12 +466,16 @@
                             {
                                 "text": "Ini memang rumahmu! Selalu datang ya!",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_n_c_3a",
                                 "set_next": "level_2.good.b"
                             },
                             {
                                 "text": "Aku senang kamu merasa nyaman di sini.",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": null,
                                 "next": "ardra_2_n_c_3b"
                             }
                         ]
@@ -458,12 +506,16 @@
                             {
                                 "text": "Aku senang bisa buatmu tersenyum seperti nenekmu!",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_g_a_3a",
                                 "set_next": "level_2.good.b"
                             },
                             {
                                 "text": "Mau yang spesial hari ini?",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": null,
                                 "next": "ardra_2_g_a_3b",
                                 "set_next": "level_2.good.a"
                             }
@@ -493,12 +545,16 @@
                             {
                                 "text": "Itu hal terindah yang pernah aku dengar!",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_g_b_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
                                 "text": "Terima kasih... aku akan terus berusaha.",
                                 "affinity": 2,
+                                "expression": "happy",
+                                "emoji": null,
                                 "next": "ardra_2_g_b_3b"
                             }
                         ]
@@ -529,12 +585,16 @@
                             {
                                 "text": "Aku minta maaf... ceritakan tentang kue nenekmu, aku akan coba buat!",
                                 "affinity": 3,
+                                "expression": "happy",
+                                "emoji": "happy",
                                 "next": "ardra_2_b_a_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
                                 "text": "Aku mengerti rindumu. Mau coba lagi hari ini?",
                                 "affinity": 1,
+                                "expression": "neutral",
+                                "emoji": null,
                                 "next": "ardra_2_b_a_3b",
                                 "set_next": "level_2.neutral.a"
                             }
@@ -561,8 +621,8 @@
         "ending": 100
     },
     "assets": {
-        "sprite": "Assets/NPC/Ardra.png",
-        "emoji_happy": "Assets/NPC/Ardra_happy.png",
-        "emoji_angry": "Assets/NPC/Ardra_angry.png"
+        "sprite":        "Assets/NPC/Ardra.png",
+        "sprite_happy":  "Assets/NPC/Ardra_happy.png",
+        "sprite_angry":  "Assets/NPC/Ardra_angry.png"
     }
 }

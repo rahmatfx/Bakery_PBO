@@ -21,8 +21,9 @@ class NavButton(Button):
 
 class NavigationUI(Subject):
 
-    def __init__(self):
+    def __init__(self, audio=None):
         super().__init__()
+        self.audio = audio
         self.room: str = ""
         self.buttons: list[NavButton] = []
         self.timer_text: str = ""
@@ -93,6 +94,8 @@ class NavigationUI(Subject):
 
     def _on_button_click(self, room_name: str) -> None:
         print(f"[DEBUG NAV] Emitting 'room_change' event with room: {room_name}")
+        if self.audio:
+            self.audio.play_sfx("nav_click")
         self.notify("room_change", room_name)
 
     def get_room(self) -> str:
