@@ -54,6 +54,7 @@ class Cashier(Room):
 
         self._expression_set = ExpressionSet()
         self._emoji_popup = EmojiPopup()
+        self._npc_expression_sprites: dict[str, dict[str, pygame.Surface]] = {}
 
         self._order_ui = OrderUI()
 
@@ -99,6 +100,53 @@ class Cashier(Room):
 
         self._current_npc_img = npc_img if npc_img else self._default_npc
         self._sprite_cache[data.id] = self._current_npc_img
+
+    def _load_npc_expression_sprites(self, data: NPCData) -> None:
+        if data.id in self._npc_expression_sprites:
+            return  # sudah di-cache, skip
+
+        sprites: dict[str, pygame.Surface] = {}
+
+        # neutral — pakai sprite default
+        neutral_img = self._load_and_scale(
+            data.assets.get("sprite", ""),
+            Constant.NPC_WIDTH, Constant.NPC_HEIGHT
+        )
+        if neutral_img:
+            sprites["neutral"] = neutral_img
+
+        # happy — sprite saat expression = "happy"
+        happy_img = self._load_and_scale(
+            data.assets.get("sprite_happy", ""),
+            Constant.NPC_WIDTH, Constant.NPC_HEIGHT
+        )
+        if happy_img:
+            sprites["happy"] = happy_img
+
+        # angry — sprite saat expression = "angry"
+        angry_img = self._load_and_scale(
+            data.assets.get("sprite_angry", ""),
+            Constant.NPC_WIDTH, Constant.NPC_HEIGHT
+        )
+        if angry_img:
+            sprites["angry"] = angry_img
+
+        self._npc_expression_sprites[data.id] = sprites
+        loaded = list(sprites.keys())
+        print(f"[Cashier] Expression sprites '{data.id}': {loaded}")
+
+    def _get_expression_sprite(self) -> pygame.Surface | None:
+        if not self.npc:
+            return self._default_npc
+
+        npc_id = self.npc.data.id
+        expression = self.npc.expression  # "neutral" / "happy" / "angry"
+        sprites = self._npc_expression_sprites.get(npc_id, {})
+
+        return (sprites.get(expression)
+                or sprites.get("neutral")
+                or self._current_npc_img
+                or self._default_npc)
 
     def _get_cached_text(self, text: str, color: tuple) -> pygame.Surface:
         key = f"{text}_{color}"
@@ -162,8 +210,11 @@ class Cashier(Room):
             self.npc = NPC(fallback_data)
 
         self.order = None
+
+        # Load sprite default (neutral) → untuk fallback
         self._load_npc_sprite(self.npc.data)
-        self._expression_set.load_from_assets(self.npc.data.assets, self.npc.data.id)
+
+        self._load_npc_expression_sprites(self.npc.data)
 
         self._state = CashierState.SLIDING_IN
         self._npc_x = -Constant.NPC_WIDTH
@@ -228,12 +279,6 @@ class Cashier(Room):
         self.dialogue_box.show()
 
     def _on_dialogue_advance(self, choice_result: int) -> None:
-        """Dipanggil saat pemain klik dialogue box (linear) atau pilih choice.
-
-        Args:
-            choice_result: -2 = klik panel (linear advance), -1 = diabaikan,
-                           >= 0 = index choice yang dipilih.
-        """
         if choice_result == -1:
             return
 
@@ -258,11 +303,6 @@ class Cashier(Room):
             self._show_current_dialogue()
 
     def _apply_dialogue_result(self, result: AdvanceResult) -> None:
-        """Terapkan affinity delta, ekspresi NPC, dan emoji popup dari hasil advance.
-
-        Ini adalah single point of truth untuk semua perubahan visual
-        yang dipicu oleh dialogue choice.
-        """
         if result.affinity_delta != 0 and self.npc:
             self.npc.change_affinity(result.affinity_delta)
             print(f"[DEBUG Cashier] Dialogue affinity: "
@@ -277,19 +317,19 @@ class Cashier(Room):
             self._show_emoji_popup(result.emoji)
 
     def _apply_npc_expression(self, expression: str) -> None:
-        """Ubah ekspresi NPC dan jalankan animasi yang sesuai."""
         if expression == "happy":
-            self.npc.showHappy()
+            self.npc.showHappy()          # set self.npc.expression = "happy"
             self.animator.bounce("npc")
             if self.audio:
                 self.audio.play_sfx("affinity_up")
         elif expression == "angry":
-            self.npc.showAngry()
+            self.npc.showAngry()          # set self.npc.expression = "angry"
             self.animator.shake("npc")
         else:
             self.npc.expression = "neutral"
 
-        print(f"[DEBUG Cashier] NPC expression set to: {expression}")
+        print(f"[DEBUG Cashier] NPC expression → '{expression}' "
+              f"(sprite akan ganti di render)")
 
     # ── Cake Select ──
 
@@ -364,7 +404,6 @@ class Cashier(Room):
                 if self.audio:
                     self.audio.play_sfx("order_correct")
             else:
-                # Correct tapi tidak sesuai selera
                 self.npc.expression = "neutral"
                 self._show_emoji_popup("angry")
                 self.animator.shake("npc")
@@ -408,7 +447,7 @@ class Cashier(Room):
     # ── Emoji Popup ──
 
     def _show_emoji_popup(self, expression: str) -> None:
-        surface = self._expression_set.get_surface(expression)
+        surface = self._expression_set.get_surface(expression)   # global emoji
         fallback_text, fallback_color = self._expression_set.get_fallback(expression)
         center_x = int(self._npc_x) + Constant.NPC_WIDTH // 2
 
@@ -419,7 +458,7 @@ class Cashier(Room):
         if self.audio:
             self.audio.play_sfx("emoji_popup")
 
-        print(f"[DEBUG Cashier] Emoji popup: {expression}")
+        print(f"[DEBUG Cashier] Emoji popup: {expression} (global)")
 
     # ── Update ──
 
@@ -488,17 +527,20 @@ class Cashier(Room):
         npc_x = int(self._npc_x + dx)
         npc_y = int(Constant.NPC_Y + dy)
 
-        if self._current_npc_img:
+        npc_sprite = self._get_expression_sprite()
+
+        if npc_sprite:
             if scale != 1.0:
                 w = max(1, int(Constant.NPC_WIDTH * scale))
                 h = max(1, int(Constant.NPC_HEIGHT * scale))
-                scaled_img = pygame.transform.scale(self._current_npc_img, (w, h))
+                scaled_img = pygame.transform.scale(npc_sprite, (w, h))
                 offset_x = (Constant.NPC_WIDTH - w) // 2
                 offset_y = (Constant.NPC_HEIGHT - h) // 2
                 self.screen.blit(scaled_img, (npc_x + offset_x, npc_y + offset_y))
             else:
-                self.screen.blit(self._current_npc_img, (npc_x, npc_y))
+                self.screen.blit(npc_sprite, (npc_x, npc_y))
         else:
+            # Fallback kotak warna jika semua gambar tidak ada
             npc_rect = pygame.Rect(npc_x, npc_y, Constant.NPC_WIDTH, Constant.NPC_HEIGHT)
             shadow = npc_rect.move(Constant.SHADOW_OFFSET, Constant.SHADOW_OFFSET)
             pygame.draw.rect(self.screen, (0, 0, 0), shadow, border_radius=12)
