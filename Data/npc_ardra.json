@@ -343,10 +343,10 @@
                         "text": "Kemarin kuenya... kurang pas. Tapi aku masih mau datang ke sini...",
                         "choices": [
                             {
-                                "text": "Aku janji akan lebih baik! Ceritakan yang kamu mau.",
-                                "affinity": 2,
-                                "expression": "happy",
-                                "emoji": "happy",
+                                "text": "gak usah gitu lo, anak setan.",
+                                "affinity": -3,
+                                "expression": "sad",
+                                "emoji": "sad",
                                 "next": "ardra_1_b_a_3a",
                                 "set_next": "level_1.neutral.a"
                             },
@@ -620,9 +620,11 @@
         "level_3": 50,
         "ending": 100
     },
-    "assets": {
-        "sprite":        "Assets/NPC/Ardra.png",
-        "sprite_happy":  "Assets/NPC/Ardra_happy.png",
-        "sprite_angry":  "Assets/NPC/Ardra_angry.png"
+   "assets": {
+        "sprite": "Assets/NPC/Ardra.png",
+        "expressions": {
+            "happy":  "Assets/NPC/Ardra_happy.png",
+            "angry":  "Assets/NPC/Ardra_angry.png"
+        }
     }
 }

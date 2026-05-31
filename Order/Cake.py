@@ -9,7 +9,6 @@ class CakeStep(IntEnum):
     DECORATED  = 3   # Decoration Room selesai (topping sudah dipilih)
     COMPLETE   = 4   # Semua step selesai, siap dicek Cashier
 
-
 class Cake:
 
     def __init__(self):

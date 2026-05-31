@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
+
 @dataclass
 class NPCData:
-
     id: str
     name: str
     personality: str
@@ -23,8 +23,6 @@ class NPCData:
     def get_preferred_decorations(self) -> list[str]:
         return self.preferences.get("decorations", [])
 
-    # ── Dislike helpers ──
-
     def get_disliked_flavors(self) -> list[str]:
         return self.dislikes.get("flavors", [])
 
@@ -34,13 +32,26 @@ class NPCData:
     def get_disliked_decorations(self) -> list[str]:
         return self.dislikes.get("decorations", [])
 
-    # ── Dialogue helpers (mood + variant) ──
+    # ── Sprite helpers (GENERIC — supports ANY expression) ──
+
+    def get_sprite_path(self) -> str:
+        return self.assets.get("sprite", "")
+
+    def get_expression_sprite_path(self, expression: str) -> str:
+        """Get sprite path for ANY expression — reads from assets.expressions dict."""
+        expressions = self.assets.get("expressions", {})
+        return expressions.get(expression, "")
+
+    def get_all_expression_names(self) -> list[str]:
+        """Return list of all expression names defined for this NPC."""
+        return list(self.assets.get("expressions", {}).keys())
+
+    # ── Dialogue helpers ──
 
     def get_moods_for_level(self, level: int) -> list[str]:
         level_data = self.dialogues.get(f"level_{level}")
         if level_data is None:
             return []
-        # Backward compat: flat list = neutral
         if isinstance(level_data, list):
             return ["neutral"]
         if isinstance(level_data, dict):
@@ -51,7 +62,6 @@ class NPCData:
         level_data = self.dialogues.get(f"level_{level}")
         if level_data is None:
             return []
-        # Backward compat: flat list = neutral/a
         if isinstance(level_data, list):
             return ["a"] if mood == "neutral" else []
         if isinstance(level_data, dict):
@@ -66,7 +76,6 @@ class NPCData:
         level_data = self.dialogues.get(f"level_{level}")
         if level_data is None:
             return []
-        # Backward compat: flat list = neutral/a
         if isinstance(level_data, list):
             return level_data if mood == "neutral" and variant == "a" else []
         if isinstance(level_data, dict):
@@ -77,7 +86,6 @@ class NPCData:
                 return mood_data if variant == "a" else []
         return []
 
-    # Legacy — masih works, selalu neutral/a
     def get_dialogues_for_level(self, level: int) -> list[dict]:
         return self.get_dialogue_entries(level, "neutral", "a")
 
@@ -100,23 +108,6 @@ class NPCData:
 
     def get_ending_threshold(self) -> int:
         return self.affinity_thresholds.get("ending", -1)
-
-    # ── Asset helpers ──
-
-    def get_sprite_path(self) -> str:
-        return self.assets.get("sprite", "")
-
-    def get_sprite_happy_path(self) -> str:
-        return self.assets.get("sprite_happy", "")
-
-    def get_sprite_angry_path(self) -> str:
-        return self.assets.get("sprite_angry", "")
-
-    def get_emoji_happy_path(self) -> str:
-        return self.assets.get("emoji_happy", "")
-
-    def get_emoji_angry_path(self) -> str:
-        return self.assets.get("emoji_angry", "")
 
     def __str__(self) -> str:
         return (f"NPCData(id={self.id}, name={self.name}, "

@@ -56,6 +56,9 @@ class AudioManager:
         self.register_sfx("nav_click", Constant.SFX_NAV_CLICK)
         self.register_sfx("affinity_up", Constant.SFX_AFFINITY_UP)
         self.register_sfx("timer_urgent", Constant.SFX_TIMER_URGENT)
+        self.register_sfx("happy_sfx", Constant.HAPPY_SFX)
+        self.register_sfx("sad_sfx", Constant.SAD_SFX)
+        self.register_sfx("angry_sfx", Constant.ANGRY_SFX)
 
     # ── BGM ──
 

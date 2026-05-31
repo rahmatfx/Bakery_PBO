@@ -1,10 +1,9 @@
 class DialogueTracker:
 
     def __init__(self):
-        self._next_dialogue: dict[str, str] = {}   # npc_id → "level_X.mood.variant"
-        self._current_mood: dict[str, str] = {}     # npc_id → mood
-        self._seen_variants: dict[str, set] = {}    # "npc_level_mood" → set of seen variants
-
+        self._next_dialogue: dict[str, str] = {}  
+        self._current_mood: dict[str, str] = {}    
+        self._seen_variants: dict[str, set] = {}   
     def set_next(self, npc_id: str, path: str) -> None:
         self._next_dialogue[npc_id] = path
 
@@ -17,7 +16,7 @@ class DialogueTracker:
     def resolve_next(self, npc_id: str, level: int,
                      available_moods: list[str],
                      get_variants_fn) -> tuple[str, str]:
-        # 1. Kalau ada set_next dari dialogue choice sebelumnya
+        # Kalau ada set_next dari dialogue choice sebelumnya
         if npc_id in self._next_dialogue:
             path = self._next_dialogue.pop(npc_id)
             parts = path.split(".")
@@ -27,7 +26,7 @@ class DialogueTracker:
                 self._mark_seen(npc_id, level, mood, variant)
                 return mood, variant
 
-        # 2. Persist mood + cycle variant
+        # Persist mood + cycle variant
         current_mood = self._current_mood.get(npc_id, "neutral")
         if current_mood not in available_moods and available_moods:
             current_mood = available_moods[0]
