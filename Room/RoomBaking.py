@@ -1,6 +1,6 @@
 import pygame, os, sys
 from Room.Room import Room
-from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY
+from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY, NAMPAN_IMAGE
 
 class BakingRoom(Room):
     def __init__(self):
@@ -34,12 +34,21 @@ class BakingRoom(Room):
         self.isBaked = False
         self.cake_image = None
         self.isReadyToTake = False
+        self.nampan_image = None
+        self.isInNampan = False
     
 
     def enter(self):
         if os.path.exists(BAKING_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(BAKING_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        
+        if os.path.exists(NAMPAN_IMAGE):
+            img = pygame.image.load(NAMPAN_IMAGE).convert_alpha()
+            original_width, original_height = img.get_size()
+            new_width = 150
+            new_height = int(original_height * (new_width / original_width))
+            self.nampan_image = pygame.transform.smoothscale(img, (new_width, new_height))
             
         if os.path.exists(ADONAN_TEMPORARY):
             img = pygame.image.load(ADONAN_TEMPORARY).convert_alpha()
@@ -94,7 +103,7 @@ class BakingRoom(Room):
         
         self._button_bake_rect = pygame.Rect(910, 340, 50, 50)
 
-        self.rect_posAwalDough = pygame.Rect(250, 300, 50, 50)
+        self.rect_posAwalDough = pygame.Rect(250, 280, 50, 50)
 
         self.rect_posOvenDough = pygame.Rect(710, 600, 50, 50)
 
@@ -143,7 +152,10 @@ class BakingRoom(Room):
             if event.button == 1:
                 self.isDragging = False
                 if not (self._oven_isOpen and self._adonan_rect.colliderect(self._oven_rect)):
-                    self._adonan_rect.center = self.rect_posAwalDough.center 
+                    self._adonan_rect.center = self.rect_posAwalDough.center
+                    if self.isReadyToTake:
+                        self.isInNampan = True
+                        print("Kue Masuk Nampan") 
                 if (self._oven_isOpen and self._adonan_rect.colliderect(self._oven_rect)):
                     self._adonan_rect.center = self.rect_posOvenDough.center 
         
@@ -185,6 +197,10 @@ class BakingRoom(Room):
 
         if self._oven_bake_image and self.bakeDough:
             self.screen.blit(self._oven_bake_image, self._oven_size)
+        
+        if self.nampan_image:
+            self.nampan_image = pygame.transform.scale(self.nampan_image, (300,410))
+            self.screen.blit(self.nampan_image, (120,120))
 
         if not self._doughInOven and self.isBaked and self.cake_image:
             self.screen.blit(self.cake_image, self._adonan_rect)
