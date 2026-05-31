@@ -1,5 +1,6 @@
 import pygame, os
 from Room.Room import Room
+from Order.Cake import Cake
 from UI.Button import Button
 from Constant import (
     SCREEN_WIDTH, 
@@ -20,7 +21,16 @@ from Constant import (
     oreo_hover_IMAGE,
     sprinkles_decor_IMAGE,
     sprinkles_hover_IMAGE,
-    CAKE_TEMPORARY)
+    berriesTop,
+    creamTop,
+    oreoTop,
+    sprinklesHeart,
+    sprinklesStar,
+    sprinklesRound,
+    chocoHeart,
+    chocoStar,
+    chocoRound
+    )
 
 class DecorButton(Button):
     def __init__(self, x, y, *args, **kwargs):
@@ -72,45 +82,43 @@ class Decoration(Room):
         self.isDecorated = False
         self.cakeImg = None
         self.cakeRect = None
+        self.topping = None        # stores the name e.g. "berries"
+        self.toppingImage = None   # stores the surface to blit
+        self.toppingImages = {}    # all loaded topping surfaces, filled in enter()
 
         self.berries = DecorButton(
             x=345,
             y=550,
             image_path=berries_decor_IMAGE,
-            hover_image_path=berries_hover_IMAGE,
-            # callback=self.spawn_original
+            hover_image_path=berries_hover_IMAGE
         )
 
         self.sprinkles = DecorButton(
             x=225,
             y=600,
             image_path=sprinkles_decor_IMAGE,
-            hover_image_path=sprinkles_hover_IMAGE,
-            # callback=self.spawn_original
+            hover_image_path=sprinkles_hover_IMAGE
         )
 
         self.chocochip = DecorButton(
             x=800,
             y=560,
             image_path=chocochip_decor_IMAGE,
-            hover_image_path=chocochip_hover_IMAGE,
-            # callback=self.spawn_original
+            hover_image_path=chocochip_hover_IMAGE
         )
 
         self.cream = DecorButton(
             x=975,
             y=550,
             image_path=cream_decor_IMAGE,
-            hover_image_path=cream_hover_IMAGE,
-            # callback=self.spawn_original
+            hover_image_path=cream_hover_IMAGE
         )
 
         self.oreo = DecorButton(
             x=905,
             y=620,
             image_path=oreo_decor_IMAGE,
-            hover_image_path=oreo_hover_IMAGE,
-            # callback=self.spawn_original
+            hover_image_path=oreo_hover_IMAGE
         )
 
         self.berries.image = pygame.transform.smoothscale(self.berries.image, (130, 125))
@@ -134,6 +142,27 @@ class Decoration(Room):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+        # load all topping images into the dictionary
+        topping_paths = {
+            "berries":        berriesTop,
+            "cream":          creamTop,
+            "oreo":           oreoTop,
+            "sprinkles_heart": sprinklesHeart,
+            "sprinkles_star":  sprinklesStar,
+            "sprinkles_round": sprinklesRound,
+            "choco_heart":    chocoHeart,
+            "choco_star":     chocoStar,
+            "choco_round":    chocoRound,
+        }
+
+        for key, path in topping_paths.items():
+            if os.path.exists(path):
+                img = pygame.image.load(path).convert_alpha()
+                w, h = img.get_size()
+                new_w = 150
+                new_h = int(h * (new_w / w))
+                self.toppingImages[key] = pygame.transform.smoothscale(img, (new_w, new_h))
+
 
     def update(self): 
         mouse_pos = pygame.mouse.get_pos()
@@ -145,6 +174,7 @@ class Decoration(Room):
 
     def exit(self): pass
 
+
     def render(self):
         if not self.screen: return
         if self._bg_image:
@@ -155,9 +185,38 @@ class Decoration(Room):
             self.chocochip.render(self.screen)
             self.cream.render(self.screen)
             self.oreo.render(self.screen)
+
+            # render topping on top of cake
+            if self.toppingImage:
+                # fixed for now — swap (SCREEN_WIDTH//2, SCREEN_HEIGHT//2) for cakeRect.center later
+                topping_rect = self.toppingImage.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+                self.screen.blit(self.toppingImage, topping_rect)
         else:
             self.screen.fill(COLOR_BG_CREAM)
             t = self._font_heading.render("~ Decoration ~", True, COLOR_DARK_BROWN)
             self.screen.blit(t, t.get_rect(centerx=SCREEN_WIDTH//2, centery=SCREEN_HEIGHT//3))
 
-    def handle_event(self, event): pass
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            
+            if self.berries.rect.collidepoint(event.pos):
+                self.topping = "berries"
+                self.toppingImage = self.toppingImages["berries"]
+
+            elif self.sprinkles.rect.collidepoint(event.pos):
+                self.topping = "sprinkles"
+                # placeholder — will use cake shape later
+                self.toppingImage = self.toppingImages["sprinkles_heart"]
+
+            elif self.chocochip.rect.collidepoint(event.pos):
+                self.topping = "chocochip"
+                # placeholder — will use cake shape later
+                self.toppingImage = self.toppingImages["choco_heart"]
+
+            elif self.cream.rect.collidepoint(event.pos):
+                self.topping = "cream"
+                self.toppingImage = self.toppingImages["cream"]
+
+            elif self.oreo.rect.collidepoint(event.pos):
+                self.topping = "oreo"
+                self.toppingImage = self.toppingImages["oreo"]
