@@ -621,8 +621,8 @@
         "ending": 100
     },
     "assets": {
-        "sprite": "Assets/NPC/Ardra.png",
-        "emoji_happy": "Assets/NPC/Ardra_happy.png",
-        "emoji_angry": "Assets/NPC/Ardra_angry.png"
+        "sprite":        "Assets/NPC/Ardra.png",
+        "sprite_happy":  "Assets/NPC/Ardra_happy.png",
+        "sprite_angry":  "Assets/NPC/Ardra_angry.png"
     }
 }
