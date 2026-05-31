@@ -10,6 +10,7 @@ from UI.OrderUI import OrderUI
 from UI.DialogueBox import DialogueBox
 from UI.CakeSelectionUI import CakeSelectionUI
 from Order.Order import Order
+from Order.Cake import Cake, CakeStep
 from Enum.CashierState import CashierState
 import Constant
 
@@ -29,7 +30,7 @@ class Cashier(Room):
         # NPC & Order state
         self.npc: NPC = None
         self.order: Order = None
-        self.cake = None
+        # Note: self.cake di-inject dari Game.py (shared Cake object)
         self.result: bool = False
         self._cake_options: list = []
 
@@ -350,22 +351,34 @@ class Cashier(Room):
         self._state = CashierState.ORDER_ACTIVE
         self._order_ui.show_order_details()
 
+        # Reset cake buat round baru
+        if self.cake:
+            self.cake.reset()
+
         if self._scene_manager:
             self._scene_manager.start_timer(Constant.TIMER_DURATION)
 
         print("[DEBUG Cashier] Timer started, order active")
 
-    def onCheckOrder(self, cake) -> None:
+    def check_cake(self) -> None:
+        """Cek kue yang sudah jadi. Dipanggil saat player balik ke Cashier.
+
+        Cake di-cek dari self.cake (shared objek dari Game.py).
+        """
+        if not self.cake:
+            print("[WARN Cashier] No Cake!")
+            return
+
+        if self.cake.is_complete():
+            self.onCheckOrder(self.cake)
+        else:
+            print(f"[WARN Cashier] Cake belum selesai! step={self.cake.step}")
+
+    def onCheckOrder(self, cake: Cake) -> None:
         if not self.order or not cake:
             return
 
-        self.cake = cake
-
-        correct_cake = (
-            cake.flavor == self.order.flavor
-            and cake.mold == self.order.mold
-            and cake.decoration == self.order.decoration
-        )
+        correct_cake = cake.matches_order(self.order)
 
         if self._scene_manager:
             self._scene_manager.stop_timer()

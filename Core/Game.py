@@ -5,6 +5,7 @@ from Core.SceneManager import SceneManager
 from Core.MainMenu import MainMenu
 from Core.SaveManager import SaveManager
 from Core.DialogueTracker import DialogueTracker
+from Order.Cake import Cake
 from Room.Cashier import Cashier
 from Room.Decoration import Decoration
 from Room.RoomBaking import BakingRoom
@@ -38,6 +39,9 @@ class Game:
 
         self.scene_manager = SceneManager(self.screen)
 
+        # Shared Cake — satu objek yang dipakai semua room
+        self.cake = Cake()
+
         # Rooms
         main_menu = MainMenu()
         cashier = Cashier(self.npc_registry, self.save_manager,
@@ -51,6 +55,12 @@ class Game:
         dekorasi.screen = self.screen
         baking.screen = self.screen
         dough.screen = self.screen
+
+        # Inject Cake ke semua room
+        cashier.cake = self.cake
+        dough.cake = self.cake
+        baking.cake = self.cake
+        dekorasi.cake = self.cake
 
         self.scene_manager.room_cashier = cashier
         self.scene_manager.room_decoration = dekorasi
@@ -97,7 +107,7 @@ class Game:
     def _save_on_exit(self) -> None:
         affinity = self.npc_registry.get_all_affinity()
         self.save_manager.save_affinity(affinity)
-        # Phase 7: save dialogue tracker
+        # save dialogue tracker
         tracker_data = self.dialogue_tracker.get_save_data()
         self.save_manager.save_dialogue_tracker(tracker_data)
         print("[Game] Save on exit complete")

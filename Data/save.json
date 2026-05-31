@@ -3,14 +3,15 @@
         "ardra": 1
     },
     "dialogue_tracker": {
-        "next_dialogue": {
-            "ardra": "level_0.good.a"
-        },
+        "next_dialogue": {},
         "current_mood": {
-            "ardra": "neutral"
+            "ardra": "good"
         },
         "seen_variants": {
             "ardra_0_neutral": [
+                "a"
+            ],
+            "ardra_0_good": [
                 "a"
             ]
         }
