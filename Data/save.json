@@ -9,7 +9,6 @@
             "lucy": "level_1.neutral.a"
         },
         "current_mood": {
-            "ardra": "neutral",
             "lucy": "neutral"
         },
         "seen_variants": {
@@ -34,22 +33,6 @@
             ],
             "lucy_0_neutral": [
                 "b",
-                "a"
-            ],
-            "lucy_0_good": [
-                "b",
-                "a"
-            ],
-            "lucy_0_bad": [
-                "a"
-            ],
-            "lucy_1_bad": [
-                "a"
-            ],
-            "lucy_3_bad": [
-                "a"
-            ],
-            "lucy_3_neutral": [
                 "a"
             ]
         }
