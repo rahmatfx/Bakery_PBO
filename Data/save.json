@@ -1,7 +1,7 @@
 {
     "affinity": {
         "ardra": 300,
-        "lucy": 358
+        "lucy": 388
     },
     "dialogue_tracker": {
         "next_dialogue": {
@@ -13,12 +13,12 @@
         },
         "seen_variants": {
             "ardra_0_neutral": [
-                "b",
-                "a"
+                "a",
+                "b"
             ],
             "ardra_0_good": [
-                "b",
-                "a"
+                "a",
+                "b"
             ],
             "ardra_1_good": [
                 "a"
@@ -36,8 +36,8 @@
                 "a"
             ],
             "lucy_0_good": [
-                "b",
-                "a"
+                "a",
+                "b"
             ],
             "lucy_0_bad": [
                 "a"
