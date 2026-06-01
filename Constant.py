@@ -29,18 +29,19 @@ BGM_BAKING     = os.path.join(BGM_DIR, "baking.ogg")
 BGM_DECORATION = os.path.join(BGM_DIR, "decoration.ogg")
 
 # SFX files
-SFX_DIALOGUE_TYPE  = os.path.join(SFX_DIR, "dialogue_type.ogg")
-SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.ogg")
-SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.ogg")
-SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.ogg")
-SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.ogg")
-SFX_ORDER_WRONG = os.path.join(SFX_DIR, "order_wrong.ogg")
-SFX_NAV_CLICK = os.path.join(SFX_DIR, "nav_click.ogg")
-SFX_AFFINITY_UP  = os.path.join(SFX_DIR, "affinity_up.ogg")
-SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.ogg")
-ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.ogg")
-SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.ogg")
-HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.ogg")
+SFX_DIALOGUE_TYPE  = os.path.join(SFX_DIR, "dialogue_type.mp3") #
+SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.mp3")#
+SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.mp3")#
+SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.mp3")#
+SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.mp3")#
+SFX_ORDER_WRONG = os.path.join(SFX_DIR, "order_wrong.mp3")#
+SFX_NAV_CLICK = os.path.join(SFX_DIR, "nav_click.mp3")
+SFX_AFFINITY_UP  = os.path.join(SFX_DIR, "affinity_up.mp3")#
+SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.mp3")#
+ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.mp3")#
+SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.mp3")
+HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.mp3")#
+
 BAKA   = os.path.join(SFX_DIR, "baka.mp3")
 
 # Animation
@@ -130,6 +131,18 @@ OVEN_BAKE_IMAGE  = os.path.join(ASSETS_DIR, "OvenMemanggang.png")
 ADONAN_TEMPORARY = os.path.join(ASSETS_DIR, "AdonanTemp.png")
 CAKE_TEMPORARY = os.path.join(ASSETS_DIR, "Cake.png")
 NAMPAN_IMAGE = os.path.join(ASSETS_DIR, "Nampan.png")
+CAKE_STRAWBERRY_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Stroberi.png")
+CAKE_STRAWBERRY_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Stroberi.png")
+CAKE_STRAWBERRY_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Stroberi.png")
+
+CAKE_ORIGINAL_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Original.png")
+CAKE_ORIGINAL_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Original.png")
+CAKE_ORIGINAL_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Original.png")
+
+CAKE_CHOCOLATE_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Coklat.png")
+CAKE_CHOCOLATE_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Coklat.png")
+CAKE_CHOCOLATE_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Coklat.png")
+
 
 # Navigation Bar 
 NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_br_bg.png")
@@ -310,3 +323,101 @@ ORDER_UI_TIMER_OFFSET_Y = 16
 
 ENDING_NPC_X = SCREEN_WIDTH // 2 - NPC_WIDTH // 2   
 ENDING_NPC_Y = SCREEN_HEIGHT - NPC_HEIGHT - 200
+
+MG_PROMPT_COOLDOWN   = 10.0
+MG_PROMPT_DURATION   = 5.0
+MG_PROMPT_WIDTH      = 185
+MG_PROMPT_HEIGHT     = 78
+MG_AFFINITY_BONUS    = 1
+MG_TIMER_BONUS       = 5.0
+MG_MAX_PROMPTS       = 4
+MG_PROMPT_OPTIONS    = [
+    "Ngobrol?",
+    "Cobain Sample?",
+    "Cerita Dikit?",
+    "Minta Pendapat?",
+]
+
+DATE_EVENT_NPC_ID    = "lucy"
+DATE_EVENT_MIN_LEVEL = 2
+
+# Date Cutscene Visual 
+DATE_CUTSCENE_BG       = os.path.join(ASSETS_DIR, "Event", "BG_Event.png")
+DATE_CUTSCENE_NPC      = os.path.join(ASSETS_DIR, "Event", "NPC_Event.png")
+DATE_CUTSCENE_NPC_W    = 320
+DATE_CUTSCENE_NPC_H    = 450
+DATE_CUTSCENE_NPC_X    = SCREEN_WIDTH // 2 - 150
+DATE_CUTSCENE_NPC_Y    = 60
+
+# Date Room — Walking Sprites 
+DATE_ROOM_NPC_IMG      = os.path.join(ASSETS_DIR, "Event", "NPC_Date.png")
+DATE_ROOM_MC_IMG       = os.path.join(ASSETS_DIR, "Event", "MC_Date.png")
+DATE_ROOM_NPC_W        = 200
+DATE_ROOM_NPC_H        = 275
+DATE_ROOM_NPC_X        = 460
+DATE_ROOM_NPC_Y        = 320
+DATE_ROOM_MC_W         = 200
+DATE_ROOM_MC_H         = 275
+DATE_ROOM_MC_X         = 340
+DATE_ROOM_MC_Y         = 300
+DATE_ROOM_BOB_AMOUNT   = 5
+
+# Date Room — Parallax Walking Scene 
+DATE_ROOM_BG          = os.path.join(ASSETS_DIR, "Event", "background.jpeg")
+DATE_ROOM_CLOUD_IMG   = os.path.join(ASSETS_DIR, "Event", "cloud.png")
+DATE_ROOM_CLOUD_W     = 300
+DATE_ROOM_CLOUD_H     = 80
+DATE_ROOM_CLOUD_Y     = 140
+DATE_ROOM_CLOUD_SPEED = 0.15
+
+DATE_ROOM_TREE_IMG     = os.path.join(ASSETS_DIR, "Event", "tree.png")
+DATE_ROOM_TREE_W       = 200
+DATE_ROOM_TREE_H       = 400
+DATE_ROOM_TREE_GAP     = 60
+DATE_ROOM_TREE_Y       = 80
+DATE_ROOM_TREE_SPEED   = 0.4
+
+DATE_ROOM_FLOWER_IMG   = os.path.join(ASSETS_DIR, "Event", "flower.png")
+DATE_ROOM_FLOWER_W     = 90
+DATE_ROOM_FLOWER_H     = 80
+DATE_ROOM_FLOWER_GAP   = 40
+DATE_ROOM_FLOWER_Y     = 400
+DATE_ROOM_FLOWER_SPEED = 1.0       
+
+DATE_ROOM_BUSH_IMG     = os.path.join(ASSETS_DIR, "Event", "bush.png")
+DATE_ROOM_BUSH_W       = 180
+DATE_ROOM_BUSH_H       = 140
+DATE_ROOM_BUSH_Y       = 550       
+DATE_ROOM_BUSH_SPEED   = 1.0       
+DATE_ROOM_BUSH_GAP     = 50
+
+# ── Date Room — Spot Backgrounds (full scene saat AT_SPOT) 
+DATE_ROOM_TAMAN_BG     = os.path.join(ASSETS_DIR, "Event", "taman.png")
+DATE_ROOM_STALL_BG     = os.path.join(ASSETS_DIR, "Event", "stall.png")
+DATE_ROOM_DANAU_BG     = os.path.join(ASSETS_DIR, "Event", "danau.png")
+DATE_ROOM_SUNSET_BG    = os.path.join(ASSETS_DIR, "Event", "sunset_bg.png")
+
+# ── Date Room — Spot NPC Images (full image per spot)
+DATE_ROOM_TAMAN_NPC     = os.path.join(ASSETS_DIR, "Event", "npc_taman.png")
+DATE_ROOM_TAMAN_NPC_W   = 350
+DATE_ROOM_TAMAN_NPC_H   = 500
+DATE_ROOM_TAMAN_NPC_X   = SCREEN_WIDTH // 2 - 175
+DATE_ROOM_TAMAN_NPC_Y   = 120
+
+DATE_ROOM_STALL_NPC     = os.path.join(ASSETS_DIR, "Event", "npc_stall.png")
+DATE_ROOM_STALL_NPC_W   = 350
+DATE_ROOM_STALL_NPC_H   = 500
+DATE_ROOM_STALL_NPC_X   = SCREEN_WIDTH // 2 - 175
+DATE_ROOM_STALL_NPC_Y   = 120
+
+DATE_ROOM_DANAU_NPC     = os.path.join(ASSETS_DIR, "Event", "npc_danau.png")
+DATE_ROOM_DANAU_NPC_W   = 350
+DATE_ROOM_DANAU_NPC_H   = 500
+DATE_ROOM_DANAU_NPC_X   = SCREEN_WIDTH // 2 - 175
+DATE_ROOM_DANAU_NPC_Y   = 120
+
+DATE_ROOM_SUNSET_NPC    = os.path.join(ASSETS_DIR, "Event", "npc_sunset.png")
+DATE_ROOM_SUNSET_NPC_W  = 350
+DATE_ROOM_SUNSET_NPC_H  = 500
+DATE_ROOM_SUNSET_NPC_X  = SCREEN_WIDTH // 2 - 175
+DATE_ROOM_SUNSET_NPC_Y  = 120

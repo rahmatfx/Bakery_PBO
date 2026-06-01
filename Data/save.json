@@ -14,5 +14,8 @@
                 "a"
             ]
         }
+    },
+    "date_events": {
+        "lucy:2": true
     }
 }

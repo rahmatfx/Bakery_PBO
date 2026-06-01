@@ -1,0 +1,575 @@
+{
+    "id": "mimo",
+    "name": "Mimo",
+    "personality": "Cantik, imut, pemalu, perhatian",
+    "preferences": {
+        "flavors": ["Chocolate", "Original"],
+        "molds": ["Star", "Round"],
+        "decorations": ["Dried Fruit", "Whipcream"]
+    },
+    "dislikes": {
+        "flavors": ["Strawberry"],
+        "molds": ["Heart"],
+        "decorations": ["Oreo", "Sprinkle"]
+    },
+    "dialogues": {
+        "level_0": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "mimo_0_n_a_1",
+                        "text": "Permisi... Halo! Tokonya harum banget, aku mau lihat-lihat kue di sini dong.",
+                        "next": "mimo_0_n_a_2"
+                    },
+                    {
+                        "id": "mimo_0_n_a_2",
+                        "text": "Kira-kira kue yang paling recommended buat orang yang lagi banyak pikiran apa ya, Kak?",
+                        "choices": [
+                            {
+                                "text": "Hmm... kalau boleh tahu, kuenya mau dimakan sendiri atau buat hadiah?",
+                                "affinity": 3,
+                                "expression": "neutral",
+                                "emoji": "curious",
+                                "next": "mimo_0_n_a_3a"
+                            },
+                            {
+                                "text": "Tergantung selera sih. Lihat aja sendiri di etalase, lengkap kok.",
+                                "affinity": -10,
+                                "expression": "kecewa",
+                                "emoji": "sigh",
+                                "next": "mimo_0_n_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_0_n_a_3a",
+                        "text": "Mau aku makan sendiri sih, seharian ini capek banget sama urusan kampus. Pengen yang manis.",
+                        "choices": [
+                            {
+                                "text": "Siap, paham banget rasanya! Akan kubuatkan kue Cokelat Spesial biar harimu langsung cerah.",
+                                "affinity": 5,
+                                "expression": "happy",
+                                "emoji": "happy",
+                                "next": "mimo_0_n_a_4aa",
+                                "set_next": "level_0.good.a"
+                            },
+                            {
+                                "text": "Oh, anak kuliahan ya. Pesen aja rasa Original, itu lumayan standar.",
+                                "affinity": 1,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "mimo_0_n_a_4ab",
+                                "set_next": "level_0.neutral.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_0_n_a_4aa",
+                        "text": "Wah, beneran? Makasih banyak ya! Kamu peka banget, jadi gak sabar nunggu kuenya.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_0_n_a_4ab",
+                        "text": "Hmm, ya udah deh, aku coba yang Original aja dulu satu.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_0_n_a_3b",
+                        "text": "(Ih... jutek banget sih penjualnya. Padahal kan aku baru pertama kali ke sini...)",
+                        "next": "mimo_0_n_a_3b_end"
+                    },
+                    {
+                        "id": "mimo_0_n_a_3b_end",
+                        "text": "Nggak jadi deh, Kak. Maaf ya ganggu waktunya.",
+                        "next": null,
+                        "set_next": "level_0.bad.a"
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "mimo_0_n_b_1",
+                        "text": "Halo lagi... Aku balik lagi nih. Kue Original kemarin ternyata enak juga, teksturnya lembut.",
+                        "next": "mimo_0_n_b_2"
+                    },
+                    {
+                        "id": "mimo_0_n_b_2",
+                        "text": "Hari ini aku pengen coba menu lain deh. Ada saran gak yang bentuknya lucu?",
+                        "choices": [
+                            {
+                                "text": "Gimana kalau cetakan bentuk Bintang dengan hiasan Dried Fruit? Cantik kayak kamu.",
+                                "affinity": 8,
+                                "expression": "happy",
+                                "emoji": "blush",
+                                "next": "mimo_0_n_b_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Ada bentuk bulat biasa kok. Mau ditambah whipcream?",
+                                "affinity": 4,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "mimo_0_n_b_3b",
+                                "set_next": "level_0.good.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_0_n_b_3a",
+                        "text": "E-eh? Gombal ya... Tapi makasih, aku suka idenya! Tolong buatkan bentuk Bintang ya.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_0_n_b_3b",
+                        "text": "Boleh deh, yang bulat pakai whipcream ya. Makasih infonya.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "mimo_0_g_a_1",
+                        "text": "Hai! Kue cokelat kemarin beneran jadi moodbooster aku lho! Kamu jago banget bikinnya.",
+                        "next": "mimo_0_g_a_2"
+                    },
+                    {
+                        "id": "mimo_0_g_a_2",
+                        "text": "Hari ini aku sengaja mampir lagi sebelum pulang. Toko kamu beneran bikin nyaman.",
+                        "choices": [
+                            {
+                                "text": "Pasti dong! Pintu toko ini selalu terbuka lebar khusus buat pelanggan seistimewa kamu.",
+                                "affinity": 8,
+                                "expression": "happy",
+                                "emoji": "smile",
+                                "next": "mimo_0_g_a_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Syukurlah kalau suka. Kebetulan bahannya lagi fresh semua hari ini.",
+                                "affinity": 4,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "mimo_0_g_a_3b",
+                                "set_next": "level_0.neutral.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_0_g_a_3a",
+                        "text": "Pelanggan istimewa ya? Hehe, bisa aja kamu. Jadi merasa tersanjung nih.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_0_g_a_3b",
+                        "text": "Wah pantesan rasanya premium banget. Ya udah, aku pesen rasa yang sama ya!",
+                        "next": null
+                    }
+                ]
+            },
+            "bad": {
+                "a": [
+                    {
+                        "id": "mimo_0_b_a_1",
+                        "text": "...Halo. Sebenernya aku agak malas ke sini lagi, tapi jalan pulang cuma lewat sini.",
+                        "next": "mimo_0_b_a_2"
+                    },
+                    {
+                        "id": "mimo_0_b_a_2",
+                        "text": "Kemarin pelayanan kamu agak ketus. Tapi ya sudahlah, apa hari ini kamu bisa rekomendasiin kue dengan bener?",
+                        "choices": [
+                            {
+                                "text": "Maaf banget ya soal kemarin, aku lagi capek luar biasa. Izinkan aku nebus kesalahanku dengan kue terbaik gratis!",
+                                "affinity": 10,
+                                "expression": "happy",
+                                "emoji": "apology",
+                                "next": "mimo_0_b_a_3a",
+                                "set_next": "level_0.neutral.a"
+                            },
+                            {
+                                "text": "Ya kalau males gak usah mampir, Kak. Kita kan jualan santai aja.",
+                                "affinity": -20,
+                                "expression": "angry",
+                                "emoji": "frown",
+                                "next": "mimo_0_b_a_3b",
+                                "set_next": "level_0.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_0_b_a_3a",
+                        "text": "Eh? Beneran mau digratisin? Hmm... ya udah deh, aku hargai niat baik kamu buat minta maaf.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_0_b_a_3b",
+                        "text": "Astaga, bener-bener ya toko ini! Gak akan pernah aku injek kaki di sini lagi! Bye!",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_1": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "mimo_1_n_a_1",
+                        "text": "Halo... Maaf ya kalau muka aku ditekuk gini. Aku lagi kesel banget hari ini.",
+                        "next": "mimo_1_n_a_2"
+                    },
+                    {
+                        "id": "mimo_1_n_a_2",
+                        "text": "Masa tugas kelompok kampus aku dituduh plagiat sama dosen, padahal temen kelompokku yang copas tanpa bilang-bilang! Pengen nangis rasanya.",
+                        "choices": [
+                            {
+                                "text": "Hah? Kurang ajar banget temen kelompokmu! Sini biar aku yang marahin mereka, kamu tenang aja di sini.",
+                                "affinity": 12,
+                                "expression": "angry",
+                                "emoji": "support",
+                                "next": "mimo_1_n_a_3a",
+                                "set_next": "level_1.good.a"
+                            },
+                            {
+                                "text": "Ya namanya juga kerja kelompok, resiko bareng-bareng. Mending kamu fokus perbaiki aja.",
+                                "affinity": -15,
+                                "expression": "kecewa",
+                                "emoji": "disappointed",
+                                "next": "mimo_1_n_a_3b",
+                                "set_next": "level_1.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_1_n_a_3a",
+                        "text": "Hahaha! Kamu kok ikutan emosi sih? Tapi makasih ya, denger kamu belain aku gini rasanya beban aku langsung berkurang.",
+                        "next": "mimo_1_n_a_4a"
+                    },
+                    {
+                        "id": "mimo_1_n_a_4a",
+                        "text": "Oiya, buat ngerayain emosi ini, buatin aku kue cokelat yang pekat banget dong, biar pahitnya ilang.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_1_n_a_3b",
+                        "text": "Kamu gak paham posisiku ya... Aku ke sini nyari ketenangan, malah diceramahin. Ya udah deh.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "mimo_1_g_a_1",
+                        "text": "Hai kamu! Tebak apa? Masalah dosen kemarin beres! Aku ajuin bukti digital ke jurusanku dan nilai aku aman!",
+                        "next": "mimo_1_g_a_2"
+                    },
+                    {
+                        "id": "mimo_1_g_a_2",
+                        "text": "Ini semua berkat dukungan emosional dari kamu kemarin tahu! Aku seneng banget hari ini!",
+                        "choices": [
+                            {
+                                "text": "Wah, hebat banget kamu berani speak up! Berhubung hari ini kamu seneng, kue spesial ini free buat merayakan kemenanganmu!",
+                                "affinity": 15,
+                                "expression": "happy",
+                                "emoji": "celebrate",
+                                "next": "mimo_1_g_a_3a",
+                                "set_next": "level_2.neutral.a"
+                            },
+                            {
+                                "text": "Mantap deh kalau gitu. Berarti hari ini pesen kue bayar full kan? Hehe.",
+                                "affinity": 5,
+                                "expression": "happy",
+                                "emoji": "laugh",
+                                "next": "mimo_1_g_a_3b",
+                                "set_next": "level_1.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_1_g_a_3a",
+                        "text": "Yeeeay! Kamu emang paling terbaik! Makasih banyak ya, besok-besok aku bawain sesuatu deh buat kamu.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_1_g_a_3b",
+                        "text": "Ih dasar perhitungan banget, tenang aja pasti aku bayar kok! Hahaha.",
+                        "next": null
+                    }
+                ]
+            },
+            "bad": {
+                "a": [
+                    {
+                        "id": "mimo_1_b_a_1",
+                        "text": "(mimo datang dengan mata sembab dan cemberut) ...Aku pesen kue Original satu, gak usah banyak tanya ya.",
+                        "next": "mimo_1_b_a_2"
+                    },
+                    {
+                        "id": "mimo_1_b_a_2",
+                        "text": "Dunia hari ini gak adil banget sama aku. Gak ada satu pun orang yang ngertiin perasaan aku.",
+                        "choices": [
+                            {
+                                "text": "Hei... maaf kalau kata-kataku kemarin bikin kamu gak nyaman. Aku di sini siap dengerin kalau kamu mau cerita.",
+                                "affinity": 18,
+                                "expression": "sad",
+                                "emoji": "care",
+                                "next": "mimo_1_b_a_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Jangan cengeng lah, hidup emang keras kali. Semua orang punya masalah.",
+                                "affinity": -25,
+                                "expression": "angry",
+                                "emoji": "rage",
+                                "next": "mimo_1_b_a_3b",
+                                "set_next": "level_1.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_1_b_a_3a",
+                        "text": "...Kamu beneran mau dengerin? (mimo mengusap matanya) Makasih ya... maaf aku tadi agak emosi pas masuk.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_1_b_a_3b",
+                        "text": "Kamu bener-bener manusia paling gak punya empati! Cukup, aku benci banget sama kamu!",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_2": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "mimo_2_n_a_1",
+                        "text": "Hai... Hari ini suasananya sendu ya, pas banget kayak suasana hati aku sekarang.",
+                        "next": "mimo_2_n_a_2"
+                    },
+                    {
+                        "id": "mimo_2_n_a_2",
+                        "text": "Hari ini tepat satu tahun nenekku meninggal. Dulu waktu kecil, setiap aku sedih, beliau selalu buatin kue bulat rasa original pake whipcream di atasnya...",
+                        "choices": [
+                            {
+                                "text": "Nenekmu pasti sosok yang penyayang luar biasa. Sini, biar aku buatin kue yang persis kayak kenangan masa kecilmu itu.",
+                                "affinity": 20,
+                                "expression": "sad",
+                                "emoji": "warmth",
+                                "next": "mimo_2_n_a_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Wah, pantesan kamu suka menu itu. Tapi sayangnya hari ini stok whipcream kita habis, ganti oreo mau?",
+                                "affinity": -15,
+                                "expression": "kecewa",
+                                "emoji": "sigh",
+                                "next": "mimo_2_n_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_2_n_a_3a",
+                        "text": "Beneran? (Mata mimo berkaca-kaca) Makasih ya... Kamu selalu tahu cara bikin aku ngerasa berharga di tempat ini.",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_2_n_a_3b",
+                        "text": "Yah... padahal aku berharap banget bisa ngerasain momen itu lagi hari ini. Gak apa-apa deh, gak usah pake dekorasi kalau gitu.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "mimo_2_g_a_1",
+                        "text": "Kue buatanmu kemarin... rasanya bener-bener mirip sama buatan nenekku! Aku sampe nangis pas makannya di kosan.",
+                        "next": "mimo_2_g_a_2"
+                    },
+                    {
+                        "id": "mimo_2_g_a_2",
+                        "text": "Sekarang aku sadar, kehadiran kamu di hidup aku tuh berharga banget. Kamu bukan cuma sekadar penjual kue biasa buat aku.",
+                        "choices": [
+                            {
+                                "text": "Aku juga ngerasa gitu, mimo. Setiap kali kamu datang, toko ini rasanya jauh lebih hidup dan bermakna.",
+                                "affinity": 25,
+                                "expression": "happy",
+                                "emoji": "love_hint",
+                                "next": "mimo_2_g_a_3a",
+                                "set_next": "level_3.neutral.a"
+                            },
+                            {
+                                "text": "Haha, makasih! Ya kan emang tugas aku buat muasin semua pelanggan toko.",
+                                "affinity": 5,
+                                "expression": "neutral",
+                                "emoji": "clueless",
+                                "next": "mimo_2_g_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_2_g_a_3a",
+                        "text": "Masa sih? Hehe... Jantung aku kok tiba-tiba deg-degan ya denger kamu ngomong gitu. Kamu bikin aku salah paham tahu!",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_2_g_a_3b",
+                        "text": "Oh... jadi cuma anggep pelanggan biasa ya? Iya deh, paham kok. Pesen rasa Original satu ya.",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_3": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "mimo_3_n_a_1",
+                        "text": "Hai! Hari ini aku sengaja datang pas tokomu mau tutup. Biar sepi, hehe.",
+                        "next": "mimo_3_n_a_2"
+                    },
+                    {
+                        "id": "mimo_3_n_a_2",
+                        "text": "Sebenernya aku ke sini bukan mau beli kue buat dibawa pulang sih... Aku mau nanya sesuatu yang pribadi, boleh?",
+                        "choices": [
+                            {
+                                "text": "Boleh banget, mimo. Mau nanya apa? Buat kamu, malam ini aku punya waktu luang seharian.",
+                                "affinity": 30,
+                                "expression": "happy",
+                                "emoji": "heart",
+                                "next": "mimo_3_n_a_3a",
+                                "set_next": "ending.romance"
+                            },
+                            {
+                                "text": "Waduh maaf ya mimo, tapi aku udah capek banget mau langsung beres-beres toko nih.",
+                                "affinity": -30,
+                                "expression": "kecewa",
+                                "emoji": "broken",
+                                "next": "mimo_3_n_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "mimo_3_n_a_3a",
+                        "text": "Hmm... Aku mau nanya, tipe pacar idaman kamu tuh kayak gimana sih? Terus... aku masuk kriteria gak?",
+                        "next": "mimo_3_n_a_4a"
+                    },
+                    {
+                        "id": "mimo_3_n_a_4a",
+                        "text": "Jangan dijawab dulu! Mending besok pas aku ke sini lagi, kamu kasih jawaban langsung ya. Aku pulang dulu, dadah!",
+                        "next": null
+                    },
+                    {
+                        "id": "mimo_3_n_a_3b",
+                        "text": "Oh... ya udah deh kalau kamu capek. Maaf ya udah ganggu waktumu malam-malam gini.",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "ending": {
+            "romance": [
+                {
+                    "id": "mimo_end_1",
+                    "text": "(mimo datang dengan dress yang sangat cantik, wajahnya merona merah saat melihatmu)",
+                    "next": "mimo_end_2"
+                },
+                {
+                    "id": "mimo_end_2",
+                    "text": "Hari ini aku sengaja nunggu jawaban dari pertanyaan aku kemarin... Kamu udah siap kan?",
+                    "next": "mimo_end_3"
+                },
+                {
+                    "id": "mimo_end_3",
+                    "text": "Aku sadar kita berawal dari penjual kue dan pelanggan, melewati hari-hari penuh tawa, amarah, sampai air mata bareng... Aku sayang banget sama kamu. Jadi, jawaban kamu apa?",
+                    "choices": [
+                        {
+                            "text": "mimo, dari awal aku juga udah jatuh hati sama kamu. Mulai hari ini, maukah kamu jadi pacarku dan nemenin aku bikin kue selamanya?",
+                            "affinity": 100,
+                            "expression": "happy",
+                            "emoji": "couple",
+                            "next": "mimo_end_success"
+                        },
+                        {
+                            "text": "Maaf mimo, tapi aku ngerasa kita lebih cocok sebatas teman dekat dan pelanggan setia aja.",
+                            "affinity": -50,
+                            "expression": "sad",
+                            "emoji": "heartbreak",
+                            "next": "mimo_end_friendzone"
+                        }
+                    ]
+                },
+                {
+                    "id": "mimo_end_success",
+                    "text": "Aaaaa! Mau! Aku mau banget! (mimo memelukmu erat) Makasih ya udah milih aku... Mulai sekarang, aku pacar kamu yang paling cerewet! Hehe, i love you!",
+                    "next": null
+                },
+                {
+                    "id": "mimo_end_friendzone",
+                    "text": "Oh... begitu ya... (mimo tersenyum getir menahan air mata) Makasih ya atas kejujuran kamu. Aku... pamit dulu ya.",
+                    "next": null
+                }
+            ]
+        }
+    },
+    "affinity_thresholds": {
+        "level_1": 15,
+        "level_2": 35,
+        "level_3": 65,
+        "ending": 95
+    },
+    "assets": {
+        "sprite": "Assets/NPC/BiniArdra.png",
+        "expressions": {
+            "happy": "Assets/NPC/BiniArdra.png",
+            "angry": "Assets/NPC/BiniArdraMarah.png",
+            "kecewa": "Assets/NPC/BiniArdraKecewa.png",
+            "sad": "Assets/NPC/BiniArdraSedih.png"
+        },
+        "expression_sfx": {
+            "angry": "baka"
+        }
+    },
+    "ending": {
+        "background": "Assets/ending_background.jpg",
+        "bgm": "Assets/Audio/BGM/ending.mp3",
+        "sprite": "Assets/NPC/BiniArdra.png",
+        "dialogues": [
+            {
+                "id": "ardra_end_1",
+                "text": "Kamu tahu... sejak pertama kali datang ke sini, aku selalu merasa nyaman.",
+                "next": "ardra_end_2"
+            },
+            {
+                "id": "ardra_end_2",
+                "text": "Kamu selalu buat kue yang sempurna untukku... dan selalu membuatku tersenyum.",
+                "choices": [
+                    {
+                        "text": "Kamu juga membuatku tersenyum, Ardra.",
+                        "expression": "happy",
+                        "emoji": "happy",
+                        "next": "ardra_end_3a"
+                    },
+                    {
+                        "text": "Aku senang bisa membuatmu bahagia.",
+                        "expression": "happy",
+                        "next": "ardra_end_3b"
+                    }
+                ]
+            },
+            {
+                "id": "ardra_end_3a",
+                "text": "B-benarkah...? Aku... aku juga... terima kasih untuk semuanya...",
+                "next": null
+            },
+            {
+                "id": "ardra_end_3b",
+                "text": "Hehe... kamu memang baik sekali... aku tidak akan pernah melupakanmu...",
+                "next": null
+            }
+        ]
+    }
+}

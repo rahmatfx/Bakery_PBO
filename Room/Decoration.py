@@ -3,6 +3,9 @@ from Enum.BakeryEnum import DecorationOption, Mold
 from Room.Room import Room
 from Order.Cake import Cake, CakeStep
 from UI.Button import Button
+from Enum.BakeryEnum import Flavor
+import Constant
+
 from Constant import (
     SCREEN_WIDTH, 
     SCREEN_HEIGHT, 
@@ -32,6 +35,18 @@ from Constant import (
     chocoStar,
     chocoRound
     )
+
+BAKED_CAKE = {
+    (Flavor.STRAWBERRY, Mold.ROUND): Constant.CAKE_STRAWBERRY_BUNDAR,
+    (Flavor.STRAWBERRY, Mold.STAR): Constant.CAKE_STRAWBERRY_STAR,
+    (Flavor.STRAWBERRY, Mold.HEART): Constant.CAKE_STRAWBERRY_LOVE,
+    (Flavor.ORIGINAL, Mold.ROUND): Constant.CAKE_ORIGINAL_BUNDAR,
+    (Flavor.ORIGINAL, Mold.HEART): Constant.CAKE_ORIGINAL_LOVE,
+    (Flavor.ORIGINAL, Mold.STAR): Constant.CAKE_ORIGINAL_STAR,
+    (Flavor.CHOCOLATE, Mold.ROUND): Constant.CAKE_CHOCOLATE_BUNDAR,
+    (Flavor.CHOCOLATE, Mold.HEART): Constant.CAKE_CHOCOLATE_LOVE,
+    (Flavor.CHOCOLATE, Mold.STAR): Constant.CAKE_CHOCOLATE_STAR,
+}
 
 class DecorButton(Button):
     def __init__(self, x, y, *args, **kwargs):
@@ -142,6 +157,25 @@ class Decoration(Room):
         if os.path.exists(DEKORASI_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        
+        print("=== DECORATION ENTER ===")
+        print(f"cake: {self.cake}")
+        if self.cake:
+            print(f"step: {self.cake.step}")
+            print(f"flavor: {self.cake.flavor}")
+            print(f"mold: {self.cake.mold}")
+            path = BAKED_CAKE.get((self.cake.flavor, self.cake.mold))
+            print(f"path: {path}")
+            print(f"path exists: {os.path.exists(path) if path else False}")
+            
+        if self.cake and self.cake.step >= CakeStep.BAKED:
+            path = BAKED_CAKE.get((self.cake.flavor, self.cake.mold))
+            if path and os.path.exists(path):
+                img = pygame.image.load(path).convert_alpha()
+                new_w = 150
+                new_h = int(img.get_height() * (new_w / img.get_width()))
+                self.cakeImg = pygame.transform.smoothscale(img, (new_w, new_h))
+                self.cakeRect = self.cakeImg.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
 
         if not self.toppingImages:
             topping_paths = {
@@ -199,6 +233,7 @@ class Decoration(Room):
 
     def render(self):
         if not self.screen: return
+
         if self._bg_image:
             self.screen.blit(self._bg_image, (0, 0))
 
@@ -207,6 +242,9 @@ class Decoration(Room):
             self.chocochip.render(self.screen)
             self.cream.render(self.screen)
             self.oreo.render(self.screen)
+
+            if self.cakeImg and self.cakeRect:
+                self.screen.blit(self.cakeImg, self.cakeRect)
 
             # render topping on top of cake
             if self.toppingImage:
