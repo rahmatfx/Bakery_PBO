@@ -131,6 +131,18 @@ OVEN_BAKE_IMAGE  = os.path.join(ASSETS_DIR, "OvenMemanggang.png")
 ADONAN_TEMPORARY = os.path.join(ASSETS_DIR, "AdonanTemp.png")
 CAKE_TEMPORARY = os.path.join(ASSETS_DIR, "Cake.png")
 NAMPAN_IMAGE = os.path.join(ASSETS_DIR, "Nampan.png")
+CAKE_STRAWBERRY_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Stroberi.png")
+CAKE_STRAWBERRY_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Stroberi.png")
+CAKE_STRAWBERRY_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Stroberi.png")
+
+CAKE_ORIGINAL_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Original.png")
+CAKE_ORIGINAL_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Original.png")
+CAKE_ORIGINAL_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Original.png")
+
+CAKE_CHOCOLATE_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Coklat.png")
+CAKE_CHOCOLATE_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Coklat.png")
+CAKE_CHOCOLATE_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Coklat.png")
+
 
 # Navigation Bar 
 NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_br_bg.png")
