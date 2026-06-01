@@ -1,11 +1,12 @@
 {
     "affinity": {
-        "ardra": 300,
-        "lucy": 358
+        "ardra": 1,
+        "lucy": 8
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "lucy": "ending.romance"
+            "ardra": "level_0.good.a",
+            "lucy": "level_1.neutral.a"
         },
         "current_mood": {
             "ardra": "neutral",
@@ -13,7 +14,6 @@
         },
         "seen_variants": {
             "ardra_0_neutral": [
-                "b",
                 "a"
             ],
             "ardra_0_good": [
@@ -33,6 +33,7 @@
                 "a"
             ],
             "lucy_0_neutral": [
+                "b",
                 "a"
             ],
             "lucy_0_good": [
