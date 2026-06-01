@@ -1,5 +1,10 @@
 {
     "affinity": {
         "ardra": 24
+    },
+    "dialogue_tracker": {
+        "next_dialogue": {},
+        "current_mood": {},
+        "seen_variants": {}
     }
 }
