@@ -24,7 +24,7 @@ class AudioManager:
 
         pygame.mixer.music.set_volume(self._bgm_volume)
 
-    # ── Register ──
+    # Register
 
     def register_bgm(self, key: str, filepath: str) -> None:
         self._bgm_registry[key] = filepath
@@ -61,7 +61,7 @@ class AudioManager:
         self.register_sfx("angry_sfx", Constant.ANGRY_SFX)
         self.register_sfx("baka", Constant.BAKA)
 
-    # ── BGM ──
+    # BGM
 
     def play_bgm(self, key: str, loops: int = -1) -> None:
         if key == self._current_bgm_key and pygame.mixer.music.get_busy():
@@ -96,7 +96,7 @@ class AudioManager:
         self._bgm_volume = max(0.0, min(1.0, volume))
         pygame.mixer.music.set_volume(self._bgm_volume)
 
-    # ── SFX ──
+    # SFX
 
     def play_sfx(self, key: str) -> None:
         sound = self._sfx_cache.get(key)
@@ -120,7 +120,7 @@ class AudioManager:
         for sound in self._sfx_cache.values():
             sound.set_volume(self._sfx_volume)
 
-    # ── Typewriter ──
+    # Typewriter
 
     def play_type_tick(self, delta_time: float) -> None:
         self._type_cooldown -= delta_time
@@ -131,12 +131,12 @@ class AudioManager:
     def reset_type_cooldown(self) -> None:
         self._type_cooldown = 0.0
 
-    # ── Update ──
+    # Update
 
     def update(self, delta_time: float) -> None:
         pass
 
-    # ── Room BGM ──
+    # Room BGM
 
     def play_bgm_for_room(self, room_name: str) -> None:
         key = room_name.lower().replace(" ", "_")

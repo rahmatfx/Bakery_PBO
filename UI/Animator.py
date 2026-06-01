@@ -149,7 +149,6 @@ class Animator:
     def __init__(self):
         self._tracks: dict[str, _Track] = {}
 
-    # ── Factory ──
 
     def shake(self, track_id: str, intensity: int = 0,
               duration: float = 0.0) -> None:
@@ -182,7 +181,6 @@ class Animator:
         sink = sink or Constant.ANIM_FADE_SINK
         self._tracks[track_id] = _FadeTrack(duration, sink, min_scale)
 
-    # ── Update ──
 
     def update(self, delta_time: float) -> dict[str, tuple[float, float, float]]:
         result = {}
@@ -199,7 +197,6 @@ class Animator:
 
         return result
 
-    # ── Query ──
 
     def is_active(self, track_id: str) -> bool:
         return track_id in self._tracks
