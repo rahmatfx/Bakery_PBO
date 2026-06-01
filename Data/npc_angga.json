@@ -1,0 +1,532 @@
+{
+    "id": "angga",
+    "name": "Angga",
+    "personality": "Misterius, serius, pendiam, suka menyendiri",
+    "preferences": {
+        "flavors": ["Strawberry", "Chocolate"],
+        "molds": ["Heart", "Star"],
+        "decorations": ["Chocochip", "Whipcream"]
+    },
+    "dislikes": {
+        "flavors": ["Original"],
+        "molds": ["Round"],
+        "decorations": ["Berries", "Sprinkle"]
+    },
+    "dialogues": {
+        "level_0": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "angga_0_n_a_1",
+                        "text": "Permisi, aku mau beli roti dong...",
+                        "next": "angga_0_n_a_2"
+                    },
+                    {
+                        "id": "angga_0_n_a_2",
+                        "text": "Disini roti apa yang paling enak ya? Aku mau yang manis-manis gitu.",
+                        "choices": [
+                            {
+                                "text": "Manis-manis ya? kalau gitu coba coklat atau strawberry deh, pasti suka.",
+                                "affinity": 5,
+                                "expression": "happy",
+                                "emoji": "curious",
+                                "next": "angga_0_n_a_3a"
+                            },
+                            {
+                                "text": "Itu ada di menu kok langsung liat aja sendiri.",
+                                "affinity": -10,
+                                "expression": "kecewa",
+                                "emoji": "sigh",
+                                "next": "angga_0_n_a_3b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_0_n_a_3a",
+                        "text": "Hmm... Strawberry sama cokelat ya? Kedengarannya enak. Aku lagi butuh yang manis buat nemenin hari yang melelahkan.",
+                        "choices": [
+                            {
+                                "text": "Kalau begitu aku rekomendasikan roti cokelat spesial. Cocok buat mengembalikan mood setelah hari yang berat.",
+                                "affinity": 5,
+                                "expression": "happy",
+                                "emoji": "happy",
+                                "next": "angga_0_n_a_4aa",
+                                "set_next": "level_0.good.a"
+                            },
+                            {
+                                "text": "Kalau bingung, ambil rasa Original aja. Aman buat semua orang.",
+                                "affinity": 1,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "angga_0_n_a_4ab",
+                                "set_next": "level_0.neutral.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_0_n_a_4aa",
+                        "text": "Baiklah, aku percaya rekomendasimu. Semoga rasanya sesuai ekspektasi.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_0_n_a_4ab",
+                        "text": "Original ya... Baiklah, mungkin lain kali aku coba yang lain.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_0_n_a_3b",
+                        "text": "(Hmph... baru juga tanya sudah disuruh lihat sendiri. Mungkin aku salah tempat.)",
+                        "next": "angga_0_n_a_3b_end"
+                    },
+                    {
+                        "id": "angga_0_n_a_3b_end",
+                        "text": "Lupakan saja. Terima kasih.",
+                        "next": null,
+                        "set_next": "level_0.bad.a"
+                    }
+                ],
+                "b": [
+                    {
+                        "id": "angga_0_n_b_1",
+                        "text": "Aku datang lagi. Roti kemarin ternyata lumayan enak.",
+                        "next": "angga_0_n_b_2"
+                    },
+                    {
+                        "id": "angga_0_n_b_2",
+                        "text": "Hari ini aku ingin mencoba sesuatu yang berbeda. Ada rekomendasi?",
+                        "choices": [
+                            {
+                                "text": "Kalau suka yang unik, coba bentuk bintang dengan chocochip.",
+                                "affinity": 8,
+                                "expression": "happy",
+                                "emoji": "curious",
+                                "next": "angga_0_n_b_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Bentuk hati dengan whipcream juga cukup populer.",
+                                "affinity": 4,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "angga_0_n_b_3b",
+                                "set_next": "level_0.good.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_0_n_b_3a",
+                        "text": "Bentuk bintang ya... Menarik juga. Baiklah, aku coba yang itu.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_0_n_b_3b",
+                        "text": "Oke, yang bentuk hati saja. Terima kasih atas sarannya.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "angga_0_g_a_1",
+                        "text": "Aku kembali lagi. Roti cokelat kemarin ternyata cukup membantu memperbaiki hariku.",
+                        "next": "angga_0_g_a_2"
+                    },
+                    {
+                        "id": "angga_0_g_a_2",
+                        "text": "Jarang ada toko yang pelayanannya nyaman seperti ini.",
+                        "choices": [
+                            {
+                                "text": "Senang mendengarnya. Kamu selalu diterima di sini kapan saja.",
+                                "affinity": 8,
+                                "expression": "happy",
+                                "emoji": "smile",
+                                "next": "angga_0_g_a_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Terima kasih. Kebetulan bahan hari ini juga sedang bagus.",
+                                "affinity": 4,
+                                "expression": "neutral",
+                                "emoji": null,
+                                "next": "angga_0_g_a_3b",
+                                "set_next": "level_0.neutral.b"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_0_g_a_3a",
+                        "text": "Haha, terima kasih. Mendengar itu membuatku sedikit lebih bersemangat hari ini.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_0_g_a_3b",
+                        "text": "Pantas saja rasanya lebih enak. Kalau begitu aku pesan yang sama lagi.",
+                        "next": null
+                    }
+                ]
+            },
+            "bad": {
+                "a": [
+                    {
+                        "id": "angga_0_b_a_1",
+                        "text": "...Aku sebenarnya tidak berniat kembali ke sini. Tapi kebetulan lewat.",
+                        "next": "angga_0_b_a_2"
+                    },
+                    {
+                        "id": "angga_0_b_a_2",
+                        "text": "Kemarin pelayanannya kurang menyenangkan. Apa hari ini berbeda?",
+                        "choices": [
+                            {
+                                "text": "Maaf soal kemarin. Aku sedang tidak dalam kondisi terbaik. Biar kutebus dengan roti gratis.",
+                                "affinity": 10,
+                                "expression": "happy",
+                                "emoji": "apology",
+                                "next": "angga_0_b_a_3a",
+                                "set_next": "level_0.neutral.a"
+                            },
+                            {
+                                "text": "Kalau tidak suka, tidak perlu datang lagi.",
+                                "affinity": -20,
+                                "expression": "angry",
+                                "emoji": "frown",
+                                "next": "angga_0_b_a_3b",
+                                "set_next": "level_0.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_0_b_a_3a",
+                        "text": "Hm... Setidaknya kamu mau mengakui kesalahanmu. Aku hargai itu.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_0_b_a_3b",
+                        "text": "Begitu ya. Baiklah, ini terakhir kalinya aku datang.",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_1": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "angga_1_n_a_1",
+                        "text": "...Aku boleh duduk sebentar di sini?",
+                        "next": "angga_1_n_a_2"
+                    },
+                    {
+                        "id": "angga_1_n_a_2",
+                        "text": "Hari ini cukup menyebalkan. Teman satu kelompokku menghilang saat presentasi, dan aku yang harus menjelaskan semuanya sendiri di depan kelas.",
+                        "choices": [
+                            {
+                                "text": "Wah, itu keterlaluan sih. Kamu sudah kerja keras, mereka seharusnya ikut bertanggung jawab.",
+                                "affinity": 12,
+                                "expression": "angry",
+                                "emoji": "support",
+                                "next": "angga_1_n_a_3a",
+                                "set_next": "level_1.good.a"
+                            },
+                            {
+                                "text": "Ya sudah, yang penting tugasnya selesai kan? Tidak perlu dipikirkan terlalu jauh.",
+                                "affinity": -15,
+                                "expression": "kecewa",
+                                "emoji": "disappointed",
+                                "next": "angga_1_n_a_3b",
+                                "set_next": "level_1.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_1_n_a_3a",
+                        "text": "Heh... Jarang ada yang benar-benar melihat masalahnya dari sudut pandangku. Terima kasih.",
+                        "next": "angga_1_n_a_4a"
+                    },
+                    {
+                        "id": "angga_1_n_a_4a",
+                        "text": "Kalau begitu, buatkan aku roti cokelat. Sepertinya aku butuh sesuatu untuk memperbaiki suasana hati.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_1_n_a_3b",
+                        "text": "Mungkin benar. Tapi tetap saja rasanya tidak menyenangkan saat kerja kerasmu dianggap biasa saja.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "angga_1_g_a_1",
+                        "text": "Aku datang lagi. Ternyata masalah kelompok kemarin sudah selesai.",
+                        "next": "angga_1_g_a_2"
+                    },
+                    {
+                        "id": "angga_1_g_a_2",
+                        "text": "Aku bicara langsung dengan dosen dan menjelaskan situasinya. Syukurlah beliau mengerti.",
+                        "choices": [
+                            {
+                                "text": "Bagus dong. Berarti keberanianmu membuahkan hasil. Hari ini kuenya gratis untuk merayakannya.",
+                                "affinity": 15,
+                                "expression": "happy",
+                                "emoji": "celebrate",
+                                "next": "angga_1_g_a_3a",
+                                "set_next": "level_2.neutral.a"
+                            },
+                            {
+                                "text": "Syukurlah. Jadi sekarang kamu bisa fokus makan roti tanpa memikirkan tugas lagi.",
+                                "affinity": 5,
+                                "expression": "happy",
+                                "emoji": "smile",
+                                "next": "angga_1_g_a_3b",
+                                "set_next": "level_1.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_1_g_a_3a",
+                        "text": "...Gratis? Tidak perlu sebenarnya. Tapi terima kasih. Aku menghargainya.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_1_g_a_3b",
+                        "text": "Haha... mungkin itu ide yang bagus. Sudah cukup stres untuk minggu ini.",
+                        "next": null
+                    }
+                ]
+            },
+            "bad": {
+                "a": [
+                    {
+                        "id": "angga_1_b_a_1",
+                        "text": "(Angga masuk dengan wajah lelah dan lingkar mata yang jelas terlihat) ...Seperti biasa, satu roti Original.",
+                        "next": "angga_1_b_a_2"
+                    },
+                    {
+                        "id": "angga_1_b_a_2",
+                        "text": "Kadang aku merasa percuma mengandalkan orang lain. Pada akhirnya, semua harus dikerjakan sendiri.",
+                        "choices": [
+                            {
+                                "text": "Maaf kalau waktu itu aku terkesan meremehkan masalahmu. Kalau mau cerita, aku siap mendengarkan.",
+                                "affinity": 18,
+                                "expression": "sad",
+                                "emoji": "care",
+                                "next": "angga_1_b_a_3a",
+                                "set_next": "level_1.neutral.a"
+                            },
+                            {
+                                "text": "Begitulah hidup. Semua orang punya masalah masing-masing.",
+                                "affinity": -25,
+                                "expression": "angry",
+                                "emoji": "rage",
+                                "next": "angga_1_b_a_3b",
+                                "set_next": "level_1.bad.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_1_b_a_3a",
+                        "text": "...Aku tidak terbiasa bercerita ke orang lain. Tapi mungkin tidak ada salahnya mencoba sekali ini.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_1_b_a_3b",
+                        "text": "Ya. Seharusnya aku tidak berharap orang lain akan mengerti.",
+                        "next": null
+                    }
+                ]
+            }
+        }
+        },
+        "level_2": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "angga_2_n_a_1",
+                        "text": "...Halo. Hari ini toko lagi sepi ya.",
+                        "next": "angga_2_n_a_2"
+                    },
+                    {
+                        "id": "angga_2_n_a_2",
+                        "text": "Hari ini tepat satu tahun sejak kakekku meninggal. Dulu beliau sering ngajak aku makan roti rasa cokelat sepulang sekolah.",
+                        "choices": [
+                            {
+                                "text": "Beliau pasti orang yang sangat berarti buatmu. Kalau mau, aku bisa bikinin roti yang mirip sama kenangan itu.",
+                                "affinity": 20,
+                                "expression": "sad",
+                                "emoji": "warmth",
+                                "next": "angga_2_n_a_3a",
+                                "set_next": "level_2.good.a"
+                            },
+                            {
+                                "text": "Oh gitu ya. Mau pesan yang biasa aja seperti biasanya?",
+                                "affinity": -15,
+                                "expression": "kecewa",
+                                "emoji": "sigh",
+                                "next": "angga_2_n_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_2_n_a_3a",
+                        "text": "...Makasih. Jarang ada orang yang peduli sama cerita beginian.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_2_n_a_3b",
+                        "text": "Iya, gak apa-apa kok. Aku cuma kepikiran masa lalu aja.",
+                        "next": null
+                    }
+                ]
+            },
+            "good": {
+                "a": [
+                    {
+                        "id": "angga_2_g_a_1",
+                        "text": "Roti yang kamu bikinin kemarin... rasanya ngingetin aku sama masa kecil. Udah lama aku gak ngerasain itu.",
+                        "next": "angga_2_g_a_2"
+                    },
+                    {
+                        "id": "angga_2_g_a_2",
+                        "text": "Aku sadar sekarang. Datang ke toko ini bukan cuma buat beli roti lagi. Rasanya nyaman aja ngobrol sama kamu.",
+                        "choices": [
+                            {
+                                "text": "Aku juga senang setiap kamu mampir. Rasanya kayak ngobrol sama teman lama.",
+                                "affinity": 25,
+                                "expression": "happy",
+                                "emoji": "friendship",
+                                "next": "angga_2_g_a_3a",
+                                "set_next": "level_3.neutral.a"
+                            },
+                            {
+                                "text": "Haha, syukurlah kalau begitu. Yang penting rotinya cocok di lidahmu.",
+                                "affinity": 5,
+                                "expression": "neutral",
+                                "emoji": "clueless",
+                                "next": "angga_2_g_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_2_g_a_3a",
+                        "text": "...Teman lama ya. Heh, kedengarannya aneh, tapi aku suka cara kamu bilang itu.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_2_g_a_3b",
+                        "text": "Iya juga sih. Yang penting rotinya enak. Aku pesan yang sama lagi ya.",
+                        "next": null
+                    }
+                ]
+            }
+        },
+        "level_3": {
+            "neutral": {
+                "a": [
+                    {
+                        "id": "angga_3_n_a_1",
+                        "text": "Hei. Aku sengaja datang agak malam hari ini.",
+                        "next": "angga_3_n_a_2"
+                    },
+                    {
+                        "id": "angga_3_n_a_2",
+                        "text": "Sebenernya aku mau ngomong sesuatu. Agak pribadi sih, tapi sebagai teman harusnya gak masalah ya?",
+                        "choices": [
+                            {
+                                "text": "Tentu aja. Cerita aja, aku dengerin.",
+                                "affinity": 30,
+                                "expression": "happy",
+                                "emoji": "support",
+                                "next": "angga_3_n_a_3a",
+                                "set_next": "ending.friendship"
+                            },
+                            {
+                                "text": "Maaf ya, aku lagi sibuk beres-beres toko.",
+                                "affinity": -30,
+                                "expression": "kecewa",
+                                "emoji": "broken",
+                                "next": "angga_3_n_a_3b",
+                                "set_next": "level_2.neutral.a"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "angga_3_n_a_3a",
+                        "text": "Aku cuma mau bilang... makasih. Selama ini kamu selalu dengerin cerita dan keluhan aku. Gak banyak orang yang mau ngelakuin itu.",
+                        "next": "angga_3_n_a_4a"
+                    },
+                    {
+                        "id": "angga_3_n_a_4a",
+                        "text": "Besok aku ke sini lagi ya. Ada sesuatu yang pengen aku kasih buat kamu sebagai ucapan terima kasih.",
+                        "next": null
+                    },
+                    {
+                        "id": "angga_3_n_a_3b",
+                        "text": "Oh... iya gak apa-apa. Mungkin lain kali aja kalau begitu.",
+                        "next": null
+                    }
+                ]
+            }
+        },
+    
+    "affinity_thresholds": {
+        "level_1": 15,
+        "level_2": 35,
+        "level_3": 65,
+        "ending": 95   
+    },
+    "assets": {
+        "sprite": "Assets/NPC/Angga.png",
+        "expressions": {
+            "happy": "Assets/NPC/Angga.png",
+            "angry": "Assets/NPC/Angga_angry.png",
+            "kecewa": "Assets/NPC/Angga.png",
+            "sad": "Assets/NPC/Angga.png"
+        },
+        "expression_sfx": {
+            "angry": "baka"
+        }
+    },
+    "ending": {
+        "friendship": [
+            {
+                "id": "angga_end_1",
+                "text": "(Angga datang dengan membawa sebuah kotak kecil. Seperti biasa ekspresinya datar, tapi kali ini terlihat sedikit gugup.)",
+                "next": "angga_end_2"
+            },
+            {
+                "id": "angga_end_2",
+                "text": "Kemarin aku bilang ada sesuatu yang mau aku kasih, kan? Sebelum itu, aku mau ngomong sedikit.",
+                "next": "angga_end_3"
+            },
+            {
+                "id": "angga_end_3",
+                "text": "Awalnya aku cuma pelanggan biasa yang mampir buat beli roti. Tapi entah kenapa, lama-lama tempat ini jadi salah satu tempat yang paling nyaman buatku. Dan itu bukan cuma karena rotinya.",
+                "choices": [
+                    {
+                        "text": "Aku juga senang bisa kenal sama kamu, Angga. Kamu sudah seperti teman dekat buatku.",
+                        "affinity": 100,
+                        "expression": "happy",
+                        "emoji": "friendship",
+                        "next": "angga_end_success"
+                    },
+                    {
+                        "text": "Makasih sudah sering mampir ke toko ini. Semoga kita tetap bisa berteman baik.",
+                        "affinity": 50,
+                        "expression": "happy",
+                        "emoji": "smile",
+                        "next": "angga_end_success"
+                    }
+                ]
+            },
+            {
+                "id": "angga_end_success",
+                "text": "...Heh, syukurlah. Jujur aja, aku gak punya banyak teman. Jadi bisa kenal sama seseorang yang selalu mau dengerin ceritaku itu berarti banget. Oh iya, ini buat kamu. Anggap aja hadiah dari seorang sahabat. Makasih untuk semuanya.",
+                "next": null
+            }
+        ]
+    }
+}
