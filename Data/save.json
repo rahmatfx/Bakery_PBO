@@ -1,17 +1,23 @@
 {
     "affinity": {
-        "ardra": 1
+        "ardra": -1,
+        "lucy": -12
     },
     "dialogue_tracker": {
         "next_dialogue": {},
         "current_mood": {
-            "ardra": "good"
+            "ardra": "good",
+            "lucy": "neutral"
         },
         "seen_variants": {
             "ardra_0_neutral": [
                 "a"
             ],
             "ardra_0_good": [
+                "a",
+                "b"
+            ],
+            "lucy_0_neutral": [
                 "a"
             ]
         }
