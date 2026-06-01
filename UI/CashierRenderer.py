@@ -14,6 +14,7 @@ class CashierRenderContext:
         "emoji_scale",
         "background",          # pygame.Surface | None
         "heart_img",           # pygame.Surface | None
+        "cake",
     )
 
     def __init__(self) -> None:
@@ -25,6 +26,7 @@ class CashierRenderContext:
         self.emoji_scale = 1.0
         self.background = None
         self.heart_img  = None
+        self.cake       = None
 
 
 class CashierRenderer:
@@ -33,6 +35,7 @@ class CashierRenderer:
         self._font: pygame.font.Font | None          = None
         self._font_affinity: pygame.font.Font | None = None
         self._text_cache: dict[str, pygame.Surface]  = {}
+        self._submit_btn_rect: pygame.Rect | None    = None
 
 
     def init_fonts(self) -> None:
@@ -68,11 +71,29 @@ class CashierRenderer:
         if ctx.state == CashierState.ORDER_ACTIVE:
             minigame.render(screen, ctx.npc_x)
 
+            if ctx.cake and ctx.cake.is_complete():
+                self._render_cake_preview(screen, ctx.cake)
+
         emoji_popup.render(screen, ctx.emoji_scale)
 
         if ctx.state == CashierState.REACTING and emoji_popup.is_done():
             self._render_hint(screen, "Click to continue...",
                               Constant.NPC_Y + Constant.NPC_HEIGHT + Constant.HINT_CLICK_OFFSET_Y)
+
+    def _render_cake_preview(self, screen: pygame.Surface, cake) -> None:
+        cake_center = (Constant.SCREEN_WIDTH - 1000, Constant.SCREEN_HEIGHT - 150)
+        cake.render_cake(screen, center=cake_center)
+
+        btn_rect = pygame.Rect(0, 0, 200, 50)
+        btn_rect.centerx = cake_center[0]
+        btn_rect.top = cake_center[1] + 100
+
+        pygame.draw.rect(screen, (80, 180, 80), btn_rect, border_radius=10)
+        if self._font:
+            label = self._font.render("Submit Cake!", True, (255, 255, 255))
+            screen.blit(label, label.get_rect(center=btn_rect.center))
+
+        self._submit_btn_rect = btn_rect
 
     # Background 
 

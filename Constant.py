@@ -1,4 +1,5 @@
 import os
+from Enum.BakeryEnum import Flavor, Mold
 
 SCREEN_WIDTH  = 1280
 SCREEN_HEIGHT = 720
@@ -143,6 +144,18 @@ CAKE_CHOCOLATE_BUNDAR = os.path.join(ASSETS_DIR, "Kue Bundar Coklat.png")
 CAKE_CHOCOLATE_STAR = os.path.join(ASSETS_DIR, "Kue Bintang Coklat.png")
 CAKE_CHOCOLATE_LOVE = os.path.join(ASSETS_DIR, "Kue Hati Coklat.png")
 
+#BAKED CAKE DICTIONARY BUAT RENDER KUE AKHIR
+BAKED_CAKE = {
+    (Flavor.STRAWBERRY, Mold.ROUND):  CAKE_STRAWBERRY_BUNDAR,
+    (Flavor.STRAWBERRY, Mold.STAR):   CAKE_STRAWBERRY_STAR,
+    (Flavor.STRAWBERRY, Mold.HEART):  CAKE_STRAWBERRY_LOVE,
+    (Flavor.ORIGINAL,   Mold.ROUND):  CAKE_ORIGINAL_BUNDAR,
+    (Flavor.ORIGINAL,   Mold.HEART):  CAKE_ORIGINAL_LOVE,
+    (Flavor.ORIGINAL,   Mold.STAR):   CAKE_ORIGINAL_STAR,
+    (Flavor.CHOCOLATE,  Mold.ROUND):  CAKE_CHOCOLATE_BUNDAR,
+    (Flavor.CHOCOLATE,  Mold.HEART):  CAKE_CHOCOLATE_LOVE,
+    (Flavor.CHOCOLATE,  Mold.STAR):   CAKE_CHOCOLATE_STAR,
+}
 
 # Navigation Bar 
 NAV_BAR_BG       = os.path.join(ASSETS_DIR, "nav_br_bg.png")
