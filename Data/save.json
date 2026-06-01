@@ -1,31 +1,8 @@
 {
-    "affinity": {
-        "ardra": -1,
-        "lucy": -12
-        "lucy": 8
-    },
+    "affinity": {},
     "dialogue_tracker": {
-        "next_dialogue": {
-            "lucy": "level_0.good.a"
-        },
-        "current_mood": {
-            "ardra": "good",
-            "lucy": "neutral"
-        },
-        "seen_variants": {
-            "ardra_0_neutral": [
-                "a"
-            ],
-            "ardra_0_good": [
-                "a",
-                "b"
-            ],
-            "lucy": "neutral"
-        },
-        "seen_variants": {
-            "lucy_0_neutral": [
-                "a"
-            ]
-        }
+        "next_dialogue": {},
+        "current_mood": {},
+        "seen_variants": {}
     }
 }
