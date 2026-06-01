@@ -1,6 +1,7 @@
 import pygame, os, sys
 from Room.Room import Room
 from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY, NAMPAN_IMAGE
+from Order.Cake import Cake
 
 class BakingRoom(Room):
     def __init__(self):
@@ -36,7 +37,8 @@ class BakingRoom(Room):
         self.isReadyToTake = False
         self.nampan_image = None
         self.isInNampan = False
-    
+
+        self.cake: Cake = None
 
     def enter(self):
         if os.path.exists(BAKING_BG):
@@ -94,6 +96,8 @@ class BakingRoom(Room):
             new_width = 520
             new_height = int(original_height * (new_width / original_width))
             self._oven_bake_image = pygame.transform.smoothscale(img, (new_width, new_height))
+        
+        #self.cake.mold
 
         if self._adonan_image:
             self._adonan_rect = self._adonan_image.get_rect(
