@@ -2,6 +2,33 @@ import pygame, os, sys
 from Room.Room import Room
 from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY, NAMPAN_IMAGE
 from Order.Cake import Cake
+from Enum.BakeryEnum import Flavor, Mold
+import Constant
+
+
+RAW_CAKE = {
+    (Flavor.ORIGINAL, Mold.ROUND): Constant.Raw_Ori_Round_Image,
+    (Flavor.ORIGINAL, Mold.HEART): Constant.Raw_Ori_Love_Image,
+    (Flavor.ORIGINAL, Mold.STAR): Constant.Raw_Ori_Star_Image,
+    (Flavor.CHOCOLATE, Mold.ROUND): Constant.Raw_Coklat_Round_Image,
+    (Flavor.CHOCOLATE, Mold.HEART): Constant.Raw_Coklat_Love_Image,
+    (Flavor.CHOCOLATE, Mold.STAR): Constant.Raw_Coklat_Star_Image,
+    (Flavor.STRAWBERRY, Mold.ROUND): Constant.Raw_Strawberry_Round_Image,
+    (Flavor.STRAWBERRY, Mold.HEART): Constant.Raw_Strawberry_Love_Image,
+    (Flavor.STRAWBERRY, Mold.STAR): Constant.Raw_Strawberry_Star_Image,
+}
+
+BAKED_CAKE = {
+    (Flavor.STRAWBERRY, Mold.ROUND): Constant.CAKE_STRAWBERRY_BUNDAR,
+    (Flavor.STRAWBERRY, Mold.STAR): Constant.CAKE_STRAWBERRY_STAR,
+    (Flavor.STRAWBERRY, Mold.HEART): Constant.CAKE_STRAWBERRY_LOVE,
+    (Flavor.ORIGINAL, Mold.ROUND): Constant.CAKE_ORIGINAL_BUNDAR,
+    (Flavor.ORIGINAL, Mold.HEART): Constant.CAKE_ORIGINAL_LOVE,
+    (Flavor.ORIGINAL, Mold.STAR): Constant.CAKE_ORIGINAL_STAR,
+    (Flavor.CHOCOLATE, Mold.ROUND): Constant.CAKE_CHOCOLATE_BUNDAR,
+    (Flavor.CHOCOLATE, Mold.HEART): Constant.CAKE_CHOCOLATE_LOVE,
+    (Flavor.CHOCOLATE, Mold.STAR): Constant.CAKE_CHOCOLATE_STAR,
+}
 
 class BakingRoom(Room):
     def __init__(self):
@@ -28,8 +55,8 @@ class BakingRoom(Room):
         self.text_rect = None
         self.bake_start_time = pygame.time.get_ticks()
         self.elapsed = 0
-        self.bake_start_time = 5
-        self.bake_duration = 5
+        self.bake_start_time = 15
+        self.bake_duration = 15
         self.rect_posAwalDough = None
         self.rect_posOvenDough = None
         self.isBaked = False
@@ -52,19 +79,23 @@ class BakingRoom(Room):
             new_height = int(original_height * (new_width / original_width))
             self.nampan_image = pygame.transform.smoothscale(img, (new_width, new_height))
             
-        if os.path.exists(ADONAN_TEMPORARY):
-            img = pygame.image.load(ADONAN_TEMPORARY).convert_alpha()
-            original_width, original_height = img.get_size()
-            new_width = 150
-            new_height = int(original_height * (new_width / original_width))
-            self._adonan_image = pygame.transform.smoothscale(img, (new_width, new_height))
+        if self.cake and self.cake.flavor and self.cake.mold:
+            path = RAW_CAKE.get((self.cake.flavor, self.cake.mold))
+            if path and os.path.exists(path):
+                img = pygame.image.load(path).convert_alpha()
+                original_width, original_height = img.get_size()
+                new_width = 150  # ← definisikan dulu!
+                new_height = int(original_height * (new_width / original_width))
+                self._adonan_image = pygame.transform.smoothscale(img, (new_width, new_height))
 
-        if os.path.exists(CAKE_TEMPORARY):
-            img = pygame.image.load(CAKE_TEMPORARY).convert_alpha()
-            original_width, original_height = img.get_size()
-            new_width = 150
-            new_height = int(original_height * (new_width / original_width))
-            self.cake_image = pygame.transform.smoothscale(img, (new_width, new_height))
+        if self.cake and self.cake.flavor and self.cake.mold:
+            baked_path = BAKED_CAKE.get((self.cake.flavor, self.cake.mold))
+            if baked_path and os.path.exists(baked_path):
+                img = pygame.image.load(baked_path).convert_alpha()
+                original_width, original_height = img.get_size()
+                new_width = 130
+                new_height = int(original_height * (new_width / original_width))
+                self.cake_image = pygame.transform.smoothscale(img, (new_width, new_height))
             
           # Load oven image
         if os.path.exists(OVEN_CLOSE_IMAGE):
@@ -185,6 +216,7 @@ class BakingRoom(Room):
             if self.elapsed <= 0: 
                 print("Kue matang!")
                 self.bakeDough = False
+                self.cake.set_baked()
                 self.isBaked = True
                 self.isReadyToTake = True
                 
