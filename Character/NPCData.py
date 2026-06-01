@@ -11,9 +11,9 @@ class NPCData:
     dialogues: dict = field(default_factory=dict)
     affinity_thresholds: dict = field(default_factory=dict)
     assets: dict = field(default_factory=dict)
+    ending: dict = field(default_factory=dict)        
 
     # ── Preference helpers ──
-
     def get_preferred_flavors(self) -> list[str]:
         return self.preferences.get("flavors", [])
 
@@ -32,8 +32,7 @@ class NPCData:
     def get_disliked_decorations(self) -> list[str]:
         return self.dislikes.get("decorations", [])
 
-    # ── Sprite helpers (GENERIC — supports ANY expression) ──
-
+    # ── Sprite helpers ──
     def get_sprite_path(self) -> str:
         return self.assets.get("sprite", "")
 
@@ -44,8 +43,11 @@ class NPCData:
     def get_all_expression_names(self) -> list[str]:
         return list(self.assets.get("expressions", {}).keys())
 
-    # ── Dialogue helpers ──
+    def get_expression_sfx(self, expression: str) -> str | None:
+        sfx_overrides = self.assets.get("expression_sfx", {})
+        return sfx_overrides.get(expression)
 
+    # ── Dialogue helpers ──
     def get_moods_for_level(self, level: int) -> list[str]:
         level_data = self.dialogues.get(f"level_{level}")
         if level_data is None:
@@ -87,12 +89,7 @@ class NPCData:
     def get_dialogues_for_level(self, level: int) -> list[dict]:
         return self.get_dialogue_entries(level, "neutral", "a")
 
-    def get_expression_sfx(self, expression: str) -> str | None:
-        sfx_overrides = self.assets.get("expression_sfx", {})
-        return sfx_overrides.get(expression)
-    
     # ── Affinity thresholds ──
-
     def get_level_for_affinity(self, affinity: int) -> int:
         level = 0
         for key, threshold in self.affinity_thresholds.items():
@@ -106,10 +103,23 @@ class NPCData:
         return level
 
     def has_ending(self) -> bool:
-        return "ending" in self.affinity_thresholds
+        return "ending" in self.affinity_thresholds and bool(self.ending)
 
     def get_ending_threshold(self) -> int:
         return self.affinity_thresholds.get("ending", -1)
+
+    # ── Ending helpers (BARU) ──
+    def get_ending_background(self) -> str:
+        return self.ending.get("background", "")
+
+    def get_ending_bgm(self) -> str:
+        return self.ending.get("bgm", "")
+
+    def get_ending_sprite(self) -> str:
+        return self.ending.get("sprite", self.get_sprite_path())
+
+    def get_ending_dialogues(self) -> list[dict]:
+        return self.ending.get("dialogues", [])
 
     def __str__(self) -> str:
         return (f"NPCData(id={self.id}, name={self.name}, "

@@ -67,6 +67,7 @@ CASHIER_BG        = os.path.join(ASSETS_DIR, "cashier_bg.png")
 BAKING_BG         = os.path.join(ASSETS_DIR, "BakingRoom.png")
 DEKORASI_BG       = os.path.join(ASSETS_DIR, "dekorasi_bg.png")
 DOUGH_BG          = os.path.join(ASSETS_DIR, "dough room.jpeg")
+ENDING_BG          = os.path.join(ASSETS_DIR, "ending_background.jpg")
 
 # Main Menu Buttons
 BTN_PLAY          = os.path.join(ASSETS_DIR, "btn_play.png")
@@ -289,3 +290,7 @@ ORDER_UI_DETAIL_VALUE_X = 110
 ORDER_UI_DETAIL_LABELS = ["Flavor:", "Mold:", "Top:"]
 ORDER_UI_TIMER_OFFSET_X = 95
 ORDER_UI_TIMER_OFFSET_Y = 16
+
+
+ENDING_NPC_X = SCREEN_WIDTH // 2 - NPC_WIDTH // 2   
+ENDING_NPC_Y = SCREEN_HEIGHT - NPC_HEIGHT - 200

@@ -532,5 +532,44 @@
         "expression_sfx": {
             "angry": "baka"
         }
+    },
+    "ending": {
+        "background": "Assets/ending_background.jpg",
+        "bgm": "Assets/Audio/BGM/ending.mp3",
+        "sprite": "Assets/NPC/lucy.png",
+        "dialogues": [
+            {
+                "id": "ardra_end_1",
+                "text": "Kamu tahu... sejak pertama kali datang ke sini, aku selalu merasa nyaman.",
+                "next": "ardra_end_2"
+            },
+            {
+                "id": "ardra_end_2",
+                "text": "Kamu selalu buat kue yang sempurna untukku... dan selalu membuatku tersenyum.",
+                "choices": [
+                    {
+                        "text": "Kamu juga membuatku tersenyum, Ardra.",
+                        "expression": "happy",
+                        "emoji": "happy",
+                        "next": "ardra_end_3a"
+                    },
+                    {
+                        "text": "Aku senang bisa membuatmu bahagia.",
+                        "expression": "happy",
+                        "next": "ardra_end_3b"
+                    }
+                ]
+            },
+            {
+                "id": "ardra_end_3a",
+                "text": "B-benarkah...? Aku... aku juga... terima kasih untuk semuanya...",
+                "next": null
+            },
+            {
+                "id": "ardra_end_3b",
+                "text": "Hehe... kamu memang baik sekali... aku tidak akan pernah melupakanmu...",
+                "next": null
+            }
+        ]
     }
 }
