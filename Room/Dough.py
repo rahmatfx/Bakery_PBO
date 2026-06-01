@@ -26,7 +26,7 @@ class Dough(Room):
         self._exhaust_mouth = None
         self._dough_x = 0
         self._dough_y = 200
-        self._target_y = 350
+        self._target_y = 400
         self._dough_speed = 25
         self._dough_entered = False
         self._selected_dough = None
@@ -82,7 +82,7 @@ class Dough(Room):
 
                 self._dough_image = pygame.transform.smoothscale(
                     self._dough_image,
-                    (250,225)
+                    (250,175)
                 )
 
                 self._dough_x = (SCREEN_WIDTH // 2 -125)
@@ -123,7 +123,7 @@ class Dough(Room):
         self._dough_image = pygame.image.load(Constant.Adonan_IMAGE).convert_alpha()
         self._dough_image = pygame.transform.smoothscale(
             self._dough_image,
-            (250,225)
+            (250,175)
         )
         self._dough_entered = True
         self._dough_y = -150
@@ -134,7 +134,7 @@ class Dough(Room):
         self._dough_image = pygame.image.load(Constant.Adonan_Coklat_IMAGE).convert_alpha()
         self._dough_image = pygame.transform.smoothscale(
             self._dough_image,
-            (250,225)
+            (250,175)
         )
         self._dough_entered = True
         self._dough_y = -250
@@ -145,7 +145,7 @@ class Dough(Room):
         self._dough_image = pygame.image.load(Constant.Adonan_Strawberry_IMAGE).convert_alpha()
         self._dough_image = pygame.transform.smoothscale(
             self._dough_image,
-            (250,225)
+            (250,175)
         )
         self._dough_entered = True
         self._dough_y = -350
