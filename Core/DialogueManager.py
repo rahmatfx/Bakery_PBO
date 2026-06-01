@@ -33,7 +33,7 @@ class DialogueManager:
         self._current_id = None
         self._finished = False
 
-    # ── Query ──
+    # Query
 
     def get_current(self) -> dict | None:
         if not self._current_id:
@@ -47,7 +47,7 @@ class DialogueManager:
     def is_finished(self) -> bool:
         return self._finished
 
-    # ── Advance ──
+    # Advance 
 
     def advance(self, choice_index: int = -1) -> AdvanceResult:
 
@@ -86,7 +86,7 @@ class DialogueManager:
 
         return result
 
-    # ── Debug ──
+    # Debug
 
     def __str__(self) -> str:
         state = "finished" if self._finished else f"at {self._current_id}"

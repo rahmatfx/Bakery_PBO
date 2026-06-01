@@ -33,14 +33,12 @@ class EndingRoom(Room):
         self._npc_offset: tuple[float, float, float] = (0, 0, 1.0)
         self._emoji_scale: float = 1.0
 
-        # "dialogue" → sedang berjalan | "finished" → selesai, tunggu klik
         self._phase = "dialogue"
 
         # Font & text cache
         self._font: pygame.font.Font | None = None
         self._text_cache: dict[str, pygame.Surface] = {}
 
-    # ── Setup (dipanggil SceneManager.start_ending sebelum enter) ─────────
 
     def setup(self, npc_data: NPCData, audio=None) -> None:
         self._npc_data           = npc_data
@@ -95,7 +93,6 @@ class EndingRoom(Room):
               f"expressions={list(self._expression_sprites.keys())}, "
               f"bg={'ada' if self._background else 'TIDAK ADA'}")
 
-    # ── Lifecycle ─────────────────────────────────────────────────────────
 
     def enter(self) -> None:
         self._font = pygame.font.SysFont(Constant.FONT_NAME, Constant.FONT_BODY_SIZE)
@@ -111,7 +108,6 @@ class EndingRoom(Room):
     def exit(self) -> None:
         print("[EndingRoom] Exit")
 
-    # ── Helper ───────────────────────────────────────────────────────────
 
     @staticmethod
     def _load_and_scale(path: str, w: int, h: int) -> pygame.Surface | None:
@@ -132,7 +128,7 @@ class EndingRoom(Room):
             self._text_cache[key] = self._font.render(text, True, color)
         return self._text_cache[key]
 
-    # ── Dialogue ─────────────────────────────────────────────────────────
+    # Dialogue 
 
     def _show_current_dialogue(self) -> None:
         entry = self._dialogue_manager.get_current()
@@ -178,7 +174,7 @@ class EndingRoom(Room):
         if result.emoji:
             self._show_emoji_popup(result.emoji)
 
-    # ── Emoji Popup ───────────────────────────────────────────────────────
+    # Emoji Popup 
 
     def _show_emoji_popup(self, expression: str) -> None:
         surface = self._expression_set.get_surface(expression)
@@ -192,7 +188,7 @@ class EndingRoom(Room):
         if self._audio:
             self._audio.play_sfx("emoji_popup")
 
-    # ── Update ────────────────────────────────────────────────────────────
+    # Update 
 
     def update(self, delta_time: float = 0.0) -> None:
         offsets           = self._animator.update(delta_time)
@@ -203,8 +199,6 @@ class EndingRoom(Room):
 
         if self._phase == "dialogue":
             self._dialogue_box.update(delta_time, self._audio)
-
-    # ── Render ────────────────────────────────────────────────────────────
 
     def render(self) -> None:
         if not self.screen:
@@ -252,7 +246,7 @@ class EndingRoom(Room):
         else:
             self.screen.blit(sprite, (npc_x, npc_y))
 
-    # ── Events ────────────────────────────────────────────────────────────
+    # Events 
 
     def handle_event(self, event) -> None:
         if self._phase == "dialogue":
@@ -262,13 +256,10 @@ class EndingRoom(Room):
                     self._on_dialogue_advance(result)
             return
 
-        # Setelah dialogue selesai — klik untuk kembali ke Main Menu
         if (self._phase == "finished"
                 and self._emoji_popup.is_done()
                 and event.type == pygame.MOUSEBUTTONDOWN
                 and event.button == 1):
             print("[EndingRoom] Klik → kembali ke Main Menu")
             if self._scene_manager:
-                # FIX: go_to_main_menu() — bukan transition_to("MainMenu")
-                # MainMenu terdaftar sebagai hidden room dengan nama "Main Menu"
                 self._scene_manager.go_to_main_menu()

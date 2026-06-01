@@ -15,6 +15,25 @@
             "mimo": "neutral"
         },
         "seen_variants": {
+            "ardra_0_neutral": [
+                "a"
+            ],
+            "ardra_0_good": [
+                "b",
+                "a"
+            ],
+            "ardra_1_good": [
+                "a"
+            ],
+            "ardra_1_neutral": [
+                "a"
+            ],
+            "ardra_1_bad": [
+                "a"
+            ],
+            "ardra_0_bad": [
+                "a"
+            ],
             "lucy_0_neutral": [
                 "a"
             ],
