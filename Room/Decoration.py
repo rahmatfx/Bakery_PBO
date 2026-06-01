@@ -1,6 +1,7 @@
 import pygame, os
+from Enum.BakeryEnum import DecorationOption, Mold
 from Room.Room import Room
-from Order.Cake import Cake
+from Order.Cake import Cake, CakeStep
 from UI.Button import Button
 from Constant import (
     SCREEN_WIDTH, 
@@ -142,26 +143,47 @@ class Decoration(Room):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        # load all topping images into the dictionary
-        topping_paths = {
-            "berries":        berriesTop,
-            "cream":          creamTop,
-            "oreo":           oreoTop,
-            "sprinkles_heart": sprinklesHeart,
-            "sprinkles_star":  sprinklesStar,
-            "sprinkles_round": sprinklesRound,
-            "choco_heart":    chocoHeart,
-            "choco_star":     chocoStar,
-            "choco_round":    chocoRound,
-        }
+        if not self.toppingImages:
+            topping_paths = {
+                "berries":         berriesTop,
+                "cream":           creamTop,
+                "oreo":            oreoTop,
+                "sprinkles_heart": sprinklesHeart,
+                "sprinkles_star":  sprinklesStar,
+                "sprinkles_round": sprinklesRound,
+                "choco_heart":     chocoHeart,
+                "choco_star":      chocoStar,
+                "choco_round":     chocoRound,
+            }
 
-        for key, path in topping_paths.items():
-            if os.path.exists(path):
-                img = pygame.image.load(path).convert_alpha()
-                w, h = img.get_size()
-                new_w = 150
-                new_h = int(h * (new_w / w))
-                self.toppingImages[key] = pygame.transform.smoothscale(img, (new_w, new_h))
+            for key, path in topping_paths.items():
+                if os.path.exists(path):
+                    img = pygame.image.load(path).convert_alpha()
+                    w, h = img.get_size()
+                    new_w = 150
+                    new_h = int(h * (new_w / w))
+                    self.toppingImages[key] = pygame.transform.smoothscale(img, (new_w, new_h))
+
+        # sync visual state with cake data on every entry
+        if self.cake and self.cake.decoration:
+            shape = self.cake.mold.value.lower() if self.cake.mold else "round"
+
+            decoration_to_key = {
+                DecorationOption.DRIED_FRUIT: "berries",
+                DecorationOption.WHIPCREAM:   "cream",
+                DecorationOption.OREO:        "oreo",
+                DecorationOption.SPRINKLE:    f"sprinkles_{shape}",
+                DecorationOption.CHOCOCHIP:   f"choco_{shape}",
+            }
+
+            key = decoration_to_key.get(self.cake.decoration)
+            self.topping = self.cake.decoration.value
+            self.toppingImage = self.toppingImages.get(key) if key else None
+            self.isDecorated = True
+        else:
+            self.topping = None
+            self.toppingImage = None
+            self.isDecorated = False
 
 
     def update(self): 
@@ -198,25 +220,46 @@ class Decoration(Room):
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            
+
+            # block decoration if cake isn't baked yet
+            if not self.cake or self.cake.step < CakeStep.BAKED:
+                return
+
+            clicked = None
+
             if self.berries.rect.collidepoint(event.pos):
+                clicked = DecorationOption.DRIED_FRUIT
                 self.topping = "berries"
-                self.toppingImage = self.toppingImages["berries"]
+                self.toppingImage = self.toppingImages.get("berries")
+                print("[debug] berries clicked")
 
             elif self.sprinkles.rect.collidepoint(event.pos):
+                clicked = DecorationOption.SPRINKLE
                 self.topping = "sprinkles"
-                # placeholder — will use cake shape later
-                self.toppingImage = self.toppingImages["sprinkles_heart"]
-
+                # pick variant based on cake mold
+                shape = self.cake.mold.value.lower() if self.cake.mold else "round"
+                self.toppingImage = self.toppingImages.get(f"sprinkles_{shape}")
+                print("[debug] sprinkles clicked")
+                
             elif self.chocochip.rect.collidepoint(event.pos):
+                clicked = DecorationOption.CHOCOCHIP
                 self.topping = "chocochip"
-                # placeholder — will use cake shape later
-                self.toppingImage = self.toppingImages["choco_heart"]
+                shape = self.cake.mold.value.lower() if self.cake.mold else "round"
+                self.toppingImage = self.toppingImages.get(f"choco_{shape}")
+                print("[debug] chocochip clicked")
 
             elif self.cream.rect.collidepoint(event.pos):
+                clicked = DecorationOption.WHIPCREAM
                 self.topping = "cream"
-                self.toppingImage = self.toppingImages["cream"]
+                self.toppingImage = self.toppingImages.get("cream")
+                print("[debug] cream clicked")
 
             elif self.oreo.rect.collidepoint(event.pos):
+                clicked = DecorationOption.OREO
                 self.topping = "oreo"
-                self.toppingImage = self.toppingImages["oreo"]
+                self.toppingImage = self.toppingImages.get("oreo")
+                print("[debug] oreo clicked")
+
+            if clicked:
+                self.cake.set_decoration(clicked)
+                self.isDecorated = True
