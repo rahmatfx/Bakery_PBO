@@ -104,7 +104,6 @@ class AudioManager:
             sound.play()
             return
 
-        # lazy load
         filepath = self._sfx_registry.get(key)
         if filepath and os.path.exists(filepath):
             try:
