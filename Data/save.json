@@ -1,18 +1,16 @@
 {
     "affinity": {
-        "lucy": 56,
-        "ardra": 200,
-        "mimo": 62
+        "lucy": 28,
+        "ardra": 3
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "lucy": "level_3.neutral.a",
-            "mimo": "level_2.good.a"
+            "lucy": "level_1.good.a",
+            "ardra": "level_1.neutral.a"
         },
         "current_mood": {
-            "lucy": "good",
-            "ardra": "good",
-            "mimo": "neutral"
+            "lucy": "neutral",
+            "ardra": "good"
         },
         "seen_variants": {
             "ardra_0_neutral": [
@@ -63,7 +61,8 @@
             "mimo_1_good": [
                 "a"
             ],
-            "mimo_2_neutral": [
+            "ardra_0_good": [
+                "b",
                 "a"
             ]
         }

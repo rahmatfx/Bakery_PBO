@@ -5,7 +5,7 @@
     "preferences": {
         "flavors": ["Chocolate", "Original"],
         "molds": ["Star", "Round"],
-        "decorations": ["Dried Fruit", "Whipcream"]
+        "decorations": ["Berries", "Whipcream"]
     },
     "dislikes": {
         "flavors": ["Strawberry"],
@@ -96,7 +96,7 @@
                         "text": "Hari ini aku pengen coba menu lain deh. Ada saran gak yang bentuknya lucu?",
                         "choices": [
                             {
-                                "text": "Gimana kalau cetakan bentuk Bintang dengan hiasan Dried Fruit? Cantik kayak kamu.",
+                                "text": "Gimana kalau cetakan bentuk Bintang dengan hiasan Berries? Cantik kayak kamu.",
                                 "affinity": 8,
                                 "expression": "happy",
                                 "emoji": "blush",
