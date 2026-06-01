@@ -9,12 +9,13 @@ class CashierRenderContext:
         "state",
         "npc",
         "npc_x",
-        "npc_offset",          # (dx, dy, scale)
-        "npc_sprite",          # pygame.Surface | None
+        "npc_offset",        
+        "npc_sprite",        
         "emoji_scale",
-        "background",          # pygame.Surface | None
-        "heart_img",           # pygame.Surface | None
+        "background",        
+        "heart_img",          
         "cake",
+        "emoji_popup_done",
     )
 
     def __init__(self) -> None:
@@ -27,6 +28,7 @@ class CashierRenderContext:
         self.background = None
         self.heart_img  = None
         self.cake       = None
+        self.emoji_popup_done = False 
 
 
 class CashierRenderer:
@@ -54,7 +56,6 @@ class CashierRenderer:
                order_ui,
                dialogue_box,
                cake_selection_ui,
-               emoji_popup,
                minigame) -> None:
         
         self._render_background(screen, ctx.background)
@@ -74,9 +75,8 @@ class CashierRenderer:
             if ctx.cake and ctx.cake.is_complete():
                 self._render_cake_preview(screen, ctx.cake)
 
-        emoji_popup.render(screen, ctx.emoji_scale)
 
-        if ctx.state == CashierState.REACTING and emoji_popup.is_done():
+        if ctx.state == CashierState.REACTING and ctx.emoji_popup_done:
             self._render_hint(screen, "Click to continue...",
                               Constant.NPC_Y + Constant.NPC_HEIGHT + Constant.HINT_CLICK_OFFSET_Y)
 

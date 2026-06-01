@@ -92,7 +92,6 @@ class KeepHappyMinigame:
     # Render
 
     def render(self, screen: pygame.Surface, npc_x: float) -> None:
-        """Render prompt dan flash sukses ke screen."""
         self._ensure_fonts()
         self._render_prompt(screen)
         self._render_success_flash(screen, npc_x)
@@ -119,7 +118,24 @@ class KeepHappyMinigame:
         self._prompt_active  = False
         self._cooldown       = Constant.MG_PROMPT_COOLDOWN
         self._success_flash  = 0.7
-        self.just_succeeded  = True   # Cashier akan baca ini
+        self.just_succeeded  = True   
+
+    def resume(self, elapsed: float = 0.0) -> None:
+        self._running = True
+
+        if elapsed <= 0:
+            return
+
+        if self._prompt_active:
+            self._prompt_timer -= elapsed
+            if self._prompt_timer <= 0:
+                self._prompt_active = False
+                self._cooldown = Constant.MG_PROMPT_COOLDOWN
+                print(f"[KeepHappyMG] Prompt terlewat saat di luar room ({elapsed:.1f}s)")
+        else:
+            if self._prompt_count < Constant.MG_MAX_PROMPTS:
+                self._cooldown -= elapsed
+                self._cooldown = max(self._cooldown, -0.1)
 
     # Rendering helpers 
 

@@ -22,7 +22,10 @@ class AudioManager:
         self._type_cooldown: float = 0.0
         self._type_cooldown_max: float = Constant.TYPEWRITER_SFX_COOLDOWN
 
+        self._type_channel: pygame.mixer.Channel | None = None
+
         pygame.mixer.music.set_volume(self._bgm_volume)
+        
 
     # Register
 
@@ -114,6 +117,8 @@ class AudioManager:
             except pygame.error as e:
                 print(f"[AudioManager] Gagal load & play SFX '{key}': {e}")
 
+    
+
     def set_sfx_volume(self, volume: float) -> None:
         self._sfx_volume = max(0.0, min(1.0, volume))
         for sound in self._sfx_cache.values():
@@ -124,8 +129,15 @@ class AudioManager:
     def play_type_tick(self, delta_time: float) -> None:
         self._type_cooldown -= delta_time
         if self._type_cooldown <= 0:
-            self.play_sfx("dialogue_type")
+            sound = self._sfx_cache.get("dialogue_type")
+            if sound:
+                self._type_channel = sound.play()  # simpan channel-nya
             self._type_cooldown = self._type_cooldown_max
+
+    def stop_type_tick(self) -> None:
+        sound = self._sfx_cache.get("dialogue_type")
+        if sound:
+            sound.stop()
 
     def reset_type_cooldown(self) -> None:
         self._type_cooldown = 0.0

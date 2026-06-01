@@ -1,95 +1,53 @@
 {
     "affinity": {
-        "lucy": 68,
-        "ardra": 18,
-        "angga": 49,
-        "mimo": 61
+        "mimo": 27,
+        "ardra": 4,
+        "angga": 20,
+        "lucy": 10
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "angga": "level_2.neutral.a",
-            "ardra": "level_1.good.a",
-            "mimo": "level_2.good.a",
-            "lucy": "level_3.neutral.a"
+            "ardra": "level_0.good.a",
+            "lucy": "level_1.neutral.a",
+            "angga": "level_1.neutral.a",
+            "mimo": "level_1.neutral.a"
         },
         "current_mood": {
-            "lucy": "good",
+            "mimo": "good",
             "ardra": "neutral",
             "angga": "good",
-            "mimo": "neutral"
+            "lucy": "neutral"
         },
         "seen_variants": {
-            "ardra_0_neutral": [
-                "a"
-            ],
-            "ardra_0_good": [
+            "mimo_0_neutral": [
                 "b",
                 "a"
             ],
-            "ardra_1_good": [
-                "a"
-            ],
-            "ardra_1_neutral": [
-                "a"
-            ],
-            "ardra_1_bad": [
-                "a"
-            ],
-            "ardra_0_bad": [
-                "a"
-            ],
-            "lucy_0_neutral": [
-                "a"
-            ],
-            "lucy_0_good": [
-                "a"
-            ],
-            "lucy_1_neutral": [
-                "a"
-            ],
-            "lucy_1_good": [
-                "a"
-            ],
-            "lucy_2_neutral": [
-                "a"
-            ],
-            "lucy_2_good": [
-                "a"
-            ],
-            "mimo_0_neutral": [
-                "a"
-            ],
-            "mimo_2_good": [
-                "a"
-            ],
-            "mimo_1_neutral": [
-                "a"
-            ],
-            "mimo_1_good": [
+            "ardra_0_neutral": [
                 "a"
             ],
             "angga_0_neutral": [
                 "b",
                 "a"
             ],
-            "angga_0_good": [
+            "ardra_0_good": [
+                "b",
                 "a"
             ],
             "mimo_0_good": [
                 "a"
             ],
-            "angga_1_neutral": [
+            "lucy_0_neutral": [
+                "b",
                 "a"
             ],
-            "angga_1_good": [
+            "angga_0_good": [
                 "a"
             ],
-            "mimo_2_neutral": [
+            "mimo_1_good": [
                 "a"
             ]
         }
     },
-    "date_events": {
-        "lucy:2": true
-    }
+    "date_events": {}
 }
