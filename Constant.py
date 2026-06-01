@@ -29,18 +29,19 @@ BGM_BAKING     = os.path.join(BGM_DIR, "baking.ogg")
 BGM_DECORATION = os.path.join(BGM_DIR, "decoration.ogg")
 
 # SFX files
-SFX_DIALOGUE_TYPE  = os.path.join(SFX_DIR, "dialogue_type.ogg")
-SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.ogg")
-SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.ogg")
-SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.ogg")
-SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.ogg")
-SFX_ORDER_WRONG = os.path.join(SFX_DIR, "order_wrong.ogg")
-SFX_NAV_CLICK = os.path.join(SFX_DIR, "nav_click.ogg")
-SFX_AFFINITY_UP  = os.path.join(SFX_DIR, "affinity_up.ogg")
-SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.ogg")
-ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.ogg")
-SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.ogg")
-HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.ogg")
+SFX_DIALOGUE_TYPE  = os.path.join(SFX_DIR, "dialogue_type.mp3") #
+SFX_DIALOGUE_CLICK = os.path.join(SFX_DIR, "dialogue_click.mp3")#
+SFX_EMOJI_POPUP    = os.path.join(SFX_DIR, "emoji_popup.mp3")#
+SFX_ORDER_NEW      = os.path.join(SFX_DIR, "order_new.mp3")#
+SFX_ORDER_CORRECT  = os.path.join(SFX_DIR, "order_correct.mp3")#
+SFX_ORDER_WRONG = os.path.join(SFX_DIR, "order_wrong.mp3")#
+SFX_NAV_CLICK = os.path.join(SFX_DIR, "nav_click.mp3")
+SFX_AFFINITY_UP  = os.path.join(SFX_DIR, "affinity_up.mp3")#
+SFX_TIMER_URGENT  = os.path.join(SFX_DIR, "timer_urgent.mp3")#
+ANGRY_SFX   = os.path.join(SFX_DIR, "angry_sfx.mp3")#
+SAD_SFX   = os.path.join(SFX_DIR, "sad_sfx.mp3")
+HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.mp3")#
+
 BAKA   = os.path.join(SFX_DIR, "baka.mp3")
 
 # Animation
@@ -85,6 +86,22 @@ Exhaust_Mouth_IMAGE = os.path.join(ASSETS_DIR,"Exhaust_Mulut.PNG")
 BTN_Original_IMAGE = os.path.join(ASSETS_DIR, "original_button.png")
 BTN_Coklat_IMAGE = os.path.join(ASSETS_DIR, "coklat_button.png")
 BTN_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "strawberry_button.png")
+
+Cetakan_Love_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Love.png")
+Cetakan_Round_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Round.png")
+Cetakan_Star_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Star.png")
+
+Raw_Ori_Round_Image = os.path.join(ASSETS_DIR, "Round_Ori.PNG")
+Raw_Ori_Star_Image = os.path.join(ASSETS_DIR, "Star_Ori.PNG")
+Raw_Ori_Love_Image = os.path.join(ASSETS_DIR, "Love_Ori.PNG")
+
+Raw_Coklat_Round_Image = os.path.join(ASSETS_DIR, "Round_Coklat.PNG")
+Raw_Coklat_Star_Image = os.path.join(ASSETS_DIR, "Star_Coklat.PNG")
+Raw_Coklat_Love_Image = os.path.join(ASSETS_DIR, "Love_Coklat.PNG")
+
+Raw_Strawberry_Round_Image = os.path.join(ASSETS_DIR, "Round_Pink.PNG")
+Raw_Strawberry_Star_Image = os.path.join(ASSETS_DIR, "Star_Pink.PNG")
+Raw_Strawberry_Love_Image = os.path.join(ASSETS_DIR, "Love_Pink.PNG")
 
 # Decoration Room Images
 berries_decor_IMAGE = os.path.join(ASSETS_DIR, "berriesBowl.png")
