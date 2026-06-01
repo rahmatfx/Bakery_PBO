@@ -484,6 +484,7 @@ class Cashier(Room):
         ctx.emoji_scale = self._emoji_scale
         ctx.background  = self._current_bg
         ctx.heart_img   = self._heart_img
+        ctx.cake        = self.cake
 
     # Events
 
@@ -505,10 +506,14 @@ class Cashier(Room):
             return
 
         if self._state == CashierState.ORDER_ACTIVE:
-            if (event.type == pygame.MOUSEBUTTONDOWN
-                    and event.button == 1
-                    and self._minigame.handle_click(event.pos)):
-                pass
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self._minigame.handle_click(event.pos):
+                    pass
+                elif (self.cake and self.cake.is_complete()
+                    and hasattr(self._renderer, '_submit_btn_rect')
+                    and self._renderer._submit_btn_rect
+                    and self._renderer._submit_btn_rect.collidepoint(event.pos)):
+                    self.check_cake()
             return
 
         if (self._state == CashierState.REACTING
