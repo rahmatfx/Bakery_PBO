@@ -31,7 +31,7 @@ RAW_CAKE = {
 class Dough(Room):
     def __init__(self):
         super().__init__(name="Dough")
-        self.cake = Cake()
+        self.cake: Cake = None
         self._bg_image = None
         self._font_heading = pygame.font.SysFont(FONT_NAME, FONT_HEADING_SIZE)
         self._font_body = pygame.font.SysFont(FONT_NAME, FONT_BODY_SIZE)
