@@ -156,6 +156,11 @@ class BakingRoom(Room):
                     if self.isReadyToTake:
                         self.isInNampan = True
                         print("Kue Masuk Nampan") 
+                        if self.isInNampan:
+                            self.doughInFront = False
+                            self._doughInOven = False
+                            self.bakeDough = False
+                            self.isReadyToTake = False
                 if (self._oven_isOpen and self._adonan_rect.colliderect(self._oven_rect)):
                     self._adonan_rect.center = self.rect_posOvenDough.center 
         
