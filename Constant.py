@@ -87,6 +87,22 @@ BTN_Original_IMAGE = os.path.join(ASSETS_DIR, "original_button.png")
 BTN_Coklat_IMAGE = os.path.join(ASSETS_DIR, "coklat_button.png")
 BTN_Strawberry_IMAGE = os.path.join(ASSETS_DIR, "strawberry_button.png")
 
+Cetakan_Love_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Love.png")
+Cetakan_Round_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Round.png")
+Cetakan_Star_IMAGE = os.path.join(ASSETS_DIR, "Cetakan_Star.png")
+
+Raw_Ori_Round_Image = os.path.join(ASSETS_DIR, "Round_Ori.PNG")
+Raw_Ori_Star_Image = os.path.join(ASSETS_DIR, "Star_Ori.PNG")
+Raw_Ori_Love_Image = os.path.join(ASSETS_DIR, "Love_Ori.PNG")
+
+Raw_Coklat_Round_Image = os.path.join(ASSETS_DIR, "Round_Coklat.PNG")
+Raw_Coklat_Star_Image = os.path.join(ASSETS_DIR, "Star_Coklat.PNG")
+Raw_Coklat_Love_Image = os.path.join(ASSETS_DIR, "Love_Coklat.PNG")
+
+Raw_Strawberry_Round_Image = os.path.join(ASSETS_DIR, "Round_Pink.PNG")
+Raw_Strawberry_Star_Image = os.path.join(ASSETS_DIR, "Star_Pink.PNG")
+Raw_Strawberry_Love_Image = os.path.join(ASSETS_DIR, "Love_Pink.PNG")
+
 # Decoration Room Images
 berries_decor_IMAGE = os.path.join(ASSETS_DIR, "berriesBowl.png")
 berries_hover_IMAGE = os.path.join(ASSETS_DIR, "berriesHover.png")
