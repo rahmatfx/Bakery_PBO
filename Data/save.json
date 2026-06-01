@@ -1,22 +1,24 @@
 {
     "affinity": {
-        "lucy": 36,
-        "ardra": 3
+        "lucy": 56,
+        "ardra": 200,
+        "mimo": 42
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "lucy": "level_3.neutral.a"
+            "lucy": "level_3.neutral.a",
+            "mimo": "level_2.neutral.a"
         },
         "current_mood": {
             "lucy": "good",
-            "ardra": "good"
+            "ardra": "good",
+            "mimo": "good"
         },
         "seen_variants": {
             "ardra_0_neutral": [
                 "a"
             ],
             "ardra_0_good": [
-                "b",
                 "a"
             ],
             "ardra_1_good": [
@@ -37,16 +39,10 @@
             "lucy_0_good": [
                 "a"
             ],
-            "ardra_0_neutral": [
-                "a"
-            ],
             "lucy_1_neutral": [
                 "a"
             ],
             "lucy_1_good": [
-                "a"
-            ],
-            "ardra_0_good": [
                 "a"
             ],
             "lucy_2_neutral": [
@@ -54,7 +50,22 @@
             ],
             "lucy_2_good": [
                 "a"
+            ],
+            "mimo_0_neutral": [
+                "a"
+            ],
+            "mimo_2_good": [
+                "a"
+            ],
+            "mimo_1_neutral": [
+                "a"
+            ],
+            "mimo_1_good": [
+                "a"
             ]
         }
+    },
+    "date_events": {
+        "lucy:2": true
     }
 }
