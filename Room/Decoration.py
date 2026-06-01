@@ -1,6 +1,7 @@
 import pygame, os
+from Enum.BakeryEnum import DecorationOption, Mold
 from Room.Room import Room
-from Order.Cake import Cake
+from Order.Cake import Cake, CakeStep
 from UI.Button import Button
 from Constant import (
     SCREEN_WIDTH, 
@@ -198,25 +199,41 @@ class Decoration(Room):
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            
+
+            # block decoration if cake isn't baked yet
+            if not self.cake or self.cake.step < CakeStep.BAKED:
+                return
+
+            clicked = None
+
             if self.berries.rect.collidepoint(event.pos):
+                clicked = DecorationOption.DRIED_FRUIT
                 self.topping = "berries"
-                self.toppingImage = self.toppingImages["berries"]
+                self.toppingImage = self.toppingImages.get("berries")
 
             elif self.sprinkles.rect.collidepoint(event.pos):
+                clicked = DecorationOption.SPRINKLE
                 self.topping = "sprinkles"
-                # placeholder — will use cake shape later
-                self.toppingImage = self.toppingImages["sprinkles_heart"]
+                # pick variant based on cake mold
+                shape = self.cake.mold.value.lower() if self.cake.mold else "round"
+                self.toppingImage = self.toppingImages.get(f"sprinkles_{shape}")
 
             elif self.chocochip.rect.collidepoint(event.pos):
+                clicked = DecorationOption.CHOCOCHIP
                 self.topping = "chocochip"
-                # placeholder — will use cake shape later
-                self.toppingImage = self.toppingImages["choco_heart"]
+                shape = self.cake.mold.value.lower() if self.cake.mold else "round"
+                self.toppingImage = self.toppingImages.get(f"choco_{shape}")
 
             elif self.cream.rect.collidepoint(event.pos):
+                clicked = DecorationOption.WHIPCREAM
                 self.topping = "cream"
-                self.toppingImage = self.toppingImages["cream"]
+                self.toppingImage = self.toppingImages.get("cream")
 
             elif self.oreo.rect.collidepoint(event.pos):
+                clicked = DecorationOption.OREO
                 self.topping = "oreo"
-                self.toppingImage = self.toppingImages["oreo"]
+                self.toppingImage = self.toppingImages.get("oreo")
+
+            if clicked:
+                self.cake.set_decoration(clicked)
+                self.isDecorated = True
