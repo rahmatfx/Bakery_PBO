@@ -175,7 +175,7 @@ class Decoration(Room):
                 new_w = 150
                 new_h = int(img.get_height() * (new_w / img.get_width()))
                 self.cakeImg = pygame.transform.smoothscale(img, (new_w, new_h))
-                self.cakeRect = self.cakeImg.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+                self.cakeRect = self.cakeImg.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT - 170))
 
         if not self.toppingImages:
             topping_paths = {
@@ -248,8 +248,7 @@ class Decoration(Room):
 
             # render topping on top of cake
             if self.toppingImage:
-                # fixed for now — swap (SCREEN_WIDTH//2, SCREEN_HEIGHT//2) for cakeRect.center later
-                topping_rect = self.toppingImage.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+                topping_rect = self.toppingImage.get_rect(center=(self.cakeRect.centerx, self.cakeRect.centery - 20))
                 self.screen.blit(self.toppingImage, topping_rect)
         else:
             self.screen.fill(COLOR_BG_CREAM)
