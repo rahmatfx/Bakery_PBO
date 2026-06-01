@@ -75,7 +75,7 @@ class NPCRegistry:
 
         # Weighted random
         # Weight = max_affinity - current_affinity + 1
-        # Jadi affinity 0 → weight tinggi, affinity 50 → weight rendah
+        # Jadi affinity 0 → weight tinggi, affinity 50 = weight rendah
         # +1 supaya yang affinity tinggi tetap bisa muncul
         weights = []
         npc_list = list(available.values())
