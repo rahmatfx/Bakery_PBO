@@ -1,32 +1,30 @@
 {
     "affinity": {
-        "ardra": 13,
-        "lucy": -58
+        "ardra": 300,
+        "lucy": 358
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "ardra": "level_1.neutral.a",
-            "lucy": "level_0.bad.a"
+            "lucy": "ending.romance"
         },
         "current_mood": {
-            "ardra": "bad",
-            "lucy": "bad"
+            "ardra": "neutral",
+            "lucy": "neutral"
         },
         "seen_variants": {
             "ardra_0_neutral": [
-                "a",
-                "b"
+                "b",
+                "a"
             ],
             "ardra_0_good": [
-                "a",
-                "b"
+                "b",
+                "a"
             ],
             "ardra_1_good": [
                 "a"
             ],
             "ardra_1_neutral": [
-                "a",
-                "b"
+                "a"
             ],
             "ardra_1_bad": [
                 "a"
@@ -38,13 +36,19 @@
                 "a"
             ],
             "lucy_0_good": [
-                "a",
-                "b"
+                "b",
+                "a"
             ],
             "lucy_0_bad": [
                 "a"
             ],
             "lucy_1_bad": [
+                "a"
+            ],
+            "lucy_3_bad": [
+                "a"
+            ],
+            "lucy_3_neutral": [
                 "a"
             ]
         }

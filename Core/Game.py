@@ -11,6 +11,7 @@ from Room.Cashier import Cashier
 from Room.Decoration import Decoration
 from Room.RoomBaking import BakingRoom
 from Room.Dough import Dough
+from Room.EndingRoom import EndingRoom
 from Character.NPCRegistry import NPCRegistry
 
 
@@ -44,42 +45,50 @@ class Game:
 
         self.cake = Cake()
 
-        # rooms
-        main_menu = MainMenu()
-        cashier = Cashier(self.npc_registry, self.save_manager,
-                          self.dialogue_tracker, self.audio)
-        dekorasi = Decoration()
-        baking = BakingRoom()
-        dough = Dough()
+        # Rooms
+        main_menu   = MainMenu()
+        cashier     = Cashier(self.npc_registry, self.save_manager,
+                              self.dialogue_tracker, self.audio)
+        dekorasi    = Decoration()
+        baking      = BakingRoom()
+        dough       = Dough()
+        ending_room = EndingRoom()
 
-        main_menu.screen = self.screen
-        cashier.screen = self.screen
-        dekorasi.screen = self.screen
-        baking.screen = self.screen
-        dough.screen = self.screen
+        # ── Inject screen ke SEMUA room ──────────────────────────────────
+        main_menu.screen   = self.screen
+        cashier.screen     = self.screen
+        dekorasi.screen    = self.screen
+        baking.screen      = self.screen
+        dough.screen       = self.screen
+        ending_room.screen = self.screen   # ← FIX: sebelumnya tidak ada ini
 
-        # inject cake
-        cashier.cake = self.cake
-        dough.cake = self.cake
-        baking.cake = self.cake
+        # Inject cake
+        cashier.cake  = self.cake
+        dough.cake    = self.cake
+        baking.cake   = self.cake
         dekorasi.cake = self.cake
 
+        # ── Register rooms ke navbar (muncul di tombol navigasi) ─────────
         self.scene_manager.register_room(cashier)
         self.scene_manager.register_room(dough)
         self.scene_manager.register_room(baking)
         self.scene_manager.register_room(dekorasi)
 
+        self.scene_manager.register_hidden_room(ending_room)   # ← FIX: bukan register_room
+        self.scene_manager.register_hidden_room(main_menu)     # ← agar bisa transition balik
+
         main_menu.set_scene_manager(self.scene_manager)
         cashier.set_scene_manager(self.scene_manager)
+        ending_room.set_scene_manager(self.scene_manager)
 
         self.scene_manager.current_room = main_menu
         main_menu.enter()
 
-        # main menu bgm
+        # Main menu BGM
         self.audio.play_bgm("main_menu")
 
         self.scene_manager.navigation_ui.build_buttons(
-            self.scene_manager.get_room_names()
+            self.scene_manager.get_room_names()   # hanya room yang visible
         )
         self.scene_manager.navigation_ui.set_room(main_menu.name)
 
@@ -115,7 +124,6 @@ class Game:
         self.audio.stop_bgm()
         affinity = self.npc_registry.get_all_affinity()
         self.save_manager.save_affinity(affinity)
-        # save dialogue tracker
         tracker_data = self.dialogue_tracker.get_save_data()
         self.save_manager.save_dialogue_tracker(tracker_data)
         print("[Game] Save on exit complete")

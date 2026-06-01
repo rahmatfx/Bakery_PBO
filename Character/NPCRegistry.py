@@ -36,6 +36,7 @@ class NPCRegistry:
                     dialogues=raw.get("dialogues", {}),
                     affinity_thresholds=raw.get("affinity_thresholds", {}),
                     assets=raw.get("assets", {}),
+                    ending=raw.get("ending", {}), 
                 )
 
                 self.npcs[npc.id] = npc

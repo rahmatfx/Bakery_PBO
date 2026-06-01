@@ -186,6 +186,10 @@ class Cashier(Room):
 
         if self._state == CashierState.HIDDEN:
             self.showNPC()
+            
+            self._debug_ending_status()
+            self._check_and_trigger_ending()
+            return
 
     def exit(self) -> None:
         print("[DEBUG Cashier] Exiting room")
@@ -226,6 +230,7 @@ class Cashier(Room):
         self._order_ui.hide()
         self.dialogue_box.hide()
         self.cake_selection.hide()
+
 
         print(f"[DEBUG Cashier] NPC spawned: {self.npc.name} "
               f"(affinity: {self.npc.affinity}, level: {self.npc.get_affinity_level()})")
@@ -443,6 +448,24 @@ class Cashier(Room):
         self.animator.shake("npc")
         self._auto_save()
 
+    def _check_and_trigger_ending(self) -> bool:
+        if not self.npc or not self.npc.data.has_ending():
+            return False
+        if self.npc.affinity < self.npc.data.get_ending_threshold():
+            return False
+
+    
+        self._order_ui.hide()
+        self.dialogue_box.hide()
+        self.cake_selection.hide()
+        self._emoji_popup.hide()
+
+    # Trigger ending
+        print(f"[DEBUG Cashier] Ending triggered for {self.npc.name}!")
+        if self._scene_manager:
+            self._scene_manager.start_ending(self.npc.data)
+        return True
+
     # ── Emoji Popup ──
 
     def _show_emoji_popup(self, expression: str) -> None:
@@ -645,6 +668,11 @@ class Cashier(Room):
         return getattr(Constant, color_name, Constant.COLOR_WARM_BROWN)
 
     def _reset_for_new_round(self) -> None:
+
+        if self._check_and_trigger_ending():
+
+            return
+
         self.npc = None
         self.order = None
         self.cake = None
@@ -672,3 +700,60 @@ class Cashier(Room):
         self._current_npc_img = self._default_npc
 
         self.showNPC()
+
+    def _debug_ending_status(self) -> None:
+        if not self.npc:
+            print("[DEBUG Ending] No NPC loaded yet")
+            return
+
+        npc = self.npc
+        data = npc.data
+
+    # Basic info
+        print(f"[DEBUG Ending] ─────────────────────────────────")
+        print(f"[DEBUG Ending] NPC: {data.name} (id={data.id})")
+        print(f"[DEBUG Ending] Affinity: {npc.affinity}")
+
+    # Check 1: affinity_thresholds punya key "ending"?
+        has_threshold = "ending" in data.affinity_thresholds
+        if has_threshold:
+            threshold = data.affinity_thresholds["ending"]
+            print(f"[DEBUG Ending] Threshold: {threshold} ✅ ada")
+            print(f"[DEBUG Ending]   → affinity {npc.affinity} / {threshold}"
+              f" {'✅ REACHED!' if npc.affinity >= threshold else '❌ not yet'}")
+        else:
+            print(f"[DEBUG Ending] Threshold: ❌ TIDAK ADA key 'ending' di affinity_thresholds")
+            print(f"[DEBUG Ending]   → Yang ada: {list(data.affinity_thresholds.keys())}")
+
+    # Check 2: ending dict punya data?
+        has_ending_data = bool(data.ending)
+        if has_ending_data:
+            keys = list(data.ending.keys())
+            print(f"[DEBUG Ending] Ending data: ✅ ada (keys: {keys})")
+            for key in ["background", "bgm", "sprite", "dialogues"]:
+                val = data.ending.get(key)
+                if val:
+                    if key == "dialogues":
+                        print(f"[DEBUG Ending]   → {key}: {len(val)} entries ✅")
+                    else:
+                        print(f"[DEBUG Ending]   → {key}: {val} ✅")
+                else:
+                    print(f"[DEBUG Ending]   → {key}: ❌ kosong/tidak ada")
+        else:
+            print(f"[DEBUG Ending] Ending data: ❌ TIDAK ADA field 'ending' di JSON")
+
+    # Final verdict
+        can_end = data.has_ending()
+        print(f"[DEBUG Ending] has_ending(): {can_end}")
+        if can_end:
+            threshold = data.get_ending_threshold()
+            reached = npc.affinity >= threshold
+            print(f"[DEBUG Ending] RESULT: {'✅ ENDING READY!' if reached else '⏳ Ending exists, affinity belum cukup'}")
+        else:
+            reason = []
+            if not has_threshold:
+                reason.append("'ending' tidak ada di affinity_thresholds")
+            if not has_ending_data:
+                reason.append("'ending' tidak ada di JSON data")
+            print(f"[DEBUG Ending] RESULT: ❌ TIDAK PUNYA ENDING karena {', '.join(reason)}")
+        print(f"[DEBUG Ending] ─────────────────────────────────")
