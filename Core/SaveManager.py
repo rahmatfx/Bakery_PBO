@@ -58,3 +58,14 @@ class SaveManager:
     def load_dialogue_tracker(self) -> dict:
         data = self.load()
         return data.get("dialogue_tracker", {})
+    
+    def save_date_events(self, date_event_data: dict) -> None:
+        data = self.load()
+        if not data:
+            data = {}
+        data["date_events"] = date_event_data
+        self.save(data)
+
+    def load_date_events(self) -> dict:
+        data = self.load()
+        return data.get("date_events", {})

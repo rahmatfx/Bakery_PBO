@@ -19,9 +19,6 @@ class SceneManager(Observer):
         self.audio  = audio
         self.current_room: Room = None
 
-        # ── Dua kamus room ───────────────────────────────────────────────
-        # _rooms        → muncul di navbar (Cashier, Dough, Baking, Decoration)
-        # _hidden_rooms → TIDAK muncul di navbar (Ending, Main Menu)
         self._rooms: dict[str, Room]        = {}
         self._hidden_rooms: dict[str, Room] = {}
 
@@ -43,32 +40,24 @@ class SceneManager(Observer):
         self._timer_remaining = 0.0
         self._timer_expired   = False
 
-    # ── Register ─────────────────────────────────────────────────────────
+    # Register
 
     def register_room(self, room: Room) -> None:
-        """Register room yang muncul di navbar."""
         self._rooms[room.name] = room
 
     def register_hidden_room(self, room: Room) -> None:
-        """
-        Register room yang TIDAK muncul di navbar.
-        Gunakan untuk: EndingRoom, MainMenu, CreditRoom, dsb.
-        Room ini tetap bisa dituju dengan transition_to().
-        """
         self._hidden_rooms[room.name] = room
         print(f"[SceneManager] Hidden room registered: '{room.name}'")
 
-    # ── Query ─────────────────────────────────────────────────────────────
+    # Query
 
     def _get_room_by_name(self, name: str) -> Room | None:
-        """Cari room di kedua kamus (_rooms dan _hidden_rooms)."""
         return self._rooms.get(name) or self._hidden_rooms.get(name)
 
     def get_room_names(self) -> list[str]:
-        """Hanya return nama room yang VISIBLE di navbar."""
         return list(self._rooms.keys())
 
-    # ── Observer ──────────────────────────────────────────────────────────
+    # Observer
 
     def on_notify(self, event_type: str, data=None) -> None:
         if event_type == "room_change":
@@ -79,7 +68,7 @@ class SceneManager(Observer):
                 return
             self.transition_to(room_name)
 
-    # ── Transition ────────────────────────────────────────────────────────
+    # Transition 
 
     def transition_to(self, room) -> None:
         if isinstance(room, str):
@@ -108,36 +97,28 @@ class SceneManager(Observer):
         self._fade_alpha = 0
 
     def go_to_main_menu(self) -> None:
-        """
-        Shortcut untuk kembali ke Main Menu.
-        Otomatis sembunyikan navbar (Main Menu tidak pakai navbar).
-        """
         self.hide_navigation_ui()
         self.stop_timer()
-        self.transition_to("Main Menu")   # nama sesuai MainMenu.__init__ → "Main Menu"
+        self.transition_to("Main Menu")
 
     def _apply_room_change(self) -> None:
         self.current_room = self._next_room
         self.current_room.enter()
 
-        # Update highlight navbar (untuk room yang visible)
         self.navigation_ui.set_room(self.current_room.name)
 
-        # Navbar: tampil hanya untuk room yang terdaftar di _rooms (visible)
-        # Hidden rooms (Ending, Main Menu) → navbar disembunyikan
         if self.current_room.name in self._rooms:
             self._nav_visible = True
         else:
             self._nav_visible = False
 
-        # Ganti BGM sesuai room
         if self.audio:
             self.audio.play_bgm_for_room(self.current_room.name)
 
         print(f"[DEBUG SM] Current room: '{self.current_room.name}'")
         self._next_room = None
 
-    # ── Nav UI ────────────────────────────────────────────────────────────
+    # Nav UI 
 
     def show_navigation_ui(self) -> None:
         self._nav_visible = True
@@ -145,7 +126,7 @@ class SceneManager(Observer):
     def hide_navigation_ui(self) -> None:
         self._nav_visible = False
 
-    # ── Timer ─────────────────────────────────────────────────────────────
+    # Timer 
 
     def start_timer(self, seconds: float) -> None:
         self._timer_active    = True
@@ -157,6 +138,12 @@ class SceneManager(Observer):
         self._timer_active = False
         self.navigation_ui.set_timer_text("")
         print("[DEBUG SM] Timer stopped")
+
+    def add_time(self, seconds: float) -> None:
+        """Tambah waktu ke timer yang sedang berjalan (untuk reward minigame)."""
+        if self._timer_active:
+            self._timer_remaining += seconds
+            print(f"[DEBUG SM] +{seconds}s added, remaining: {self._timer_remaining:.1f}s")
 
     def get_timer_remaining(self) -> float:
         return max(0.0, self._timer_remaining)
@@ -176,24 +163,22 @@ class SceneManager(Observer):
             self._timer_expired = True
             self.transition_to("Cashier")
 
-    # ── Special triggers ──────────────────────────────────────────────────
+    # Special triggers 
 
     def start_ending(self, npc_data) -> None:
         print(f"[DEBUG SM] start_ending called for '{npc_data.name}'")
-        ending_room = self._hidden_rooms.get("Ending")   # ← cari di hidden rooms
+        ending_room = self._hidden_rooms.get("Ending")
         if ending_room:
             ending_room.setup(npc_data, self.audio)
             self.hide_navigation_ui()
             self.stop_timer()
             self.transition_to(ending_room)
         else:
-            print("[DEBUG SM] Ending room not registered! "
-                  "Gunakan scene_manager.register_hidden_room(ending_room) di Game.py")
+            print("[DEBUG SM] Ending room not registered!")
 
-    # ── Update ────────────────────────────────────────────────────────────
+    # Update 
 
     def update(self, delta_time: float = 0.0) -> None:
-        # ── Fade transition ───────────────────────────────────────────────
         if self._state == TransitionState.FADE_OUT:
             self._fade_alpha += Constant.TRANSITION_SPEED
             if self._fade_alpha >= 255:
@@ -208,42 +193,35 @@ class SceneManager(Observer):
                 self._state      = TransitionState.IDLE
                 print("[DEBUG SM] Transition complete")
 
-                # Jalankan pending transition kalau ada
                 if self._pending_room:
                     pending            = self._pending_room
                     self._pending_room = None
                     print(f"[DEBUG SM] Executing pending transition to '{pending.name}'")
                     self.transition_to(pending)
 
-        # ── Timer tick ────────────────────────────────────────────────────
-        # FIX: timer update di sini (LUAR blok transisi), bukan di dalam
-        # if self._fade_alpha <= 0 seperti kode sebelumnya
         if self._timer_active:
-            self._timer_remaining -= delta_time   # gunakan delta_time, lebih akurat dari 1/FPS
+            self._timer_remaining -= delta_time
             if self._timer_remaining <= 0:
                 self._timer_remaining = 0
                 self._timer_active    = False
                 self._on_timer_expired()
 
-        # ── Timer text di navbar ──────────────────────────────────────────
         if self._timer_active:
             secs = max(0, int(self._timer_remaining))
             self.navigation_ui.set_timer_text(f"Time: {secs}s")
         else:
             self.navigation_ui.set_timer_text("")
 
-        # ── Navbar update ─────────────────────────────────────────────────
         if self._nav_visible:
             self.navigation_ui.update()
 
-        # ── Current room update ───────────────────────────────────────────
         if self.current_room:
             try:
                 self.current_room.update(delta_time)
             except TypeError:
                 self.current_room.update()
 
-    # ── Render ────────────────────────────────────────────────────────────
+    # Render 
 
     def render(self) -> None:
         if self.current_room:
@@ -256,7 +234,7 @@ class SceneManager(Observer):
             self._fade_surface.set_alpha(int(self._fade_alpha))
             self.screen.blit(self._fade_surface, (0, 0))
 
-    # ── Events ────────────────────────────────────────────────────────────
+    # Events
 
     def handle_event(self, event) -> None:
         if self._nav_visible:
