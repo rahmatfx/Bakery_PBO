@@ -19,6 +19,8 @@ class Cake:
         self.topping_surface = None
         self.step: CakeStep = CakeStep.EMPTY
         self.cake_surface = None
+        self.is_baking: bool = False
+        self.bake_start_time: int | None = None
 
 # urusan dough room
 
@@ -88,7 +90,7 @@ class Cake:
             cake_rect = self.cake_surface.get_rect(center=center)
             surface.blit(self.cake_surface, cake_rect)
             # topping sits near the top of the cake
-            topping_center = (cake_rect.centerx, cake_rect.top + 40)
+            topping_center = (cake_rect.centerx, cake_rect.top + 30)
             self.render_topping(surface, topping_center)
 
     def is_complete(self) -> bool:

@@ -63,6 +63,11 @@ class AudioManager:
         self.register_sfx("sad_sfx", Constant.SAD_SFX)
         self.register_sfx("angry_sfx", Constant.ANGRY_SFX)
         self.register_sfx("baka", Constant.BAKA)
+        self.register_sfx("ding_sound", Constant.DING_SOUND)
+        self.register_sfx("oven_button_sound", Constant.OVEN_BUTTON)
+        self.register_sfx("oven_door", Constant.OVEN_DOOR)
+        self.register_sfx("oven_grill", Constant.GRILLING_OVEN)
+
 
     # BGM
 
