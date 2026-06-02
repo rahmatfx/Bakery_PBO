@@ -1,6 +1,6 @@
 {
-    "id": "ardra",
-    "name": "Ardra",
+    "id": "mae-rin",
+    "name": "Mae Rin",
     "personality": "Pemalu tapi penyayang, suka hal-hal yang manis dan lembut",
     "preferences": {
         "flavors": ["Strawberry", "Original"],
@@ -17,12 +17,12 @@
             "neutral": {
                 "a": [
                     {
-                        "id": "ardra_0_n_a_1",
+                        "id": "mae-rin_0_n_a_1",
                         "text": "H-halo... permisi...",
-                        "next": "ardra_0_n_a_2"
+                        "next": "mae-rin_0_n_a_2"
                     },
                     {
-                        "id": "ardra_0_n_a_2",
+                        "id": "mae-rin_0_n_a_2",
                         "text": "Aku... aku mau pesan kue. Boleh?",
                         "choices": [
                             {
@@ -30,7 +30,7 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_0_n_a_3a",
+                                "next": "mae-rin_0_n_a_3a",
                                 "set_next": "level_0.good.a"
                             },
                             {
@@ -38,29 +38,29 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_0_n_a_3b"
+                                "next": "mae-rin_0_n_a_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_0_n_a_3a",
+                        "id": "mae-rin_0_n_a_3a",
                         "text": "Wah... terima kasih... kamu baik sekali... Aku mau yang manis ya...",
                         "next": null
                     },
                     {
-                        "id": "ardra_0_n_a_3b",
+                        "id": "mae-rin_0_n_a_3b",
                         "text": "O-oke... aku lihat dulu ya...",
                         "next": null
                     }
                 ],
                 "b": [
                     {
-                        "id": "ardra_0_n_b_1",
+                        "id": "mae-rin_0_n_b_1",
                         "text": "E-ehm... maaf mengganggu...",
-                        "next": "ardra_0_n_b_2"
+                        "next": "mae-rin_0_n_b_2"
                     },
                     {
-                        "id": "ardra_0_n_b_2",
+                        "id": "mae-rin_0_n_b_2",
                         "text": "Aku dengar kue di sini enak... boleh aku pesan?",
                         "choices": [
                             {
@@ -68,7 +68,7 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_0_n_b_3a",
+                                "next": "mae-rin_0_n_b_3a",
                                 "set_next": "level_0.good.a"
                             },
                             {
@@ -76,17 +76,17 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_0_n_b_3b"
+                                "next": "mae-rin_0_n_b_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_0_n_b_3a",
+                        "id": "mae-rin_0_n_b_3a",
                         "text": "B-baik... aku percaya padamu...",
                         "next": null
                     },
                     {
-                        "id": "ardra_0_n_b_3b",
+                        "id": "mae-rin_0_n_b_3b",
                         "text": "Hmm... oke aku akan lihat-lihat...",
                         "next": null
                     }
@@ -95,12 +95,12 @@
             "good": {
                 "a": [
                     {
-                        "id": "ardra_0_g_a_1",
+                        "id": "mae-rin_0_g_a_1",
                         "text": "Halo lagi! Aku... aku senang bisa datang ke sini lagi...",
-                        "next": "ardra_0_g_a_2"
+                        "next": "mae-rin_0_g_a_2"
                     },
                     {
-                        "id": "ardra_0_g_a_2",
+                        "id": "mae-rin_0_g_a_2",
                         "text": "Kuenya kemarin enak sekali... boleh pesan lagi?",
                         "choices": [
                             {
@@ -108,7 +108,7 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_0_g_a_3a",
+                                "next": "mae-rin_0_g_a_3a",
                                 "set_next": "level_0.good.b"
                             },
                             {
@@ -116,29 +116,29 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_0_g_a_3b"
+                                "next": "mae-rin_0_g_a_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_0_g_a_3a",
+                        "id": "mae-rin_0_g_a_3a",
                         "text": "Hehe... kamu baik banget... mau yang manis lagi ya...",
                         "next": null
                     },
                     {
-                        "id": "ardra_0_g_a_3b",
+                        "id": "mae-rin_0_g_a_3b",
                         "text": "Mmm... yang kemarin itu enak... mungkin yang serupa?",
                         "next": null
                     }
                 ],
                 "b": [
                     {
-                        "id": "ardra_0_g_b_1",
+                        "id": "mae-rin_0_g_b_1",
                         "text": "Hai! Aku lagi semangat datang ke sini!",
-                        "next": "ardra_0_g_b_2"
+                        "next": "mae-rin_0_g_b_2"
                     },
                     {
-                        "id": "ardra_0_g_b_2",
+                        "id": "mae-rin_0_g_b_2",
                         "text": "Kemarin kamu baik banget... aku harap hari ini juga seru!",
                         "choices": [
                             {
@@ -146,7 +146,7 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_0_g_b_3a",
+                                "next": "mae-rin_0_g_b_3a",
                                 "set_next": "level_1.neutral.a"
                             },
                             {
@@ -154,17 +154,17 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_0_g_b_3b"
+                                "next": "mae-rin_0_g_b_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_0_g_b_3a",
+                        "id": "mae-rin_0_g_b_3a",
                         "text": "S-serius? Aku... aku senang banget... terima kasih!",
                         "next": null
                     },
                     {
-                        "id": "ardra_0_g_b_3b",
+                        "id": "mae-rin_0_g_b_3b",
                         "text": "Oke... aku mau yang manis lagi ya...",
                         "next": null
                     }
@@ -173,12 +173,12 @@
             "bad": {
                 "a": [
                     {
-                        "id": "ardra_0_b_a_1",
+                        "id": "mae-rin_0_b_a_1",
                         "text": "... halo.",
-                        "next": "ardra_0_b_a_2"
+                        "next": "mae-rin_0_b_a_2"
                     },
                     {
-                        "id": "ardra_0_b_a_2",
+                        "id": "mae-rin_0_b_a_2",
                         "text": "Kemarin kuenya... tidak sesuai harapan aku. Tapi... aku mau coba lagi.",
                         "choices": [
                             {
@@ -186,7 +186,7 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_0_b_a_3a",
+                                "next": "mae-rin_0_b_a_3a",
                                 "set_next": "level_0.neutral.a"
                             },
                             {
@@ -194,18 +194,18 @@
                                 "affinity": 0,
                                 "expression": "angry",
                                 "emoji": "angry",
-                                "next": "ardra_0_b_a_3b",
+                                "next": "mae-rin_0_b_a_3b",
                                 "set_next": "level_0.bad.a"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_0_b_a_3a",
+                        "id": "mae-rin_0_b_a_3a",
                         "text": "... baiklah. Aku percaya padamu...",
                         "next": null
                     },
                     {
-                        "id": "ardra_0_b_a_3b",
+                        "id": "mae-rin_0_b_a_3b",
                         "text": "Hm... aku harap kali ini lebih baik...",
                         "next": null
                     }
@@ -216,12 +216,12 @@
             "neutral": {
                 "a": [
                     {
-                        "id": "ardra_1_n_a_1",
+                        "id": "mae-rin_1_n_a_1",
                         "text": "Halo... aku datang lagi...",
-                        "next": "ardra_1_n_a_2"
+                        "next": "mae-rin_1_n_a_2"
                     },
                     {
-                        "id": "ardra_1_n_a_2",
+                        "id": "mae-rin_1_n_a_2",
                         "text": "Aku senang kuenya kemarin... terima kasih sudah dibuatkan.",
                         "choices": [
                             {
@@ -229,7 +229,7 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_1_n_a_3a",
+                                "next": "mae-rin_1_n_a_3a",
                                 "set_next": "level_1.good.a"
                             },
                             {
@@ -237,29 +237,29 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_1_n_a_3b"
+                                "next": "mae-rin_1_n_a_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_1_n_a_3a",
+                        "id": "mae-rin_1_n_a_3a",
                         "text": "B-benarkah? Aku... aku sangat senang... terima kasih...",
                         "next": null
                     },
                     {
-                        "id": "ardra_1_n_a_3b",
+                        "id": "mae-rin_1_n_a_3b",
                         "text": "Hmm... mungkin yang manis-manis lagi seperti kemarin...",
                         "next": null
                     }
                 ],
                 "b": [
                     {
-                        "id": "ardra_1_n_b_1",
+                        "id": "mae-rin_1_n_b_1",
                         "text": "E-ehm... hai...",
-                        "next": "ardra_1_n_b_2"
+                        "next": "mae-rin_1_n_b_2"
                     },
                     {
-                        "id": "ardra_1_n_b_2",
+                        "id": "mae-rin_1_n_b_2",
                         "text": "Aku sudah datang beberapa kali kan? Rasanya... semakin nyaman di sini.",
                         "choices": [
                             {
@@ -267,7 +267,7 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_1_n_b_3a",
+                                "next": "mae-rin_1_n_b_3a",
                                 "set_next": "level_1.good.a"
                             },
                             {
@@ -275,17 +275,17 @@
                                 "affinity": 0,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_1_n_b_3b"
+                                "next": "mae-rin_1_n_b_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_1_n_b_3a",
+                        "id": "mae-rin_1_n_b_3a",
                         "text": "F-favorit? Aku... terharu... hehe...",
                         "next": null
                     },
                     {
-                        "id": "ardra_1_n_b_3b",
+                        "id": "mae-rin_1_n_b_3b",
                         "text": "Baiklah... aku mau coba yang berbeda kali ini...",
                         "next": null
                     }
@@ -294,12 +294,12 @@
             "good": {
                 "a": [
                     {
-                        "id": "ardra_1_g_a_1",
+                        "id": "mae-rin_1_g_a_1",
                         "text": "Hei! Aku datang lagi dengan senang! Kuenya kemarin luar biasa!",
-                        "next": "ardra_1_g_a_2"
+                        "next": "mae-rin_1_g_a_2"
                     },
                     {
-                        "id": "ardra_1_g_a_2",
+                        "id": "mae-rin_1_g_a_2",
                         "text": "Kamu tahu... kue buatanmu selalu bikin hariku lebih baik.",
                         "choices": [
                             {
@@ -307,7 +307,7 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_1_g_a_3a",
+                                "next": "mae-rin_1_g_a_3a",
                                 "set_next": "level_2.neutral.a"
                             },
                             {
@@ -315,17 +315,17 @@
                                 "affinity": 1,
                                 "expression": "happy",
                                 "emoji": null,
-                                "next": "ardra_1_g_a_3b"
+                                "next": "mae-rin_1_g_a_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_1_g_a_3a",
+                        "id": "mae-rin_1_g_a_3a",
                         "text": "Aku mau... yang manis sekali! Seperti kemarin tapi lebih!",
                         "next": null
                     },
                     {
-                        "id": "ardra_1_g_a_3b",
+                        "id": "mae-rin_1_g_a_3b",
                         "text": "Hehe... aku yakin kuenya akan enak lagi...",
                         "next": null
                     }
@@ -334,12 +334,12 @@
             "bad": {
                 "a": [
                     {
-                        "id": "ardra_1_b_a_1",
+                        "id": "mae-rin_1_b_a_1",
                         "text": "... hai.",
-                        "next": "ardra_1_b_a_2"
+                        "next": "mae-rin_1_b_a_2"
                     },
                     {
-                        "id": "ardra_1_b_a_2",
+                        "id": "mae-rin_1_b_a_2",
                         "text": "Kemarin kuenya... kurang pas. Tapi aku masih mau datang ke sini...",
                         "choices": [
                             {
@@ -347,7 +347,7 @@
                                 "affinity": -3,
                                 "expression": "sad",
                                 "emoji": "sad",
-                                "next": "ardra_1_b_a_3a",
+                                "next": "mae-rin_1_b_a_3a",
                                 "set_next": "level_1.neutral.a"
                             },
                             {
@@ -355,18 +355,18 @@
                                 "affinity": 0,
                                 "expression": "angry",
                                 "emoji": "angry",
-                                "next": "ardra_1_b_a_3b",
+                                "next": "mae-rin_1_b_a_3b",
                                 "set_next": "level_1.bad.a"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_1_b_a_3a",
+                        "id": "mae-rin_1_b_a_3a",
                         "text": "Baiklah... aku percaya... tolong buat yang enak ya...",
                         "next": null
                     },
                     {
-                        "id": "ardra_1_b_a_3b",
+                        "id": "mae-rin_1_b_a_3b",
                         "text": "Hmm... semoga kali ini lebih baik...",
                         "next": null
                     }
@@ -377,12 +377,12 @@
             "neutral": {
                 "a": [
                     {
-                        "id": "ardra_2_n_a_1",
+                        "id": "mae-rin_2_n_a_1",
                         "text": "Kamu tahu... aku sebenarnya suka banget makan kue waktu kecil.",
-                        "next": "ardra_2_n_a_2"
+                        "next": "mae-rin_2_n_a_2"
                     },
                     {
-                        "id": "ardra_2_n_a_2",
+                        "id": "mae-rin_2_n_a_2",
                         "text": "Nenekku selalu buatkan kue stroberi bentuk hati... jadi kue di sini mengingatkanku padanya.",
                         "choices": [
                             {
@@ -390,7 +390,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_n_a_3a",
+                                "next": "mae-rin_2_n_a_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
@@ -398,30 +398,30 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_n_a_3b",
+                                "next": "mae-rin_2_n_a_3b",
                                 "set_next": "level_2.good.b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_n_a_3a",
+                        "id": "mae-rin_2_n_a_3a",
                         "text": "Iya... dia orang yang paling baik yang aku kenal. Makasih ya... sudah mau mendengarkanku.",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_n_a_3b",
+                        "id": "mae-rin_2_n_a_3b",
                         "text": "B-benarkah?! Aku... aku ingin mencobanya suatu saat nanti...",
                         "next": null
                     }
                 ],
                 "b": [
                     {
-                        "id": "ardra_2_n_b_1",
+                        "id": "mae-rin_2_n_b_1",
                         "text": "Hari ini aku teringat masa kecilku...",
-                        "next": "ardra_2_n_b_2"
+                        "next": "mae-rin_2_n_b_2"
                     },
                     {
-                        "id": "ardra_2_n_b_2",
+                        "id": "mae-rin_2_n_b_2",
                         "text": "Aroma kue stroberi selalu bikin aku kembali ke dapur nenek. Kamu pernah merasa begitu?",
                         "choices": [
                             {
@@ -429,7 +429,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_n_b_3a",
+                                "next": "mae-rin_2_n_b_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
@@ -437,30 +437,30 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_n_b_3b",
+                                "next": "mae-rin_2_n_b_3b",
                                 "set_next": "level_2.good.b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_n_b_3a",
+                        "id": "mae-rin_2_n_b_3a",
                         "text": "Tepat sekali... makasih sudah mengerti...",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_n_b_3b",
+                        "id": "mae-rin_2_n_b_3b",
                         "text": "Hehe... iya aku harap begitu...",
                         "next": null
                     }
                 ],
                 "c": [
                     {
-                        "id": "ardra_2_n_c_1",
+                        "id": "mae-rin_2_n_c_1",
                         "text": "Aku baru sadar... sudah lama sekali aku datang ke sini.",
-                        "next": "ardra_2_n_c_2"
+                        "next": "mae-rin_2_n_c_2"
                     },
                     {
-                        "id": "ardra_2_n_c_2",
+                        "id": "mae-rin_2_n_c_2",
                         "text": "Dulu aku takut banget buat datang sendiri... tapi sekarang rasanya seperti rumah.",
                         "choices": [
                             {
@@ -468,7 +468,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_n_c_3a",
+                                "next": "mae-rin_2_n_c_3a",
                                 "set_next": "level_2.good.b"
                             },
                             {
@@ -476,17 +476,17 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": null,
-                                "next": "ardra_2_n_c_3b"
+                                "next": "mae-rin_2_n_c_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_n_c_3a",
+                        "id": "mae-rin_2_n_c_3a",
                         "text": "Rumah... iya... ini seperti rumah keduaku... terima kasih...",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_n_c_3b",
+                        "id": "mae-rin_2_n_c_3b",
                         "text": "Nyaman... iya itu kata yang tepat... hehe...",
                         "next": null
                     }
@@ -495,12 +495,12 @@
             "good": {
                 "a": [
                     {
-                        "id": "ardra_2_g_a_1",
+                        "id": "mae-rin_2_g_a_1",
                         "text": "Hei! Aku sangat senang hari ini! Kuenya kemarin sempurna!",
-                        "next": "ardra_2_g_a_2"
+                        "next": "mae-rin_2_g_a_2"
                     },
                     {
-                        "id": "ardra_2_g_a_2",
+                        "id": "mae-rin_2_g_a_2",
                         "text": "Tahukah kamu? Setiap kali aku makan kue buatanmu, aku teringat nenek. Tapi yang bahagia sekarang!",
                         "choices": [
                             {
@@ -508,7 +508,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_g_a_3a",
+                                "next": "mae-rin_2_g_a_3a",
                                 "set_next": "level_2.good.b"
                             },
                             {
@@ -516,30 +516,30 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": null,
-                                "next": "ardra_2_g_a_3b",
+                                "next": "mae-rin_2_g_a_3b",
                                 "set_next": "level_2.good.a"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_g_a_3a",
+                        "id": "mae-rin_2_g_a_3a",
                         "text": "Kamu... kamu benar-benar baik padaku... aku tidak tahu harus berkata apa...",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_g_a_3b",
+                        "id": "mae-rin_2_g_a_3b",
                         "text": "Spesial? Iya... aku mau yang terbaik yang kamu bisa buat!",
                         "next": null
                     }
                 ],
                 "b": [
                     {
-                        "id": "ardra_2_g_b_1",
+                        "id": "mae-rin_2_g_b_1",
                         "text": "Hari ini aku datang dengan senyum! Karena kue kemarin luar biasa!",
-                        "next": "ardra_2_g_b_2"
+                        "next": "mae-rin_2_g_b_2"
                     },
                     {
-                        "id": "ardra_2_g_b_2",
+                        "id": "mae-rin_2_g_b_2",
                         "text": "Aku pernah dengar kata orang... tempat yang bikin nyaman itu seperti pelukan. Dan kuenya kamu seperti itu.",
                         "choices": [
                             {
@@ -547,7 +547,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_g_b_3a",
+                                "next": "mae-rin_2_g_b_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
@@ -555,17 +555,17 @@
                                 "affinity": 2,
                                 "expression": "happy",
                                 "emoji": null,
-                                "next": "ardra_2_g_b_3b"
+                                "next": "mae-rin_2_g_b_3b"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_g_b_3a",
+                        "id": "mae-rin_2_g_b_3a",
                         "text": "Hehe... maksudku lho... jangan salah paham... tapi aku senang di sini...",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_g_b_3b",
+                        "id": "mae-rin_2_g_b_3b",
                         "text": "Aku yakin kuenya akan selalu enak... karena dibuat dengan hati...",
                         "next": null
                     }
@@ -574,12 +574,12 @@
             "bad": {
                 "a": [
                     {
-                        "id": "ardra_2_b_a_1",
+                        "id": "mae-rin_2_b_a_1",
                         "text": "... hai. Maaf aku agak murung hari ini.",
-                        "next": "ardra_2_b_a_2"
+                        "next": "mae-rin_2_b_a_2"
                     },
                     {
-                        "id": "ardra_2_b_a_2",
+                        "id": "mae-rin_2_b_a_2",
                         "text": "Kuenya kemarin... kurang pas. Dan itu ingatkanku kalau aku rindu kue nenek tapi tidak pernah sama...",
                         "choices": [
                             {
@@ -587,7 +587,7 @@
                                 "affinity": 3,
                                 "expression": "happy",
                                 "emoji": "happy",
-                                "next": "ardra_2_b_a_3a",
+                                "next": "mae-rin_2_b_a_3a",
                                 "set_next": "level_2.good.a"
                             },
                             {
@@ -595,18 +595,18 @@
                                 "affinity": 1,
                                 "expression": "neutral",
                                 "emoji": null,
-                                "next": "ardra_2_b_a_3b",
+                                "next": "mae-rin_2_b_a_3b",
                                 "set_next": "level_2.neutral.a"
                             }
                         ]
                     },
                     {
-                        "id": "ardra_2_b_a_3a",
+                        "id": "mae-rin_2_b_a_3a",
                         "text": "B-benarkah? Kue stroberi bentuk hati dengan whipcream... itu favorit nenek... dan aku...",
                         "next": null
                     },
                     {
-                        "id": "ardra_2_b_a_3b",
+                        "id": "mae-rin_2_b_a_3b",
                         "text": "... baiklah. Mungkin kali ini akan lebih baik...",
                         "next": null
                     }
@@ -621,10 +621,10 @@
         "ending": 100
     },
    "assets": {
-        "sprite": "Assets/NPC/Ardra.png",
+        "sprite": "Assets/NPC/MarinNormal.png",
         "expressions": {
-            "happy":  "Assets/NPC/Ardra_happy.png",
-            "angry":  "Assets/NPC/Ardra_angry.png"
+            "happy":  "Assets/NPC/MarinHappy.png",
+            "angry":  "Assets/NPC/MarinAngry.png"
         }
     }
 }
