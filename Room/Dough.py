@@ -110,25 +110,17 @@ class Dough(Room):
         self._Btn_Coklat.hitbox     = pygame.Rect(0, 349, 230, 140)
         self._Btn_Strawberry.hitbox = pygame.Rect(0, 208, 230, 140)
 
-    # ------------------------------------------------------------------ #
-    #  ENTER / EXIT                                                        #
-    # ------------------------------------------------------------------ #
 
     def enter(self):
         print("[DEBUG Dough] Enter room")
         self._reset_visual()
         self._load_bg()
-        self._sync_from_cake()   # <-- rebuild visual dari data cake
+        self._sync_from_cake()   # rebuild visual dari data cake
 
     def exit(self):
         print("[DEBUG Dough] Exit room")
 
-    # ------------------------------------------------------------------ #
-    #  VISUAL HELPERS                                                      #
-    # ------------------------------------------------------------------ #
-
     def _reset_visual(self):
-        """Reset semua visual state ke kondisi kosong."""
         self._dough_image    = None
         self._dough_entered  = False
         self._dough_y        = -200
@@ -138,7 +130,6 @@ class Dough(Room):
         self._mold_rect.topleft = (SCREEN_WIDTH // 2 - 100, 120)
 
     def _load_bg(self):
-        """Load background dan gambar exhaust."""
         if os.path.exists(DOUGH_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DOUGH_BG).convert(),
@@ -157,10 +148,6 @@ class Dough(Room):
                 pygame.image.load(Constant.Exhaust_Mouth_IMAGE).convert_alpha(), (950, 350))
 
     def _sync_from_cake(self):
-        """
-        Rebuild visual state dari cake object — dipanggil setiap enter().
-        Ini yang bikin state selalu benar meskipun user bolak-balik room.
-        """
         if not self.cake:
             return
 
@@ -182,15 +169,11 @@ class Dough(Room):
             print(f"[DEBUG Dough] Sync: mold={self.cake.mold.value}, sudah dipotong")
 
     def _load_flavor_image(self, flavor: Flavor):
-        """Load gambar adonan sesuai flavor."""
         path = FLAVOR_DOUGH_IMAGE.get(flavor)
         if path and os.path.exists(path):
             img = pygame.image.load(path).convert_alpha()
             self._dough_image = pygame.transform.smoothscale(img, (250, 175))
 
-    # ------------------------------------------------------------------ #
-    #  SPAWN DOUGH                                                         #
-    # ------------------------------------------------------------------ #
 
     def spawn_original(self):
         if self.cake.flavor is not None:
@@ -219,10 +202,6 @@ class Dough(Room):
         self._dough_y = -300
         print("[DEBUG Dough] Spawn strawberry dough")
 
-    # ------------------------------------------------------------------ #
-    #  MOLD SELECTION                                                      #
-    # ------------------------------------------------------------------ #
-
     def _select_mold(self, mold: Mold):
         """Satu method untuk semua mold — hilangkan duplikasi."""
         if self.cake.flavor is None or self.cake.mold is not None:
@@ -239,20 +218,12 @@ class Dough(Room):
     def _select_heart(self): self._select_mold(Mold.HEART)
     def _select_star(self):  self._select_mold(Mold.STAR)
 
-    # ------------------------------------------------------------------ #
-    #  CUT DOUGH                                                           #
-    # ------------------------------------------------------------------ #
-
     def cut_dough(self):
-        """Ubah gambar adonan jadi bentuk sesuai cetakan."""
         path = RAW_CAKE.get((self.cake.flavor, self.cake.mold))
         if path and os.path.exists(path):
             img = pygame.image.load(path).convert_alpha()
             self._dough_image = pygame.transform.smoothscale(img, (250, 175))
 
-    # ------------------------------------------------------------------ #
-    #  UPDATE                                                              #
-    # ------------------------------------------------------------------ #
 
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -267,9 +238,6 @@ class Dough(Room):
                 if self.cake and self.cake.flavor:
                     print(f"[DEBUG Dough] {self.cake.flavor.value} dough fully entered")
 
-    # ------------------------------------------------------------------ #
-    #  RENDER                                                              #
-    # ------------------------------------------------------------------ #
 
     def render(self):
         if not self.screen:
@@ -315,7 +283,6 @@ class Dough(Room):
             self._draw_hover(self._Btn_Strawberry.hitbox)
 
     def _render_order_box(self):
-        """Render kotak info order di atas layar."""
         box_w, box_h = 600, 100
         box_x = (SCREEN_WIDTH - box_w) // 2
         box_y = Constant.NAV_BAR_HEIGHT + 15
@@ -344,10 +311,6 @@ class Dough(Room):
 
     # Alias lama biar tidak ada yang patah kalau masih dipanggil di luar
     def draw_Hover(self, rect): self._draw_hover(rect)
-
-    # ------------------------------------------------------------------ #
-    #  EVENTS                                                              #
-    # ------------------------------------------------------------------ #
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -386,7 +349,7 @@ class Dough(Room):
                 self._mold_image = None
                 self._Dragging   = False
                 self._Dough_Cut  = True
-                self._dough_y    = self._target_y  # FIX: pastikan dough kelihatan setelah dipotong
+                self._dough_y    = self._target_y 
                 print("[DEBUG Dough] Cake ready, transitioning to Baking")
                 if hasattr(self, "_scene_manager"):
                     self._scene_manager.transition_to("RoomBaking")

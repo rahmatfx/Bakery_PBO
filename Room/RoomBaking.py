@@ -77,20 +77,9 @@ class BakingRoom(Room):
 
         self.cake: Cake = None
 
-    # ------------------------------------------------------------------ #
-    #  isBaked — property, bukan instance variable                         #
-    #  Langsung baca dari cake.step supaya tidak pernah stale.             #
-    #  Setelah cake.reset() → cake.step = EMPTY → isBaked otomatis False.  #
-    #  Setelah cake.set_baked() → cake.step = BAKED → isBaked otomatis True#
-    # ------------------------------------------------------------------ #
-
     @property
     def isBaked(self) -> bool:
         return self.cake is not None and self.cake.step >= CakeStep.BAKED
-
-    # ------------------------------------------------------------------ #
-    #  ENTER / EXIT                                                        #
-    # ------------------------------------------------------------------ #
 
     def enter(self):
         self._reset_visual()
@@ -100,12 +89,7 @@ class BakingRoom(Room):
     def exit(self) -> None:
         pass
 
-    # ------------------------------------------------------------------ #
-    #  VISUAL HELPERS                                                      #
-    # ------------------------------------------------------------------ #
-
     def _reset_visual(self):
-        """Reset semua UI/interaction state ke nol."""
         self._doughInOven  = False
         self.bakeDough     = False
         self.doughInFront  = False
@@ -119,7 +103,6 @@ class BakingRoom(Room):
         self.cake_image    = None
 
     def _load_assets(self):
-        """Load semua gambar. Dipanggil setiap enter()."""
 
         # Background
         if os.path.exists(BAKING_BG):
@@ -222,19 +205,11 @@ class BakingRoom(Room):
             self._oven_isOpen = False
             print("[DEBUG Baking] Sync: dough ready, not in oven yet")
 
-    # ------------------------------------------------------------------ #
-    #  MEKANIK OVEN                                                        #
-    # ------------------------------------------------------------------ #
-
     def mekanik(self):
         if self._adonan_rect and self._adonan_rect.colliderect(self._oven_rect):
             if self._oven_isOpen and not self.isDragging:
                 self.doughInFront = True
                 print("Adonan berhasil masuk")
-
-    # ------------------------------------------------------------------ #
-    #  UPDATE                                                              #
-    # ------------------------------------------------------------------ #
 
     def update(self):
         self.mekanik()
@@ -244,14 +219,11 @@ class BakingRoom(Room):
             if self.elapsed <= 0:
                 print("[DEBUG Baking] Kue matang!")
                 self.bakeDough     = False
-                self.cake.set_baked()   # isBaked property langsung jadi True
-                self.cake.is_baking = False        # NEW
+                self.cake.set_baked()  
+                self.cake.is_baking = False        
                 self.cake.bake_start_time = None 
                 self.isReadyToTake = True
 
-    # ------------------------------------------------------------------ #
-    #  RENDER                                                              #
-    # ------------------------------------------------------------------ #
 
     def render(self):
         if not self.screen:
@@ -304,10 +276,6 @@ class BakingRoom(Room):
         if self.isShowText and self.bakeDough:
             self.text_surface = self.game_font.render(f"{max(0, self.elapsed)}", True, (255, 255, 59))
             self.screen.blit(self.text_surface, self.text_rect)
-
-    # ------------------------------------------------------------------ #
-    #  EVENTS                                                              #
-    # ------------------------------------------------------------------ #
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

@@ -3,7 +3,6 @@ from Enum.BakeryEnum import DecorationOption, Mold, Flavor
 from Room.Room import Room
 from Order.Cake import Cake, CakeStep
 from UI.Button import Button
-import Constant
 
 from Constant import (
     SCREEN_WIDTH,
@@ -37,7 +36,6 @@ from Constant import (
 )
 
 
-# Semua topping path dan target width dikumpulkan di sini supaya tidak berserakan
 TOPPING_ASSETS = {
     "berries":          (berriesTop,      130),
     "cream":            (creamTop,        130),
@@ -139,7 +137,7 @@ class Decoration(Room):
         self.oreo.image       = pygame.transform.smoothscale(self.oreo.image,       (130, 120))
         self.oreo.hover_image = pygame.transform.smoothscale(self.oreo.hover_image, (130, 180))
 
-        # Map tombol → DecorationOption (buat handle_event yang clean)
+        # Map tombol DecorationOption (buat handle_event yang clean)
         self._deco_map = {
             self.berries:   DecorationOption.DRIED_FRUIT,
             self.sprinkles: DecorationOption.SPRINKLE,
@@ -147,10 +145,6 @@ class Decoration(Room):
             self.cream:     DecorationOption.WHIPCREAM,
             self.oreo:      DecorationOption.OREO,
         }
-
-    # ------------------------------------------------------------------ #
-    #  ENTER / EXIT                                                        #
-    # ------------------------------------------------------------------ #
 
     def enter(self):
         print("=== DECORATION ENTER ===")
@@ -160,18 +154,12 @@ class Decoration(Room):
 
     def exit(self):
         pass
-
-    # ------------------------------------------------------------------ #
-    #  VISUAL HELPERS                                                      #
-    # ------------------------------------------------------------------ #
-
     def _load_bg(self):
         if os.path.exists(DEKORASI_BG):
             self._bg_image = pygame.transform.smoothscale(
                 pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def _load_topping_assets(self):
-        """Load semua gambar topping — hanya sekali, di-cache di self.toppingImages."""
         if self.toppingImages:
             return
         for key, (path, target_w) in TOPPING_ASSETS.items():
@@ -182,10 +170,6 @@ class Decoration(Room):
                     img, (target_w, int(h * target_w / w)))
 
     def _sync_from_cake(self):
-        """
-        Rebuild visual state dari cake object — dipanggil setiap enter().
-        Tidak ada flag boolean tersendiri; semua derived dari cake.
-        """
         if not self.cake:
             self.cakeRect = None
             return
@@ -207,18 +191,10 @@ class Decoration(Room):
         if self.cake.decoration:
             self.cake.load_topping_image(self.toppingImages)
 
-    # ------------------------------------------------------------------ #
-    #  UPDATE                                                              #
-    # ------------------------------------------------------------------ #
-
     def update(self, delta_time=0):
         mouse_pos = pygame.mouse.get_pos()
         for btn in self._deco_map:
             btn.update(mouse_pos)
-
-    # ------------------------------------------------------------------ #
-    #  RENDER                                                              #
-    # ------------------------------------------------------------------ #
 
     def render(self):
         if not self.screen:
@@ -244,10 +220,6 @@ class Decoration(Room):
             self.screen.fill(COLOR_BG_CREAM)
             t = self._font_heading.render("~ Decoration ~", True, COLOR_DARK_BROWN)
             self.screen.blit(t, t.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 3))
-
-    # ------------------------------------------------------------------ #
-    #  EVENTS                                                              #
-    # ------------------------------------------------------------------ #
 
     def handle_event(self, event):
         if event.type != pygame.MOUSEBUTTONDOWN or event.button != 1:
