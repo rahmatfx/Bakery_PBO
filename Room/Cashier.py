@@ -298,7 +298,7 @@ class Cashier(Room):
         self._state = CashierState.ORDER_ACTIVE
         self._order_ui.show_order_details()
         if self.cake:
-            self.cake.reset()
+            self.cake.reset()                              
         if self._scene_manager:
             self._scene_manager.active_cakes = self.cake  
             self._scene_manager.active_orders = self.order
@@ -551,7 +551,6 @@ class Cashier(Room):
 
         self.npc = None
         self.order = None
-        self.cake = None
         self.result = False
         self._cake_options = []
         self._state           = CashierState.HIDDEN
