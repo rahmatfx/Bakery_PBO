@@ -83,6 +83,8 @@ class Game:
         baking.cake   = self.cake
         dekorasi.cake = self.cake
 
+        baking.audio = self.audio
+
         # Register rooms 
         self.scene_manager.register_room(cashier)
         self.scene_manager.register_room(dough)

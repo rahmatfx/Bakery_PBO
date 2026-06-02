@@ -1,6 +1,6 @@
 import pygame, os, sys
 from Room.Room import Room
-from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, ADONAN_TEMPORARY, CAKE_TEMPORARY, NAMPAN_IMAGE
+from Constant import SCREEN_WIDTH, SCREEN_HEIGHT, BAKING_BG, COLOR_BG_CREAM, COLOR_DARK_BROWN, FONT_HEADING_SIZE, FONT_BODY_SIZE, FONT_NAME, OVEN_CLOSE_IMAGE, OVEN_OPEN_IMAGE, OVEN_BAKE_IMAGE, NAMPAN_IMAGE, DING_SOUND
 from Order.Cake import Cake
 from Enum.BakeryEnum import Flavor, Mold
 import Constant
@@ -66,6 +66,8 @@ class BakingRoom(Room):
         self.isInNampan = False
 
         self.cake: Cake = None
+        
+        self.audio = None
 
     def enter(self):
         if os.path.exists(BAKING_BG):
@@ -158,6 +160,8 @@ class BakingRoom(Room):
                 
                 if self._oven_rect and self._oven_rect.collidepoint(mouse_pos):
                     if not self.bakeDough and (not self._doughInOven or self.isReadyToTake):
+                        if self.audio:
+                            self.audio.play_sfx("oven_door")
                         if self.isReadyToTake and not self._oven_isOpen:
                             self._oven_isOpen = True
                             self._doughInOven = False
@@ -174,8 +178,12 @@ class BakingRoom(Room):
 
                 if self._button_bake_rect and self._button_bake_rect.collidepoint(mouse_pos):
                     if not self._oven_isOpen and self._doughInOven and not self.bakeDough:
+                        if self.audio:
+                            self.audio.play_sfx("oven_button_sound")
                         print("bake dough :  + {self.bakeDough} ")
                         self.bakeDough = True
+                        if self.audio:
+                            self.audio.play_sfx("grill_oven")
                         self.isShowText = True  
                         self.bake_start_time = pygame.time.get_ticks()
                         print(self.isShowText)
@@ -217,6 +225,8 @@ class BakingRoom(Room):
             self.elapsed = self.bake_duration - self.elapsed
             if self.elapsed <= 0: 
                 print("Kue matang!")
+                if self.audio:
+                    self.audio.play_sfx("ding_sound")
                 self.bakeDough = False
                 self.cake.set_baked()
                 self.isBaked = True
