@@ -45,6 +45,11 @@ HAPPY_SFX   = os.path.join(SFX_DIR, "happy_sfx.mp3")#
 
 BAKA   = os.path.join(SFX_DIR, "baka.mp3")
 
+DING_SOUND = os.path.join(SFX_DIR, "dingnotif.mp3")
+OVEN_BUTTON = os.path.join(SFX_DIR, "buttonoven.mp3")
+GRILLING_OVEN = os.path.join(SFX_DIR, "ovengrill.mp3")
+OVEN_DOOR = os.path.join(SFX_DIR, "ovendoor.mp3")
+
 # Animation
 ANIM_SHAKE_INTENSITY = 6
 ANIM_SHAKE_DURATION  = 0.3
