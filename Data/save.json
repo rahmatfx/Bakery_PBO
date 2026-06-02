@@ -1,23 +1,23 @@
 {
     "affinity": {
-        "mimo": 27,
+        "mimo": 37,
         "ardra": 6,
         "angga": 4,
-        "lucy": 18,
+        "lucy": 34,
         "mae-rin": 6
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "mimo": "level_1.neutral.a",
-            "lucy": "level_0.good.a",
             "mae-rin": "level_0.good.b",
-            "angga": "level_1.bad.a"
+            "angga": "level_1.bad.a",
+            "mimo": "level_1.good.a",
+            "lucy": "level_2.neutral.a"
         },
         "current_mood": {
-            "mimo": "good",
+            "mimo": "neutral",
             "ardra": "good",
             "angga": "neutral",
-            "lucy": "neutral",
+            "lucy": "good",
             "mae-rin": "good"
         },
         "seen_variants": {
@@ -55,6 +55,12 @@
                 "a"
             ],
             "mae-rin_0_good": [
+                "a"
+            ],
+            "mimo_1_neutral": [
+                "a"
+            ],
+            "lucy_1_good": [
                 "a"
             ]
         }
