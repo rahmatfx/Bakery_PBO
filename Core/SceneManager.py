@@ -18,6 +18,9 @@ class SceneManager(Observer):
         self.screen = screen
         self.audio  = audio
         self.current_room: Room = None
+        
+        self.active_orders = None
+        self.active_cakes = None
 
         self._rooms: dict[str, Room]        = {}
         self._hidden_rooms: dict[str, Room] = {}
@@ -105,6 +108,10 @@ class SceneManager(Observer):
         if self.current_room:
             self.current_room.exit()
         self.current_room = self._next_room
+        if hasattr(self.current_room, "current_order"):
+            self.current_room.current_order = self.active_orders
+        if hasattr(self.current_room, "cake"):
+            self.current_room.cakes = self.active_cakes
         self.current_room.enter()
 
         self.navigation_ui.set_room(self.current_room.name)
