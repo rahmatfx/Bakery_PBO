@@ -1,16 +1,17 @@
 {
-    "affinity": {},
-    
+    "affinity": {
+        "angga": -12
+    },
     "dialogue_tracker": {
-        "next_dialogue": {
-        },
-        
+        "next_dialogue": {},
         "current_mood": {
+            "angga": "neutral"
         },
-
         "seen_variants": {
+            "angga_0_neutral": [
+                "a"
+            ]
         }
     },
-    
     "date_events": {}
 }
