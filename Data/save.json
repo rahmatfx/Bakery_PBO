@@ -1,24 +1,19 @@
 {
     "affinity": {
-        "mimo": 27,
-        "ardra": 6,
-        "angga": 4,
-        "lucy": 18,
-        "mae-rin": 6
+        "ardra": 202,
+        "lucy": 204,
+        "mimo": 263,
+        "angga": 201
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "mimo": "level_1.neutral.a",
-            "lucy": "level_0.good.a",
-            "mae-rin": "level_0.good.b",
-            "angga": "level_1.bad.a"
+            "mimo": "ending.romance"
         },
         "current_mood": {
-            "mimo": "good",
-            "ardra": "good",
-            "angga": "neutral",
-            "lucy": "neutral",
-            "mae-rin": "good"
+            "ardra": "neutral",
+            "lucy": "good",
+            "mimo": "neutral",
+            "angga": "neutral"
         },
         "seen_variants": {
             "mimo_0_neutral": [
@@ -28,21 +23,34 @@
             "ardra_0_neutral": [
                 "a"
             ],
-            "angga_0_neutral": [
-                "a",
-                "b"
+            "lucy_0_neutral": [
+                "a"
             ],
             "ardra_0_good": [
                 "a"
             ],
-            "lucy_0_neutral": [
-                "a",
-                "b"
-            ],
-            "angga_0_good": [
+            "mimo_0_neutral": [
                 "a"
             ],
-            "lucy_0_good": [
+            "mimo_0_good": [
+                "a"
+            ],
+            "mimo_1_neutral": [
+                "a"
+            ],
+            "angga_0_neutral": [
+                "a"
+            ],
+            "mimo_3_good": [
+                "a"
+            ],
+            "angga_3_neutral": [
+                "b"
+            ],
+            "mimo_3_neutral": [
+                "a"
+            ],
+            "lucy_3_good": [
                 "a"
             ],
             "angga_1_neutral": [
@@ -59,5 +67,7 @@
             ]
         }
     },
-    "date_events": {}
+    "date_events": {
+        "lucy:3": true
+    }
 }

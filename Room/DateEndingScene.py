@@ -76,6 +76,9 @@ class DateEndingScene(Room):
         self._fade_alpha = 255.0
         self._fading_in = True
 
+    def exit(self) -> None:
+        pass    
+
 
     def update(self, delta_time: float = 0.0) -> None:
         if self._fading_in:

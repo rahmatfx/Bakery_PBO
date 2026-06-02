@@ -63,6 +63,14 @@ class CashierRenderer:
         order_ui.render(screen)
         self._render_affinity(screen, ctx)
 
+        if ctx.cake:
+            print(
+                f"STEP={ctx.cake.step} "
+                f"COMPLETE={ctx.cake.is_complete()}"
+            )
+        else:
+            print("NO CAKE")
+
         if ctx.state == CashierState.DIALOGUE:
             dialogue_box.render(screen)
 
