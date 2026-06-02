@@ -90,7 +90,7 @@ class Cake:
             cake_rect = self.cake_surface.get_rect(center=center)
             surface.blit(self.cake_surface, cake_rect)
             # topping sits near the top of the cake
-            topping_center = (cake_rect.centerx, cake_rect.top + 40)
+            topping_center = (cake_rect.centerx, cake_rect.top + 30)
             self.render_topping(surface, topping_center)
 
     def is_complete(self) -> bool:

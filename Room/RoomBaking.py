@@ -221,6 +221,8 @@ class BakingRoom(Room):
             if self.elapsed <= 0:
                 print("[DEBUG Baking] Kue matang!")
                 self.bakeDough     = False
+                if self.audio:
+                    self.audio.play_sfx("ding_sound")
                 self.cake.set_baked()  
                 self.cake.is_baking = False        
                 self.cake.bake_start_time = None 
@@ -262,18 +264,6 @@ class BakingRoom(Room):
                 # Masih mentah
                 self.screen.blit(self._adonan_image, self._adonan_rect)
 
-        # Debug rects
-        if self._oven_rect:
-            pygame.draw.rect(self.screen, (255, 0, 0), self._oven_rect, 2)
-        if self._button_bake_rect:
-            pygame.draw.rect(self.screen, (25, 52, 224), self._button_bake_rect, 2)
-        if self._adonan_rect:
-            pygame.draw.rect(self.screen, (25, 52, 224), self._adonan_rect, 2)
-        if self.rect_posAwalDough:
-            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posAwalDough, 2)
-        if self.rect_posOvenDough:
-            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posOvenDough, 2)
-
         # Countdown timer
         if self.isShowText and self.bakeDough:
             self.text_surface = self.game_font.render(f"{max(0, self.elapsed)}", True, (255, 255, 59))
@@ -295,6 +285,8 @@ class BakingRoom(Room):
                     elif not self.isReadyToTake:
                         # Toggle buka/tutup oven
                         self._oven_isOpen = not self._oven_isOpen
+                        if self.audio:
+                            self.audio.play_sfx("oven_door")
                         if not self._oven_isOpen and self.doughInFront:
                             self._doughInOven = True
 
@@ -309,12 +301,16 @@ class BakingRoom(Room):
                     and not self._oven_isOpen
                     and self._doughInOven
                     and not self.bakeDough):
+                if self.audio:
+                    self.audio.play_sfx("oven_button_sound")
                 self.bakeDough       = True
                 self.isShowText      = True
                 self.bake_start_time = pygame.time.get_ticks()
                 self.cake.is_baking = True                     # NEW
                 self.cake.bake_start_time = self.bake_start_time 
                 print("[DEBUG Baking] Baking started")
+                if self.audio and self.bakeDough:
+                    self.audio.play_sfx("oven_grill")
 
         if event.type == pygame.MOUSEMOTION and self.isDragging:
             if self._adonan_rect:
