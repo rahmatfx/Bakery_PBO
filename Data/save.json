@@ -1,50 +1,42 @@
 {
     "affinity": {
-        "mimo": 37,
+        "mimo": 61,
         "ardra": 6,
-        "angga": 4,
-        "lucy": 34,
-        "mae-rin": 8
+        "angga": 31,
+        "lucy": 70,
+        "mae-rin": 25
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "angga": "level_1.bad.a",
-            "mimo": "level_1.good.a",
-            "lucy": "level_2.neutral.a",
-            "mae-rin": "level_1.neutral.a"
+            "lucy": "level_1.good.a",
+            "mimo": "level_3.neutral.a",
+            "mae-rin": "level_1.good.a",
+            "angga": "level_1.good.a"
         },
         "current_mood": {
-            "mimo": "neutral",
+            "mimo": "good",
             "ardra": "good",
             "angga": "neutral",
-            "lucy": "good",
-            "mae-rin": "good"
+            "lucy": "neutral",
+            "mae-rin": "neutral"
         },
         "seen_variants": {
             "mimo_0_neutral": [
-                "b",
                 "a"
             ],
             "ardra_0_neutral": [
                 "a"
             ],
             "angga_0_neutral": [
-                "b",
                 "a"
             ],
             "ardra_0_good": [
-                "a"
-            ],
-            "mimo_0_neutral": [
                 "a"
             ],
             "mimo_0_good": [
                 "a"
             ],
             "mimo_1_neutral": [
-                "a"
-            ],
-            "angga_0_neutral": [
                 "a"
             ],
             "mimo_3_good": [
@@ -72,15 +64,25 @@
                 "b",
                 "a"
             ],
-            "mimo_1_neutral": [
+            "lucy_1_good": [
                 "a"
             ],
-            "lucy_1_good": [
+            "lucy_1_neutral": [
+                "a"
+            ],
+            "mimo_2_good": [
+                "a"
+            ],
+            "mae-rin_1_good": [
+                "a"
+            ],
+            "mae-rin_1_neutral": [
                 "a"
             ]
         }
     },
     "date_events": {
-        "lucy:3": true
+        "lucy:3": true,
+        "lucy:2": true
     }
 }
