@@ -3,6 +3,7 @@ from Enum.BakeryEnum import Flavor, Mold
 import os
 import Constant
 from Order.Cake import Cake
+from Order.Order import Order
 from Room.Room import Room
 from Constant import (
     SCREEN_WIDTH,
@@ -31,7 +32,8 @@ RAW_CAKE = {
 class Dough(Room):
     def __init__(self):
         super().__init__(name="Dough")
-        self.cake = Cake()
+        self.cake: Cake = None
+        self.current_order: Order = None
         self._bg_image = None
         self._font_heading = pygame.font.SysFont(FONT_NAME, FONT_HEADING_SIZE)
         self._font_body = pygame.font.SysFont(FONT_NAME, FONT_BODY_SIZE)
@@ -242,9 +244,29 @@ class Dough(Room):
                 title,
                 title.get_rect(
                     centerx=SCREEN_WIDTH // 2,
-                    centery=SCREEN_HEIGHT // 2
+                    top=Constant.NAV_BAR_HEIGHT + 130
                 )
             )
+
+        if self.current_order:
+            box_width, box_height = 600, 100
+            box_x = (SCREEN_WIDTH - box_width) // 2
+            box_y = Constant.NAV_BAR_HEIGHT + 15
+
+            order_box = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
+            order_box.fill((255, 255, 255, 200))
+            self.screen.blit(order_box, (box_x, box_y))
+            pygame.draw.rect(self.screen, COLOR_DARK_BROWN, (box_x, box_y, box_width, box_height), 2, border_radius=8)
+            
+            flavor_text = self.current_order.flavor.value if self.current_order.flavor else "None"
+            mold_text = self.current_order.mold.value if self.current_order.mold else "None"
+            decoration_text = self.current_order.decoration.value if self.current_order.decoration else "None"
+
+            title_surface = self._font_body.render("Current Order:", True, COLOR_DARK_BROWN)
+            details_surface = self._font_body.render(f"Flavor: {flavor_text} | Mold: {mold_text} | Decoration: {decoration_text}", True, COLOR_DARK_BROWN)
+            self.screen.blit(title_surface, title_surface.get_rect(centerx =SCREEN_WIDTH // 2, top=box_y + 10))
+            self.screen.blit(details_surface, details_surface.get_rect(centerx=SCREEN_WIDTH // 2, top=box_y + 40))
+
         if self._mold_image:
             img_rect = self._mold_image.get_rect(center=self._mold_rect.center)
             self.screen.blit(self._mold_image, img_rect.topleft)

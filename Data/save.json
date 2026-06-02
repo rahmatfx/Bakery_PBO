@@ -18,22 +18,11 @@
             "lucy": "neutral"
         },
         "seen_variants": {
-            "mimo_0_neutral": [
-                "b",
-                "a"
-            ],
             "ardra_0_neutral": [
-                "a"
-            ],
-            "angga_0_neutral": [
-                "b",
                 "a"
             ],
             "ardra_0_good": [
                 "b",
-                "a"
-            ],
-            "mimo_0_good": [
                 "a"
             ],
             "lucy_0_neutral": [
@@ -43,7 +32,7 @@
             "angga_0_good": [
                 "a"
             ],
-            "mimo_1_good": [
+            "lucy_0_good": [
                 "a"
             ],
             "lucy_1_neutral": [
