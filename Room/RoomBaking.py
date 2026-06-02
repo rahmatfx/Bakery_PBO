@@ -76,6 +76,8 @@ class BakingRoom(Room):
         self.text_rect    = None
 
         self.cake: Cake = None
+        
+        self.audio = None
 
     @property
     def isBaked(self) -> bool:

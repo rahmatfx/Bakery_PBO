@@ -16,6 +16,10 @@
             "angga": "neutral"
         },
         "seen_variants": {
+            "mimo_0_neutral": [
+                "a",
+                "b"
+            ],
             "ardra_0_neutral": [
                 "a"
             ],
@@ -23,7 +27,6 @@
                 "a"
             ],
             "ardra_0_good": [
-                "b",
                 "a"
             ],
             "mimo_0_neutral": [
@@ -48,6 +51,18 @@
                 "a"
             ],
             "lucy_3_good": [
+                "a"
+            ],
+            "angga_1_neutral": [
+                "a"
+            ],
+            "angga_0_bad": [
+                "a"
+            ],
+            "mae-rin_0_neutral": [
+                "a"
+            ],
+            "mae-rin_0_good": [
                 "a"
             ]
         }
