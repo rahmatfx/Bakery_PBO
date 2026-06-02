@@ -1,18 +1,19 @@
 {
     "affinity": {
-        "ardra": 3,
-        "lucy": 8,
-        "mimo": 31
+        "ardra": 202,
+        "lucy": 204,
+        "mimo": 263,
+        "angga": 201
     },
     "dialogue_tracker": {
         "next_dialogue": {
-            "lucy": "level_0.good.a",
-            "mimo": "level_1.good.a"
+            "mimo": "ending.romance"
         },
         "current_mood": {
-            "ardra": "good",
-            "lucy": "neutral",
-            "mimo": "neutral"
+            "ardra": "neutral",
+            "lucy": "good",
+            "mimo": "neutral",
+            "angga": "neutral"
         },
         "seen_variants": {
             "ardra_0_neutral": [
@@ -33,8 +34,25 @@
             ],
             "mimo_1_neutral": [
                 "a"
+            ],
+            "angga_0_neutral": [
+                "a"
+            ],
+            "mimo_3_good": [
+                "a"
+            ],
+            "angga_3_neutral": [
+                "b"
+            ],
+            "mimo_3_neutral": [
+                "a"
+            ],
+            "lucy_3_good": [
+                "a"
             ]
         }
     },
-    "date_events": {}
+    "date_events": {
+        "lucy:3": true
+    }
 }

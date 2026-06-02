@@ -6,13 +6,13 @@ from UI.Button import Button
 import Constant
 
 from Constant import (
-    SCREEN_WIDTH, 
-    SCREEN_HEIGHT, 
-    DEKORASI_BG, 
-    COLOR_BG_CREAM, 
-    COLOR_DARK_BROWN, 
-    FONT_HEADING_SIZE, 
-    FONT_BODY_SIZE, 
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    DEKORASI_BG,
+    COLOR_BG_CREAM,
+    COLOR_DARK_BROWN,
+    FONT_HEADING_SIZE,
+    FONT_BODY_SIZE,
     FONT_NAME,
     berries_decor_IMAGE,
     berries_hover_IMAGE,
@@ -37,6 +37,20 @@ from Constant import (
 )
 
 
+# Semua topping path dan target width dikumpulkan di sini supaya tidak berserakan
+TOPPING_ASSETS = {
+    "berries":          (berriesTop,      130),
+    "cream":            (creamTop,        130),
+    "oreo":             (oreoTop,         130),
+    "sprinkles_heart":  (sprinklesHeart,  140),
+    "sprinkles_star":   (sprinklesStar,   140),
+    "sprinkles_round":  (sprinklesRound,  140),
+    "choco_heart":      (chocoHeart,      145),
+    "choco_star":       (chocoStar,       145),
+    "choco_round":      (chocoRound,      145),
+}
+
+
 class DecorButton(Button):
     def __init__(self, x, y, *args, **kwargs):
         super().__init__(0, 0, *args, **kwargs)
@@ -50,18 +64,18 @@ class DecorButton(Button):
     def update(self, mouse_pos):
         if self._has_image:
             img = self.hover_image if self.is_hovered else self.image
-            current_rect = img.get_rect()
-            current_rect.midbottom = self.anchor_pos
-            self.rect = current_rect
+            r = img.get_rect()
+            r.midbottom = self.anchor_pos
+            self.rect = r
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
     def render(self, surface):
         if not self._has_image:
             return
         img = self.hover_image if self.is_hovered else self.image
-        draw_rect = img.get_rect()
-        draw_rect.midbottom = self.anchor_pos
-        surface.blit(img, draw_rect)
+        r = img.get_rect()
+        r.midbottom = self.anchor_pos
+        surface.blit(img, r)
 
     def set_position(self, x, y):
         self.anchor_pos = (x, y)
@@ -74,14 +88,16 @@ class DecorButton(Button):
 class Decoration(Room):
     def __init__(self):
         super().__init__(name="Decoration")
-        self._bg_image = None
-        self._font_heading = pygame.font.SysFont(FONT_NAME, FONT_HEADING_SIZE)
-        self._font_body = pygame.font.SysFont(FONT_NAME, FONT_BODY_SIZE)
-        self.cake = None          # injected by Game.py
-        self.isDecorated = False
-        self.cakeRect = None
-        self.toppingImages = {}   # filled in enter()
 
+        self._bg_image     = None
+        self._font_heading = pygame.font.SysFont(FONT_NAME, FONT_HEADING_SIZE)
+        self._font_body    = pygame.font.SysFont(FONT_NAME, FONT_BODY_SIZE)
+
+        self.cake: Cake    = None
+        self.cakeRect      = None
+        self.toppingImages = {}   # di-cache, hanya load sekali
+
+        # Tombol dekorasi
         self.berries = DecorButton(
             x=345, y=550,
             image_path=berries_decor_IMAGE,
@@ -123,80 +139,86 @@ class Decoration(Room):
         self.oreo.image       = pygame.transform.smoothscale(self.oreo.image,       (130, 120))
         self.oreo.hover_image = pygame.transform.smoothscale(self.oreo.hover_image, (130, 180))
 
+        # Map tombol → DecorationOption (buat handle_event yang clean)
+        self._deco_map = {
+            self.berries:   DecorationOption.DRIED_FRUIT,
+            self.sprinkles: DecorationOption.SPRINKLE,
+            self.chocochip: DecorationOption.CHOCOCHIP,
+            self.cream:     DecorationOption.WHIPCREAM,
+            self.oreo:      DecorationOption.OREO,
+        }
+
+    # ------------------------------------------------------------------ #
+    #  ENTER / EXIT                                                        #
+    # ------------------------------------------------------------------ #
 
     def enter(self):
-        if os.path.exists(DEKORASI_BG):
-            self._bg_image = pygame.transform.smoothscale(
-                pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
-
         print("=== DECORATION ENTER ===")
-        print(f"cake: {self.cake}")
-        if self.cake:
-            print(f"step: {self.cake.step}")
-            print(f"flavor: {self.cake.flavor}")
-            print(f"mold: {self.cake.mold}")
-            path = BAKED_CAKE.get((self.cake.flavor, self.cake.mold))
-            print(f"path: {path}")
-            print(f"path exists: {os.path.exists(path) if path else False}")
-
-        # load cake image
-        if self.cake and self.cake.step >= CakeStep.BAKED:
-            self.cake.load_cake_image(BAKED_CAKE)
-            self.cakeRect = self.cake.cake_surface.get_rect(
-                center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 170)
-            ) if self.cake.cake_surface else None
-
-        if not self.toppingImages:
-            topping_paths = {
-                "berries":          berriesTop,
-                "cream":            creamTop,
-                "oreo":             oreoTop,
-                "sprinkles_heart":  sprinklesHeart,
-                "sprinkles_star":   sprinklesStar,
-                "sprinkles_round":  sprinklesRound,
-                "choco_heart":      chocoHeart,
-                "choco_star":       chocoStar,
-                "choco_round":      chocoRound,
-            }
-            topping_widths = {
-                "berries":          130,
-                "cream":            130,
-                "oreo":             130,
-                "sprinkles_heart":  140,
-                "sprinkles_star":   140,
-                "sprinkles_round":  140,
-                "choco_heart":      145,
-                "choco_star":       145,
-                "choco_round":      145,
-            }
-            for key, path in topping_paths.items():
-                if os.path.exists(path):
-                    img = pygame.image.load(path).convert_alpha()
-                    w, h = img.get_size()
-                    target_w = topping_widths.get(key, 150)
-                    target_h = int(h * (target_w / w))
-                    self.toppingImages[key] = pygame.transform.smoothscale(img, (target_w, target_h))
-
-        # sync topping visual with cake state on every entry
-        if self.cake and self.cake.decoration:
-            self.cake.load_topping_image(self.toppingImages)
-            self.isDecorated = True
-        else:
-            self.isDecorated = False
-
-
-    def update(self, delta_time=0):
-        mouse_pos = pygame.mouse.get_pos()
-        self.berries.update(mouse_pos)
-        self.sprinkles.update(mouse_pos)
-        self.chocochip.update(mouse_pos)
-        self.cream.update(mouse_pos)
-        self.oreo.update(mouse_pos)
-
+        self._load_bg()
+        self._load_topping_assets()
+        self._sync_from_cake()
 
     def exit(self):
         pass
 
+    # ------------------------------------------------------------------ #
+    #  VISUAL HELPERS                                                      #
+    # ------------------------------------------------------------------ #
+
+    def _load_bg(self):
+        if os.path.exists(DEKORASI_BG):
+            self._bg_image = pygame.transform.smoothscale(
+                pygame.image.load(DEKORASI_BG).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    def _load_topping_assets(self):
+        """Load semua gambar topping — hanya sekali, di-cache di self.toppingImages."""
+        if self.toppingImages:
+            return
+        for key, (path, target_w) in TOPPING_ASSETS.items():
+            if os.path.exists(path):
+                img = pygame.image.load(path).convert_alpha()
+                w, h = img.get_size()
+                self.toppingImages[key] = pygame.transform.smoothscale(
+                    img, (target_w, int(h * target_w / w)))
+
+    def _sync_from_cake(self):
+        """
+        Rebuild visual state dari cake object — dipanggil setiap enter().
+        Tidak ada flag boolean tersendiri; semua derived dari cake.
+        """
+        if not self.cake:
+            self.cakeRect = None
+            return
+
+        print(f"[DEBUG Deco] step={self.cake.step}, flavor={self.cake.flavor}, mold={self.cake.mold}")
+
+        # Load gambar kue kalau sudah dipanggang
+        if self.cake.step >= CakeStep.BAKED:
+            self.cake.load_cake_image(BAKED_CAKE)
+            self.cakeRect = (
+                self.cake.cake_surface.get_rect(
+                    center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 170))
+                if self.cake.cake_surface else None
+            )
+        else:
+            self.cakeRect = None
+
+        # Sync topping kalau dekorasi sudah dipilih (misal user balik ke room ini)
+        if self.cake.decoration:
+            self.cake.load_topping_image(self.toppingImages)
+
+    # ------------------------------------------------------------------ #
+    #  UPDATE                                                              #
+    # ------------------------------------------------------------------ #
+
+    def update(self, delta_time=0):
+        mouse_pos = pygame.mouse.get_pos()
+        for btn in self._deco_map:
+            btn.update(mouse_pos)
+
+    # ------------------------------------------------------------------ #
+    #  RENDER                                                              #
+    # ------------------------------------------------------------------ #
 
     def render(self):
         if not self.screen:
@@ -205,53 +227,38 @@ class Decoration(Room):
         if self._bg_image:
             self.screen.blit(self._bg_image, (0, 0))
 
-            self.berries.render(self.screen)
-            self.sprinkles.render(self.screen)
-            self.chocochip.render(self.screen)
-            self.cream.render(self.screen)
-            self.oreo.render(self.screen)
+            # Render semua tombol dekorasi
+            for btn in self._deco_map:
+                btn.render(self.screen)
 
+            # Render kue + topping
             if self.cakeRect:
                 self.cake.render_cake(self.screen, center=self.cakeRect.center)
 
+            # Peringatan kalau kue belum dipanggang
             if self.cake and self.cake.step < CakeStep.BAKED:
                 warn = self._font_body.render("Kue belum dipanggang!", True, COLOR_DARK_BROWN)
                 self.screen.blit(warn, warn.get_rect(centerx=SCREEN_WIDTH // 2, centery=50))
+
         else:
             self.screen.fill(COLOR_BG_CREAM)
             t = self._font_heading.render("~ Decoration ~", True, COLOR_DARK_BROWN)
             self.screen.blit(t, t.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 3))
 
+    # ------------------------------------------------------------------ #
+    #  EVENTS                                                              #
+    # ------------------------------------------------------------------ #
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type != pygame.MOUSEBUTTONDOWN or event.button != 1:
+            return
 
-            if not self.cake or self.cake.step < CakeStep.BAKED:
-                return
+        if not self.cake or self.cake.step < CakeStep.BAKED:
+            return
 
-            clicked = None
-
-            if self.berries.rect.collidepoint(event.pos):
-                clicked = DecorationOption.DRIED_FRUIT
-                print("[debug] berries clicked")
-
-            elif self.sprinkles.rect.collidepoint(event.pos):
-                clicked = DecorationOption.SPRINKLE
-                print("[debug] sprinkles clicked")
-
-            elif self.chocochip.rect.collidepoint(event.pos):
-                clicked = DecorationOption.CHOCOCHIP
-                print("[debug] chocochip clicked")
-
-            elif self.cream.rect.collidepoint(event.pos):
-                clicked = DecorationOption.WHIPCREAM
-                print("[debug] cream clicked")
-
-            elif self.oreo.rect.collidepoint(event.pos):
-                clicked = DecorationOption.OREO
-                print("[debug] oreo clicked")
-
-            if clicked:
-                self.cake.set_decoration(clicked)
+        for btn, deco in self._deco_map.items():
+            if btn.rect.collidepoint(event.pos):
+                self.cake.set_decoration(deco)
                 self.cake.load_topping_image(self.toppingImages)
-                self.isDecorated = True
+                print(f"[debug] {deco.value} clicked")
+                break

@@ -19,6 +19,8 @@ class Cake:
         self.topping_surface = None
         self.step: CakeStep = CakeStep.EMPTY
         self.cake_surface = None
+        self.is_baking: bool = False
+        self.bake_start_time: int | None = None
 
 # urusan dough room
 
