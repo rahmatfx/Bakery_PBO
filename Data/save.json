@@ -2,7 +2,7 @@
     "affinity": {
         "mimo": 61,
         "ardra": 6,
-        "angga": 31,
+        "angga": 51,
         "lucy": 70,
         "mae-rin": 25
     },
@@ -11,12 +11,12 @@
             "lucy": "level_1.good.a",
             "mimo": "level_3.neutral.a",
             "mae-rin": "level_1.good.a",
-            "angga": "level_1.good.a"
+            "angga": "level_2.neutral.a"
         },
         "current_mood": {
             "mimo": "good",
             "ardra": "good",
-            "angga": "neutral",
+            "angga": "good",
             "lucy": "neutral",
             "mae-rin": "neutral"
         },
@@ -61,8 +61,8 @@
                 "a"
             ],
             "mae-rin_0_good": [
-                "b",
-                "a"
+                "a",
+                "b"
             ],
             "lucy_1_good": [
                 "a"
@@ -77,6 +77,9 @@
                 "a"
             ],
             "mae-rin_1_neutral": [
+                "a"
+            ],
+            "angga_1_good": [
                 "a"
             ]
         }

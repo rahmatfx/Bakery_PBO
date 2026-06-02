@@ -264,18 +264,6 @@ class BakingRoom(Room):
                 # Masih mentah
                 self.screen.blit(self._adonan_image, self._adonan_rect)
 
-        # Debug rects
-        if self._oven_rect:
-            pygame.draw.rect(self.screen, (255, 0, 0), self._oven_rect, 2)
-        if self._button_bake_rect:
-            pygame.draw.rect(self.screen, (25, 52, 224), self._button_bake_rect, 2)
-        if self._adonan_rect:
-            pygame.draw.rect(self.screen, (25, 52, 224), self._adonan_rect, 2)
-        if self.rect_posAwalDough:
-            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posAwalDough, 2)
-        if self.rect_posOvenDough:
-            pygame.draw.rect(self.screen, (25, 52, 224), self.rect_posOvenDough, 2)
-
         # Countdown timer
         if self.isShowText and self.bakeDough:
             self.text_surface = self.game_font.render(f"{max(0, self.elapsed)}", True, (255, 255, 59))
