@@ -87,10 +87,10 @@ class DialogueBox:
         self._displayed_chars = len(self._full_text)
         self._typewriter_done = True
 
-    # update
-
     def update(self, delta_time: float = 0.0, audio=None) -> None:
         if not self.visible:
+            if audio:
+                audio.stop_type_tick()
             return
 
         if not self._typewriter_done:
@@ -100,9 +100,11 @@ class DialogueBox:
                 self._displayed_chars = len(self._full_text)
                 self._typewriter_done = True
 
-            # typewriter sfx
             if audio and int(self._displayed_chars) > prev_chars:
                 audio.play_type_tick(delta_time)
+
+        if self._typewriter_done and audio:
+            audio.stop_type_tick()
 
         mouse_pos = pygame.mouse.get_pos()
         self._hovered_choice = -1
@@ -111,29 +113,24 @@ class DialogueBox:
                 self._hovered_choice = i
                 break
 
-    # render
-
     def render(self, surface: pygame.Surface) -> None:
         if not self.visible:
             return
 
-        # choices overlay
-        if self._show_choices and self._choices:
-            self._render_choices_overlay(surface)
-            return
-
-        # dialogue panel
         self._render_panel(surface)
         self._render_name_tag(surface)
         self._render_text(surface)
 
+        if self._show_choices and self._choices:
+            self._render_choices_overlay(surface)
+            return
+
         if self._typewriter_done and not self._choices:
             hint = self.font_hint.render("Click to continue...",
-                                          True, Constant.COLOR_LIGHT_BROWN)
+                                      True, Constant.COLOR_LIGHT_BROWN)
             surface.blit(hint,
-                         (self.panel_x + self.panel_w - Constant.DIALOGUE_HINT_OFFSET_X,
-                          self.panel_y + self.panel_h - Constant.DIALOGUE_HINT_OFFSET_Y))
-
+                     (self.panel_x + self.panel_w - Constant.DIALOGUE_HINT_OFFSET_X,
+                      self.panel_y + self.panel_h - Constant.DIALOGUE_HINT_OFFSET_Y))
     def _render_panel(self, surface: pygame.Surface) -> None:
         panel_rect = pygame.Rect(self.panel_x, self.panel_y,
                                   self.panel_w, self.panel_h)

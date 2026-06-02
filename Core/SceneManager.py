@@ -102,6 +102,8 @@ class SceneManager(Observer):
         self.transition_to("Main Menu")
 
     def _apply_room_change(self) -> None:
+        if self.current_room:
+            self.current_room.exit()
         self.current_room = self._next_room
         self.current_room.enter()
 
@@ -140,7 +142,6 @@ class SceneManager(Observer):
         print("[DEBUG SM] Timer stopped")
 
     def add_time(self, seconds: float) -> None:
-        """Tambah waktu ke timer yang sedang berjalan (untuk reward minigame)."""
         if self._timer_active:
             self._timer_remaining += seconds
             print(f"[DEBUG SM] +{seconds}s added, remaining: {self._timer_remaining:.1f}s")
@@ -229,6 +230,9 @@ class SceneManager(Observer):
 
         if self._nav_visible and self.current_room:
             self.navigation_ui.render(self.screen)
+
+        if self.current_room and hasattr(self.current_room, '_render_above_nav'):
+            self.current_room._render_above_nav(self.screen)
 
         if self._fade_alpha > 0:
             self._fade_surface.set_alpha(int(self._fade_alpha))

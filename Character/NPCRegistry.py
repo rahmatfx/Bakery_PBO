@@ -97,7 +97,6 @@ class NPCRegistry:
         return chosen
 
     def _mark_seen(self, npc_id: str) -> None:
-        """Tandai NPC sebagai baru muncul."""
         if npc_id in self._recently_seen:
             self._recently_seen.remove(npc_id)
         self._recently_seen.append(npc_id)

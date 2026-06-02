@@ -99,6 +99,7 @@ class Cake:
         self.mold = None
         self.decoration = None
         self.topping_surface = None
+        self.cake_surface = None 
         self.step = CakeStep.EMPTY
 
     def matches_order(self, order) -> bool:
