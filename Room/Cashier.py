@@ -46,7 +46,6 @@ class Cashier(Room):
         self._date_event_tracker: EventTracker | None = None
         self._date_cutscene       = None
 
-        # State
         self.npc: NPC | None       = None
         self.order: Order | None   = None
         self.cake: Cake | None     = None

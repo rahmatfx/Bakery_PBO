@@ -91,6 +91,9 @@ class DateCutscene(Room):
         self.dialogue_box.hide()
         self._start_cutscene_dialogue()
 
+    def exit(self) -> None:
+        pass    
+
     def update(self, delta_time: float = 0.0) -> None:
         if not self._finished:
             self.dialogue_box.update(delta_time, self.audio)
