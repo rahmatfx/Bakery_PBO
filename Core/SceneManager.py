@@ -111,7 +111,7 @@ class SceneManager(Observer):
         if hasattr(self.current_room, "current_order"):
             self.current_room.current_order = self.active_orders
         if hasattr(self.current_room, "cake"):
-            self.current_room.cakes = self.active_cakes
+            self.current_room.cake = self.active_cakes
         self.current_room.enter()
 
         self.navigation_ui.set_room(self.current_room.name)

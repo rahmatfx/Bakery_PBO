@@ -297,11 +297,10 @@ class Cashier(Room):
     def _start_order_active(self) -> None:
         self._state = CashierState.ORDER_ACTIVE
         self._order_ui.show_order_details()
-        if self._scene_manager:
-            self.cake = self._scene_manager.active_cakes
         if self.cake:
             self.cake.reset()
         if self._scene_manager:
+            self._scene_manager.active_cakes = self.cake  
             self._scene_manager.active_orders = self.order
             self._scene_manager.start_timer(Constant.TIMER_DURATION)
         self._minigame.start()
