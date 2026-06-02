@@ -61,7 +61,7 @@ class EmojiPopup:
             return
 
         if self._phase == "floating":
-            self._y -= self._float_speed * delta_time * 60  # frame-rate independent
+            self._y -= self._float_speed * delta_time * 60  
             if self._y <= self._target_y:
                 self._y = float(self._target_y)
                 self._phase = "displaying"
