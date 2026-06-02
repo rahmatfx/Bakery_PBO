@@ -129,14 +129,11 @@ class _FadeTrack(_Track):
         t = self.progress
 
         if t < 0.3:
-            # Quick droop
             phase = t / 0.3
             dy = self.sink * phase
             scale = 1.0 - (1.0 - self.min_scale) * phase
         else:
-            # Slow recovery
             phase = (t - 0.3) / 0.7
-            # Ease-out recovery for smooth feel
             ease = 1.0 - (1.0 - phase) ** 2
             dy = self.sink * (1.0 - ease)
             scale = self.min_scale + (1.0 - self.min_scale) * ease

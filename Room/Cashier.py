@@ -71,6 +71,8 @@ class Cashier(Room):
         self._renderer  = CashierRenderer()
         self._render_ctx = CashierRenderContext()
 
+        self._timer_on_exit: float = 0.0
+
         # Anim
         self._npc_offset: tuple[float, float, float] = (0, 0, 1.0)
         self._emoji_scale: float = 1.0
@@ -137,10 +139,16 @@ class Cashier(Room):
         self._renderer.init_fonts()
 
         if self._scene_manager and self._scene_manager.consume_timer_expired():
+            self.on_timer_expired()
             return
 
         if self._state == CashierState.ORDER_ACTIVE:
             self._order_ui.show_order_details()
+            elapsed = 0.0
+            if self._timer_on_exit > 0 and self._scene_manager:
+                elapsed = self._timer_on_exit - self._scene_manager.get_timer_remaining()
+                self._timer_on_exit = 0.0
+            self._minigame.resume(elapsed)
             return
 
         if self._state in (CashierState.REACTING,
@@ -160,7 +168,8 @@ class Cashier(Room):
             self._check_and_trigger_ending()
 
     def exit(self) -> None:
-        pass
+        if self._state == CashierState.ORDER_ACTIVE and self._scene_manager:
+            self._timer_on_exit = self._scene_manager.get_timer_remaining()
 
     def _spawn_npc(self) -> None:
         if self.npc_registry:
@@ -340,6 +349,8 @@ class Cashier(Room):
         self.result = correct
         self.npc.change_affinity(delta)
         self._state = CashierState.REACTING
+        if self.cake:
+            self.cake.reset()
         self._auto_save()
 
 
@@ -441,11 +452,10 @@ class Cashier(Room):
                 remaining = self._scene_manager.get_timer_remaining()
                 self._order_ui.set_timer_text(f"Time: {max(0, int(remaining))}s")
 
-            self._minigame.update(delta_time, self._npc_x)
-
-            # Minigame success
             if self._minigame.just_succeeded:
                 self._on_minigame_success()
+
+            self._minigame.update(delta_time, self._npc_x)
 
     # Minigame reward
 
@@ -473,9 +483,10 @@ class Cashier(Room):
             self._order_ui,
             self.dialogue_box,
             self.cake_selection,
-            self._emoji_popup,
             self._minigame,
         )
+    def _render_above_nav(self, screen: pygame.Surface) -> None:
+        self._emoji_popup.render(screen, self._emoji_scale)
 
     def _build_render_context(self) -> None:
         ctx             = self._render_ctx
@@ -487,6 +498,7 @@ class Cashier(Room):
         ctx.emoji_scale = self._emoji_scale
         ctx.background  = self._current_bg
         ctx.heart_img   = self._heart_img
+        ctx.cake        = self.cake
 
     # Events
 
@@ -508,10 +520,14 @@ class Cashier(Room):
             return
 
         if self._state == CashierState.ORDER_ACTIVE:
-            if (event.type == pygame.MOUSEBUTTONDOWN
-                    and event.button == 1
-                    and self._minigame.handle_click(event.pos)):
-                pass
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self._minigame.handle_click(event.pos):
+                    pass
+                elif (self.cake and self.cake.is_complete()
+                    and hasattr(self._renderer, '_submit_btn_rect')
+                    and self._renderer._submit_btn_rect
+                    and self._renderer._submit_btn_rect.collidepoint(event.pos)):
+                    self.check_cake()
             return
 
         if (self._state == CashierState.REACTING

@@ -95,9 +95,6 @@ class DateEndingScene(Room):
             self._dialogue_active = True
             self._show_current_dialogue()
 
-        # Affinity bonus — kecil biar gak langsung loncat level
-        # Threshold: lv1=15, lv2=35, lv3=65, ending=95
-        # Satu date kasih max ~+15 total (spots+encounter+ending)
         if self._mood >= 80:
             bonus = 5
             tier = "GREAT"

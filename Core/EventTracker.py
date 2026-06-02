@@ -1,5 +1,4 @@
 class EventTracker:
-    """Tracks which date events have been triggered (once per NPC per level)."""
 
     def __init__(self):
         # key format: "npc_id:level"  contoh: "lucy:2"

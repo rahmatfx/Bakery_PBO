@@ -148,7 +148,9 @@ class BakingRoom(Room):
         self.text_surface = self.game_font.render("Hello World!", True, YELLOW)
         self.text_rect = pygame.Rect(825, 355, 50, 50)
 
-            
+    def exit(self) -> None:
+        pass        
+    
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:

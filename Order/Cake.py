@@ -1,4 +1,5 @@
 from enum import IntEnum
+import os
 from Enum.BakeryEnum import Flavor, Mold, DecorationOption
 
 
@@ -15,7 +16,9 @@ class Cake:
         self.flavor: Flavor | None = None
         self.mold: Mold | None = None
         self.decoration: DecorationOption | None = None
+        self.topping_surface = None
         self.step: CakeStep = CakeStep.EMPTY
+        self.cake_surface = None
 
 # urusan dough room
 
@@ -43,6 +46,51 @@ class Cake:
         if self.flavor and self.mold and self.decoration and self.step >= CakeStep.BAKED:
             self.step = CakeStep.COMPLETE
 
+    def load_topping_image(self, topping_images: dict) -> None:
+        """Call this after decoration is set to store the correct topping surface."""
+        if not self.decoration or not self.mold:
+            self.topping_surface = None
+            return
+
+        shape = self.mold.value.lower()
+
+        decoration_to_key = {
+            DecorationOption.DRIED_FRUIT: "berries",
+            DecorationOption.WHIPCREAM:   "cream",
+            DecorationOption.OREO:        "oreo",
+            DecorationOption.SPRINKLE:    f"sprinkles_{shape}",
+            DecorationOption.CHOCOCHIP:   f"choco_{shape}",
+        }
+
+        key = decoration_to_key.get(self.decoration)
+        self.topping_surface = topping_images.get(key) if key else None
+
+    def render_topping(self, surface, center: tuple) -> None:
+        """Blit the topping surface centered on the given position."""
+        if not self.topping_surface:
+            return
+        rect = self.topping_surface.get_rect(center=center)
+        surface.blit(self.topping_surface, rect)
+
+    def load_cake_image(self, baked_cake_dict: dict, width: int = 150) -> None:
+        path = baked_cake_dict.get((self.flavor, self.mold))
+        if path and os.path.exists(path):
+            import pygame
+            img = pygame.image.load(path).convert_alpha()
+            new_w = width
+            new_h = int(img.get_height() * (new_w / img.get_width()))
+            self.cake_surface = pygame.transform.smoothscale(img, (new_w, new_h))
+        else:
+            self.cake_surface = None
+
+    def render_cake(self, surface, center: tuple) -> None:
+        if self.cake_surface:
+            cake_rect = self.cake_surface.get_rect(center=center)
+            surface.blit(self.cake_surface, cake_rect)
+            # topping sits near the top of the cake
+            topping_center = (cake_rect.centerx, cake_rect.top + 40)
+            self.render_topping(surface, topping_center)
+
     def is_complete(self) -> bool:
         return self.step == CakeStep.COMPLETE
 
@@ -50,6 +98,8 @@ class Cake:
         self.flavor = None
         self.mold = None
         self.decoration = None
+        self.topping_surface = None
+        self.cake_surface = None 
         self.step = CakeStep.EMPTY
 
     def matches_order(self, order) -> bool:
