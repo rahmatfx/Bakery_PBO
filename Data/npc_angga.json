@@ -489,44 +489,5 @@
         "expression_sfx": {
             "angry": "baka"
         }
-    },
-    "ending": {
-        "friendship": [
-            {
-                "id": "angga_end_1",
-                "text": "(Angga datang dengan membawa sebuah kotak kecil. Seperti biasa ekspresinya datar, tapi kali ini terlihat sedikit gugup.)",
-                "next": "angga_end_2"
-            },
-            {
-                "id": "angga_end_2",
-                "text": "Kemarin aku bilang ada sesuatu yang mau aku kasih, kan? Sebelum itu, aku mau ngomong sedikit.",
-                "next": "angga_end_3"
-            },
-            {
-                "id": "angga_end_3",
-                "text": "Awalnya aku cuma pelanggan biasa yang mampir buat beli roti. Tapi entah kenapa, lama-lama tempat ini jadi salah satu tempat yang paling nyaman buatku. Dan itu bukan cuma karena rotinya.",
-                "choices": [
-                    {
-                        "text": "Aku juga senang bisa kenal sama kamu, Angga. Kamu sudah seperti teman dekat buatku.",
-                        "affinity": 100,
-                        "expression": "happy",
-                        "emoji": "friendship",
-                        "next": "angga_end_success"
-                    },
-                    {
-                        "text": "Makasih sudah sering mampir ke toko ini. Semoga kita tetap bisa berteman baik.",
-                        "affinity": 50,
-                        "expression": "happy",
-                        "emoji": "smile",
-                        "next": "angga_end_success"
-                    }
-                ]
-            },
-            {
-                "id": "angga_end_success",
-                "text": "...Heh, syukurlah. Jujur aja, aku gak punya banyak teman. Jadi bisa kenal sama seseorang yang selalu mau dengerin ceritaku itu berarti banget. Oh iya, ini buat kamu. Anggap aja hadiah dari seorang sahabat. Makasih untuk semuanya.",
-                "next": null
-            }
-        ]
     }
 }

@@ -63,12 +63,12 @@ class DateRoom(Room):
         self._flower_img: pygame.Surface | None = None
         self._bush_img: pygame.Surface | None = None
 
-        # Spot backgrounds (full scene saat AT_SPOT)
+        # Spot backgrounds 
         self._spot_bgs: dict[int, pygame.Surface | None] = {
             0: None, 1: None, 2: None, 3: None,
         }
 
-        # Spot NPC images (full image saat AT_SPOT)
+        # Spot NPC images 
         self._spot_npcs: dict[int, pygame.Surface | None] = {
             0: None, 1: None, 2: None, 3: None,
         }
@@ -83,7 +83,7 @@ class DateRoom(Room):
     # Asset loading 
 
     def _load_assets(self) -> None:
-        # NPC walking sprite
+        # NPC 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_NPC_IMG).convert_alpha()
             self._npc_date_img = pygame.transform.scale(
@@ -92,7 +92,7 @@ class DateRoom(Room):
         except Exception:
             self._npc_date_img = None
 
-        # MC walking sprite
+        # MC 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_MC_IMG).convert_alpha()
             self._mc_date_img = pygame.transform.scale(
@@ -101,7 +101,7 @@ class DateRoom(Room):
         except Exception:
             self._mc_date_img = None
 
-        # Background (static gunung)
+        # Background 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_BG).convert()
             self._bg_img = pygame.transform.scale(
@@ -110,7 +110,7 @@ class DateRoom(Room):
         except Exception:
             self._bg_img = None
 
-        # Cloud (FAR parallax)
+        # Cloud 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_CLOUD_IMG).convert_alpha()
             self._cloud_img = pygame.transform.scale(
@@ -119,7 +119,7 @@ class DateRoom(Room):
         except Exception:
             self._cloud_img = None
 
-        # Tree (MID parallax)
+        # Tree 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_TREE_IMG).convert_alpha()
             self._tree_img = pygame.transform.scale(
@@ -128,7 +128,7 @@ class DateRoom(Room):
         except Exception:
             self._tree_img = None
 
-        # Flower (NEAR parallax)
+        # Flower
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_FLOWER_IMG).convert_alpha()
             self._flower_img = pygame.transform.scale(
@@ -137,7 +137,7 @@ class DateRoom(Room):
         except Exception:
             self._flower_img = None
 
-        # Bush (ground decoration)
+        # Bush 
         try:
             raw = pygame.image.load(Constant.DATE_ROOM_BUSH_IMG).convert_alpha()
             self._bush_img = pygame.transform.scale(
@@ -146,7 +146,7 @@ class DateRoom(Room):
         except Exception:
             self._bush_img = None
 
-        # Spot backgrounds (full scene) 
+        # Spot backgrounds 
         spot_bg_config = {
             0: (Constant.DATE_ROOM_TAMAN_BG,  "Taman BG"),
             1: (Constant.DATE_ROOM_STALL_BG,  "Stall BG"),
@@ -162,7 +162,7 @@ class DateRoom(Room):
             except Exception:
                 self._spot_bgs[idx] = None
 
-        # Spot NPC images (full image per spot) 
+        # Spot NPC images 
         spot_npc_config = {
             0: (Constant.DATE_ROOM_TAMAN_NPC,  Constant.DATE_ROOM_TAMAN_NPC_W,
                 Constant.DATE_ROOM_TAMAN_NPC_H,  "Taman NPC"),
@@ -225,6 +225,9 @@ class DateRoom(Room):
         self._dialogue_manager.reset()
         self._dialogue_box.hide()
         print("[DateRoom] Entered — walking to first spot")
+
+    def exit(self) -> None:
+        pass    
 
 
     def update(self, delta_time: float = 0.0) -> None:
@@ -454,9 +457,7 @@ class DateRoom(Room):
 
         sw, sh = Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT
 
-        #  Scene: WALKING = parallax, AT_SPOT/ENCOUNTER = spot BG + NPC ─
         if self._state in ("AT_SPOT", "ENCOUNTER"):
-            # Spot background (full screen)
             spot_bg = self._spot_bgs.get(self._current_spot)
             if spot_bg:
                 self.screen.blit(spot_bg, (0, 0))
@@ -699,7 +700,7 @@ class DateRoom(Room):
             self.screen.blit(lbl, lbl.get_rect(centerx=fx + fallback_w // 2,
                                                 centery=fy + fallback_h // 2))
 
-    # Spot BG Fallback (kalau image belum ada)
+    # Spot BG Fallback 
 
     def _draw_spot_bg_fallback(self, sw: int, sh: int) -> None:
         spot = self._current_spot
@@ -733,7 +734,7 @@ class DateRoom(Room):
         elif spot == 2:  # Danau
             # Langit
             self.screen.fill((140, 200, 240))
-            # Danau besar — beneran luas
+            # Danau besar 
             pygame.draw.ellipse(self.screen, (60, 130, 190),
                                 (100, 250, sw - 200, 300))
             pygame.draw.ellipse(self.screen, (80, 160, 220),
@@ -918,6 +919,8 @@ class DateRoom(Room):
                         self._mood, self._npc_name)
                 if self._scene_manager:
                     self._scene_manager.transition_to(self._date_ending_scene)
+
+
 
     # Color helpers
 

@@ -35,14 +35,28 @@
             "ardra_0_good": [
                 "a"
             ],
-            "lucy_0_neutral": [
-                "b",
+            "mimo_0_neutral": [
                 "a"
             ],
-            "angga_0_good": [
+            "mimo_0_good": [
                 "a"
             ],
-            "lucy_0_good": [
+            "mimo_1_neutral": [
+                "a"
+            ],
+            "angga_0_neutral": [
+                "a"
+            ],
+            "mimo_3_good": [
+                "a"
+            ],
+            "angga_3_neutral": [
+                "b"
+            ],
+            "mimo_3_neutral": [
+                "a"
+            ],
+            "lucy_3_good": [
                 "a"
             ],
             "angga_1_neutral": [
@@ -66,5 +80,7 @@
             ]
         }
     },
-    "date_events": {}
+    "date_events": {
+        "lucy:3": true
+    }
 }

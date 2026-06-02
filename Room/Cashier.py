@@ -46,7 +46,6 @@ class Cashier(Room):
         self._date_event_tracker: EventTracker | None = None
         self._date_cutscene       = None
 
-        # State
         self.npc: NPC | None       = None
         self.order: Order | None   = None
         self.cake: Cake | None     = None
@@ -298,11 +297,10 @@ class Cashier(Room):
     def _start_order_active(self) -> None:
         self._state = CashierState.ORDER_ACTIVE
         self._order_ui.show_order_details()
-        if self._scene_manager:
-            self.cake = self._scene_manager.active_cakes
         if self.cake:
-            self.cake.reset()
+            self.cake.reset()                              
         if self._scene_manager:
+            self._scene_manager.active_cakes = self.cake  
             self._scene_manager.active_orders = self.order
             self._scene_manager.start_timer(Constant.TIMER_DURATION)
         self._minigame.start()
@@ -553,7 +551,6 @@ class Cashier(Room):
 
         self.npc = None
         self.order = None
-        self.cake = None
         self.result = False
         self._cake_options = []
         self._state           = CashierState.HIDDEN
