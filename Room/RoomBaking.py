@@ -30,6 +30,8 @@ BAKED_CAKE = {
     (Flavor.CHOCOLATE, Mold.STAR): Constant.CAKE_CHOCOLATE_STAR,
 }
 
+
+
 class BakingRoom(Room):
     def __init__(self):
         super().__init__(name="Baking")
